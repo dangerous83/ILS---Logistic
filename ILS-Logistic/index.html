@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="Assets/ILS-Icon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   :root{
@@ -139,8 +139,9 @@
   .btn-ghost:hover{border-color:var(--brand);color:var(--brand);transform:translateY(-3px)}
 
   .hero-stats{
-    margin-top:42px;display:flex;gap:36px;flex-wrap:wrap;
+    margin-top:42px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;align-items:start;
   }
+  .stat{min-width:0}
   .stat .num{
     font-family:'Manrope',sans-serif;font-size:34px;font-weight:800;color:var(--ink);
     background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
@@ -1158,8 +1159,20 @@
   }
   .quote-sign-block .role{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px}
   .quote-sign-block .scribble{
-    font-family:'Brush Script MT','Lucida Handwriting',cursive;
-    font-size:30px;color:var(--brand-dark);margin-bottom:-6px;font-style:italic;
+    display:block;
+    font-family:'Great Vibes','Brush Script MT','Lucida Handwriting',cursive;
+    font-size:54px;line-height:1;color:#0b2a8a;
+    margin:0 0 -6px -2px;letter-spacing:.5px;
+    transform:rotate(-4deg);transform-origin:left bottom;
+  }
+  .quote-sign-block .sign-svg{
+    display:block;margin:-4px 0 0 -2px;width:170px;height:18px;
+    transform:rotate(-3deg);transform-origin:left center;
+    opacity:.75;
+  }
+  .quote-sign-block .sign-svg path{
+    stroke:#0b2a8a;stroke-width:1.6;fill:none;
+    stroke-linecap:round;stroke-linejoin:round;
   }
 
   .quote-actions{
@@ -1516,7 +1529,7 @@
     .deck{padding:20px 18px 60px}
     .posts-grid{grid-template-columns:1fr}
     .services{grid-template-columns:1fr}
-    .hero-stats{gap:22px}
+    .hero-stats{grid-template-columns:repeat(2,1fr);gap:22px}
     .mockup-section{padding:48px 24px}
     .why-grid{grid-template-columns:1fr}
     .why-block{padding:32px 22px}
@@ -2424,7 +2437,6 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
   </span>
   <span>Get Quotation</span>
-  <span class="quote-price">2,000 AED</span>
 </button>
 
 <!-- QUOTATION DIALOG -->
@@ -2461,8 +2473,8 @@
           <div class="val">Alvin Jampazar · Art Director</div>
         </div>
         <div class="quote-meta-block">
-          <label>Valid For</label>
-          <div class="val">1 Month from approval</div>
+          <label>Billing Cycle</label>
+          <div class="val">Per Month · Renewable</div>
         </div>
       </div>
 
@@ -2474,7 +2486,7 @@
           <button type="button" class="quote-opt" data-opt="3"><strong>Option 3</strong><small>Editorial Premium</small></button>
         </div>
 
-        <h4>Service Breakdown · 1 Month</h4>
+        <h4>Service Breakdown · Per Month</h4>
         <table class="quote-items">
           <thead>
             <tr><th>Item</th><th style="text-align:right">Quantity</th></tr>
@@ -2485,21 +2497,28 @@
                 <div class="item-name">Stories &amp; Animations</div>
                 <div class="item-desc">Branded vertical story frames + motion animations</div>
               </td>
-              <td class="qty">5 / month</td>
+              <td class="qty">5 per month</td>
             </tr>
             <tr>
               <td>
                 <div class="item-name">Reels &amp; Short Videos</div>
                 <div class="item-desc">Vertical video edits for Reels, TikTok &amp; Shorts</div>
               </td>
-              <td class="qty">4 / month</td>
+              <td class="qty">4 per month</td>
             </tr>
             <tr>
               <td>
                 <div class="item-name">Feed Posts</div>
                 <div class="item-desc">Branded posts across Instagram, LinkedIn &amp; Facebook</div>
               </td>
-              <td class="qty">15 / month</td>
+              <td class="qty">15 per month</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="item-name">Instagram Highlights</div>
+                <div class="item-desc">5 permanent highlight covers — Services, Fleet, Deliveries, Tracking, Clients</div>
+              </td>
+              <td class="qty">5 · Included</td>
             </tr>
             <tr>
               <td>
@@ -2519,14 +2538,15 @@
         </table>
 
         <div class="quote-totals">
-          <div class="lbl">Total · 1 month</div>
-          <div class="amt">2,000 <small>AED</small></div>
+          <div class="lbl">Total · Per Month</div>
+          <div class="amt">2,000 <small>AED / month</small></div>
         </div>
 
         <div class="quote-terms">
           <h5>Terms &amp; Conditions</h5>
           <ul>
-            <li><strong>Service period:</strong> 1 month from approval date — renewable on a monthly basis.</li>
+            <li><strong>Scope is final:</strong> only the items listed in this quotation are included. <u>No additional services will be provided outside this scope</u> — any extra work will require a separate quotation.</li>
+            <li><strong>Service period:</strong> billed per month from approval date — renewable on a monthly basis at 2,000 AED / month.</li>
             <li><strong>Creative direction:</strong> design follows the colour, typography and visual style of the option selected above (Option 1, 2 or 3).</li>
             <li><strong>Revisions:</strong> 2 rounds of revisions included per asset before publishing.</li>
             <li><strong>Deliverables:</strong> all final assets handed over as editable master files — full ownership transferred to ILS.</li>
@@ -2538,9 +2558,12 @@
 
         <div class="quote-sign">
           <div class="quote-sign-block">
-            <div class="scribble">Alvin</div>
+            <div class="scribble">Alvin Jampazar</div>
+            <svg class="sign-svg" viewBox="0 0 170 18" aria-hidden="true">
+              <path d="M2 12 C 18 4, 38 16, 58 8 S 96 14, 118 6 S 152 14, 168 4"/>
+            </svg>
             <div class="name">Alvin Jampazar</div>
-            <div class="role">Art Director</div>
+            <div class="role">Art Director · CEO</div>
           </div>
           <div class="quote-sign-block" style="text-align:right">
             <div class="role">Authorized signatory</div>
@@ -3269,11 +3292,11 @@
   const quoteOpts    = document.querySelectorAll('.quote-opt');
   const quoteLogo    = document.getElementById('quoteLogo');
 
-  // Date & quote number
-  const _now = new Date();
+  // Date & quote number — locked to submission date (Monday 18 May 2026)
+  const _issue = new Date(2026, 4, 18);
   const _months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const _dateStr = `${String(_now.getDate()).padStart(2,'0')} ${_months[_now.getMonth()]} ${_now.getFullYear()}`;
-  const _quoteNum = `Q-${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}${String(_now.getDate()).padStart(2,'0')}`;
+  const _dateStr = `${String(_issue.getDate()).padStart(2,'0')} ${_months[_issue.getMonth()]} ${_issue.getFullYear()}`;
+  const _quoteNum = `Q-${_issue.getFullYear()}-${String(_issue.getMonth()+1).padStart(2,'0')}${String(_issue.getDate()).padStart(2,'0')}`;
   if(quoteDateEl) quoteDateEl.textContent = _dateStr;
   if(quoteNumEl)  quoteNumEl.textContent  = _quoteNum;
 
@@ -3396,8 +3419,8 @@
     doc.setTextColor(120,120,140);
     doc.setFont('helvetica','bold');
     const colW = (W-M*2)/4;
-    const labels = ['QUOTE NUMBER','DATE ISSUED','PREPARED BY','VALID FOR'];
-    const values = [_quoteNum, _dateStr, 'Alvin Jampazar', '1 Month from approval'];
+    const labels = ['QUOTE NUMBER','DATE ISSUED','PREPARED BY','BILLING CYCLE'];
+    const values = [_quoteNum, _dateStr, 'Alvin Jampazar', 'Per Month · Renewable'];
     labels.forEach((lab,i)=>{
       doc.setTextColor(120,120,140);
       doc.setFontSize(8);
@@ -3434,13 +3457,14 @@
     doc.setFontSize(10);
     doc.setFont('helvetica','bold');
     doc.setTextColor(11,42,138);
-    doc.text('SERVICE BREAKDOWN · 1 MONTH', M, y);
+    doc.text('SERVICE BREAKDOWN · PER MONTH', M, y);
     y += 14;
 
     const items = [
-      ['Stories & Animations', 'Branded vertical story frames + motion animations', '5 / month'],
-      ['Reels & Short Videos', 'Vertical video edits for Reels, TikTok & Shorts',     '4 / month'],
-      ['Feed Posts',           'Branded posts across Instagram, LinkedIn & Facebook',  '15 / month'],
+      ['Stories & Animations', 'Branded vertical story frames + motion animations', '5 per month'],
+      ['Reels & Short Videos', 'Vertical video edits for Reels, TikTok & Shorts',     '4 per month'],
+      ['Feed Posts',           'Branded posts across Instagram, LinkedIn & Facebook',  '15 per month'],
+      ['Instagram Highlights', '5 permanent highlight covers - Services, Fleet, Deliveries, Tracking, Clients', '5 - Included'],
       ['Brand Monitoring & DM Care', 'Comment + DM handling across all platforms · 24/7', 'Included'],
       ['Design System & Templates',  "Follows the selected option's colour & brand style", 'Included'],
     ];
@@ -3481,9 +3505,9 @@
     doc.setTextColor(255,255,255);
     doc.setFont('helvetica','bold');
     doc.setFontSize(9);
-    doc.text('TOTAL · 1 MONTH', M+18, y+27);
+    doc.text('TOTAL · PER MONTH', M+18, y+27);
     doc.setFontSize(20);
-    doc.text('2,000 AED', W-M-18, y+29, { align:'right' });
+    doc.text('2,000 AED / month', W-M-18, y+29, { align:'right' });
     y += 60;
 
     // Terms
@@ -3494,7 +3518,8 @@
     doc.text('TERMS & CONDITIONS', M, y);
     y += 14;
     const terms = [
-      "Service period: 1 month from approval date - renewable on a monthly basis.",
+      "Scope is final: ONLY the items listed in this quotation are included. No additional services will be provided outside this scope - any extra work will require a separate quotation.",
+      "Service period: billed per month from approval date - renewable on a monthly basis at 2,000 AED / month.",
       "Creative direction: design follows the colour, typography and visual style of the option selected above.",
       "Revisions: 2 rounds of revisions included per asset before publishing.",
       "Deliverables: all final assets handed over as editable master files - full ownership transferred to ILS.",
@@ -3519,21 +3544,38 @@
     doc.setLineDashPattern([3,3],0);
     doc.line(M, y, W-M, y);
     doc.setLineDashPattern([],0);
-    y += 18;
+    y += 26;
+    // Handwritten signature (script font + flourish)
     doc.setFont('times','italic');
-    doc.setFontSize(22);
+    doc.setFontSize(36);
     doc.setTextColor(11,42,138);
-    doc.text('Alvin', M, y);
-    y += 16;
+    doc.text('Alvin Jampazar', M, y);
+    // Flourish stroke under the signature
+    doc.setDrawColor(11,42,138);
+    doc.setLineWidth(1);
+    const sx = M, sy = y + 6, sw = 190;
+    doc.lines(
+      [
+        [sw*0.18, -6],
+        [sw*0.22,  6],
+        [sw*0.22, -4],
+        [sw*0.20,  5],
+        [sw*0.18, -8],
+      ],
+      sx, sy,
+      [1,1], 'S'
+    );
+    doc.setLineWidth(0);
+    y += 22;
     doc.setFont('helvetica','bold');
-    doc.setFontSize(13);
+    doc.setFontSize(12);
     doc.setTextColor(10,18,48);
     doc.text('Alvin Jampazar', M, y);
     y += 12;
     doc.setFont('helvetica','normal');
     doc.setFontSize(9);
     doc.setTextColor(110,115,144);
-    doc.text('Art Director', M, y);
+    doc.text('Art Director · CEO', M, y);
 
     // Right-side
     doc.setFontSize(9);
@@ -3586,11 +3628,11 @@
     },
     {
       keys:['post per month','posts per month','how many posts','frequency','volume','how much content','deliverables'],
-      answer:"📅 Monthly content package:\n• 15 feed posts\n• 4 reels / short videos\n• 5 stories / animations\n• 24/7 brand monitoring & DM care\n\nAll across Instagram, LinkedIn, Facebook and TikTok."
+      answer:"📅 Per-month content package:\n• 15 feed posts per month\n• 4 reels / short videos per month\n• 5 stories / animations per month\n• 5 permanent Instagram highlights\n• 24/7 brand monitoring & DM care\n\nAll across Instagram, LinkedIn, Facebook and TikTok."
     },
     {
       keys:['quote','quotation','invoice','proposal price','total cost'],
-      answer:"💰 The full package is 2,000 AED for 1 month.\n\nTap the green 'Get Quotation' button on the right to view the full professional quotation and download it as a PDF."
+      answer:"💰 The full package is 2,000 AED per month — billed monthly, renewable.\n\nTap the green 'Get Quotation' button on the right to view the full professional quotation and download it as a PDF."
     },
     {
       keys:['reel','video','short video','tiktok video'],

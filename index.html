@@ -1049,7 +1049,9 @@
   }
   .quote-brand{display:flex;align-items:center;gap:14px}
   .quote-brand img{
-    height:54px;width:auto;background:#fff;border-radius:10px;padding:8px 12px;
+    height:44px;width:auto;max-width:200px;
+    background:#fff;border-radius:8px;padding:6px 10px;
+    object-fit:contain;display:block;
   }
   .quote-brand-name{line-height:1.2}
   .quote-brand-name strong{
@@ -1156,13 +1158,6 @@
     font-family:'Manrope',sans-serif;font-size:14px;font-weight:700;color:var(--ink);
   }
   .quote-sign-block .role{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px}
-  .quote-sign-block .sign-svg{
-    display:block;margin:0 0 6px -2px;width:120px;height:34px;
-  }
-  .quote-sign-block .sign-svg path{
-    stroke:#0b2a8a;stroke-width:1.6;fill:none;
-    stroke-linecap:round;stroke-linejoin:round;
-  }
 
   .quote-actions{
     padding:18px 36px 28px;display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;
@@ -1619,8 +1614,11 @@
         <span class="accent">moving stories.</span>
       </h1>
       <p class="hero-sub">
-        A full creative system that turns ILS into a recognisable, scroll-stopping logistics brand —
-        across Instagram, LinkedIn, Facebook and TikTok. Built for speed, trust, and global reach.
+        A full creative system that turns ILS into a recognisable, scroll-stopping logistics brand
+        on Instagram &amp; Facebook. Built for speed, trust, and global reach.
+        <em style="display:block;margin-top:8px;font-style:normal;font-size:13px;color:var(--brand-dark);font-weight:600">
+          Scope note: this engagement covers Instagram &amp; Facebook only — no other platforms.
+        </em>
       </p>
       <div class="hero-actions">
         <a href="#showcase" class="btn btn-primary">
@@ -2439,7 +2437,7 @@
           <img src="Assets/logo.jpg" alt="ILS" id="quoteLogo">
           <div class="quote-brand-name">
             <strong>International Logistics Services</strong>
-            <small>Social Media Management · Monthly Package</small>
+            <small>Social Media Management · Instagram &amp; Facebook only</small>
           </div>
         </div>
         <div class="quote-title-block">
@@ -2491,14 +2489,14 @@
             <tr>
               <td>
                 <div class="item-name">Reels &amp; Short Videos</div>
-                <div class="item-desc">Vertical video edits for Reels, TikTok &amp; Shorts</div>
+                <div class="item-desc">Vertical video edits for Instagram Reels &amp; Facebook Reels</div>
               </td>
               <td class="qty">4 per month</td>
             </tr>
             <tr>
               <td>
                 <div class="item-name">Feed Posts</div>
-                <div class="item-desc">Branded posts across Instagram, LinkedIn &amp; Facebook</div>
+                <div class="item-desc">Branded posts across Instagram &amp; Facebook</div>
               </td>
               <td class="qty">15 per month</td>
             </tr>
@@ -2512,7 +2510,7 @@
             <tr>
               <td>
                 <div class="item-name">Brand Monitoring &amp; DM Care</div>
-                <div class="item-desc">Comment + DM handling across all platforms · 24/7</div>
+                <div class="item-desc">Comment + DM handling on Instagram &amp; Facebook · 24/7</div>
               </td>
               <td class="qty">Included</td>
             </tr>
@@ -2534,6 +2532,7 @@
         <div class="quote-terms">
           <h5>Terms &amp; Conditions</h5>
           <ul>
+            <li><strong>Platforms covered:</strong> this service is for <u>Instagram and Facebook only</u>. <u>No other social media platforms</u> (TikTok, LinkedIn, X/Twitter, YouTube, Threads, Snapchat, etc.) are included or managed under this quotation.</li>
             <li><strong>Scope is final:</strong> only the items listed in this quotation are included. <u>No additional services will be provided outside this scope</u> — any extra work will require a separate quotation.</li>
             <li><strong>Service period:</strong> billed per month from approval date — renewable on a monthly basis at 2,000 AED / month.</li>
             <li><strong>Creative direction:</strong> design follows the colour, typography and visual style of the option selected above (Option 1, 2 or 3).</li>
@@ -2547,10 +2546,6 @@
 
         <div class="quote-sign">
           <div class="quote-sign-block">
-            <svg class="sign-svg" viewBox="0 0 120 34" aria-hidden="true">
-              <path d="M4 22 C 10 6, 22 4, 28 18 S 40 30, 48 16 S 64 6, 70 20 C 74 30, 82 28, 90 18 C 96 10, 106 12, 112 22"/>
-              <path d="M14 28 C 40 26, 80 26, 108 28" opacity=".55"/>
-            </svg>
             <div class="name">Alvin Jampazar</div>
             <div class="role">Art Director · CEO</div>
           </div>
@@ -2694,12 +2689,12 @@
       "Option One: Bold Industrial. This is the scroll-stopping direction. " +
       "Heavy display typography on cinematic blue photography — engineered to break through the noise of a B2B logistics feed. " +
       "It works as one complete system across air, sea, and road, with built-in trust badges for fast, secure, and worldwide service. " +
-      "Choose Option One if your goal is maximum attention and engagement on Instagram, TikTok, and paid Meta campaigns — " +
+      "Choose Option One if your goal is maximum attention and engagement on Instagram and Facebook — " +
       "where you need to stop the thumb mid-scroll and turn cold viewers into qualified leads.",
     "2":
       "Option Two: Clean Corporate. This is the premium, executive-grade direction. " +
       "Clean white space, real people in the shots, and corporate restraint that signals quiet authority. " +
-      "It's engineered for LinkedIn and high-trust B2B feeds, where C-level logistics buyers expect polish and credibility. " +
+      "It's engineered for Instagram and Facebook B2B feeds, where C-level logistics buyers expect polish and credibility. " +
       "Choose Option Two if your priority is building authority, attracting enterprise clients, " +
       "and looking like a partner that big shippers can rely on for years to come.",
     "3":
@@ -3303,7 +3298,7 @@
       }
     }
     quoteDialog.classList.add('show');
-    speakOnce("Here is your professional quotation. Please read every line carefully before you approve or download, because this scope is final and no extra services will be added outside it. Once you are ready, return to Alvin and let him know which option you approve so he can start the management of your social media right away.");
+    speakOnce("Here is your professional quotation. Please read every line carefully before you approve or download. This engagement covers Instagram and Facebook only — no other social media platforms are included. The scope listed here is final, and no extra services will be added outside it. Once you are ready, return to Alvin and let him know which option you approve so he can start the management of your Instagram and Facebook right away.");
   }
   function closeQuoteDialog(){
     quoteDialog.classList.remove('show');
@@ -3329,11 +3324,13 @@
 
   // Load the ILS logo as a base64 data URL so jsPDF can embed it
   let logoDataUrl = null;
+  let logoAspect  = 3; // fallback (logo is roughly 3:1)
   function loadLogoDataUrl(){
     return new Promise((resolve)=>{
       const img = new Image();
       img.onload = ()=>{
         try{
+          if(img.naturalHeight) logoAspect = img.naturalWidth / img.naturalHeight;
           const canvas = document.createElement('canvas');
           canvas.width = img.naturalWidth;
           canvas.height = img.naturalHeight;
@@ -3368,27 +3365,34 @@
     doc.setFillColor(30, 77, 216);
     doc.triangle(W-150, 0, W, 0, W, 88, 'F');
 
+    // Logo with preserved aspect ratio
+    const logoH = 32;
+    const logoW = logoH * logoAspect;
+    const boxPadX = 8, boxPadY = 6;
+    const boxW = logoW + boxPadX * 2;
+    const boxH = logoH + boxPadY * 2;
     if(logoDataUrl){
       try{
         doc.setFillColor(255,255,255);
-        doc.roundedRect(M, 20, 76, 44, 6, 6, 'F');
-        doc.addImage(logoDataUrl, 'JPEG', M+6, 24, 64, 36, undefined, 'FAST');
+        doc.roundedRect(M, 22, boxW, boxH, 5, 5, 'F');
+        doc.addImage(logoDataUrl, 'JPEG', M + boxPadX, 22 + boxPadY, logoW, logoH, undefined, 'FAST');
       }catch(_){}
     } else {
       doc.setFillColor(255,255,255);
-      doc.roundedRect(M, 20, 60, 44, 6, 6, 'F');
+      doc.roundedRect(M, 22, 60, 44, 5, 5, 'F');
       doc.setTextColor(11,42,138);
       doc.setFont('helvetica','bold');
       doc.setFontSize(16);
-      doc.text('ILS', M+30, 48, { align:'center' });
+      doc.text('ILS', M+30, 50, { align:'center' });
     }
+    const textX = M + boxW + 14;
     doc.setTextColor(255,255,255);
     doc.setFont('helvetica','bold');
     doc.setFontSize(12);
-    doc.text('International Logistics Services', M+90, 40);
+    doc.text('International Logistics Services', textX, 40);
     doc.setFont('helvetica','normal');
     doc.setFontSize(9);
-    doc.text('Social Media Management · Monthly Package', M+90, 54);
+    doc.text('Social Media · Instagram & Facebook only', textX, 54);
 
     doc.setFont('helvetica','bold');
     doc.setFontSize(22);
@@ -3437,11 +3441,11 @@
     y += 10;
 
     const items = [
-      ['Stories & Animations', 'Branded vertical story frames + motion animations', '5 per month'],
-      ['Reels & Short Videos', 'Vertical video edits for Reels, TikTok & Shorts',     '4 per month'],
-      ['Feed Posts',           'Branded posts across Instagram, LinkedIn & Facebook',  '15 per month'],
+      ['Stories & Animations', 'Branded vertical story frames + motion animations (Instagram & Facebook)', '5 per month'],
+      ['Reels & Short Videos', 'Vertical video edits for Instagram Reels & Facebook Reels',                '4 per month'],
+      ['Feed Posts',           'Branded posts across Instagram & Facebook',                                '15 per month'],
       ['Instagram Highlights', '5 permanent highlight covers - Services, Fleet, Deliveries, Tracking, Clients', '5 - Included'],
-      ['Brand Monitoring & DM Care', 'Comment + DM handling across all platforms · 24/7', 'Included'],
+      ['Brand Monitoring & DM Care', 'Comment + DM handling on Instagram & Facebook · 24/7', 'Included'],
       ['Design System & Templates',  "Follows the selected option's colour & brand style", 'Included'],
     ];
     // table header
@@ -3493,6 +3497,7 @@
     doc.text('TERMS & CONDITIONS', M, y);
     y += 11;
     const terms = [
+      "Platforms covered: this service is for INSTAGRAM AND FACEBOOK ONLY. No other social media platforms (TikTok, LinkedIn, X/Twitter, YouTube, Threads, Snapchat, etc.) are included or managed under this quotation.",
       "Scope is final: ONLY the items listed in this quotation are included. No extra services outside this scope - any additional work requires a separate quotation.",
       "Service period: billed per month from approval date, renewable on a monthly basis at 2,000 AED / month.",
       "Revisions: 2 rounds of revisions included per asset before publishing.",
@@ -3512,52 +3517,27 @@
 
     y += 10;
 
-    // Signature row (compact, no cursive name — just a small scribble)
+    // Sign-off row (no signature scribble — printed name only)
     doc.setDrawColor(200,210,235);
     doc.setLineDashPattern([3,3],0);
     doc.line(M, y, W-M, y);
     doc.setLineDashPattern([],0);
-    y += 16;
-
-    // Small abstract signature squiggle
-    doc.setDrawColor(11,42,138);
-    doc.setLineWidth(1.1);
-    const sx = M + 2, sy = y + 6;
-    // Two flowing curves
-    doc.lines(
-      [
-        [10,-10, 22,-12, 28,2],
-        [6,12, 14,8, 20,-6],
-        [10,-8, 22,4, 32,-2],
-        [8,8, 18,-4, 28,2],
-      ],
-      sx, sy, [1,1], 'S'
-    );
-    // Underline flourish
-    doc.setLineWidth(0.7);
-    doc.lines(
-      [
-        [40,2, 70,2, 110,-2],
-      ],
-      sx, sy + 12, [1,1], 'S'
-    );
-    doc.setLineWidth(0);
-    y += 22;
+    y += 18;
 
     doc.setFont('helvetica','bold');
-    doc.setFontSize(10);
+    doc.setFontSize(11);
     doc.setTextColor(10,18,48);
     doc.text('Alvin Jampazar', M, y);
-    y += 11;
+    y += 12;
     doc.setFont('helvetica','normal');
-    doc.setFontSize(8);
+    doc.setFontSize(8.5);
     doc.setTextColor(110,115,144);
     doc.text('Art Director · CEO', M, y);
 
     // Right-side
     doc.setFontSize(8);
     doc.setTextColor(110,115,144);
-    doc.text('Authorized signatory', W-M, y-11, { align:'right' });
+    doc.text('Authorized signatory', W-M, y-12, { align:'right' });
     doc.setFontSize(7.5);
     doc.text('© ILS — All rights reserved', W-M, y, { align:'right' });
 
@@ -3589,11 +3569,11 @@
   const AI_INTENTS = [
     {
       keys:['option 1','option one','bold industrial','industrial','bold'],
-      answer:"📦 Option 1 — Bold Industrial\n\nHeavy display typography on cinematic blue photography. Built to stop the scroll on Instagram, TikTok and paid Meta campaigns.\n\nBest for: maximum attention, engagement-driven growth, and turning cold viewers into qualified leads."
+      answer:"📦 Option 1 — Bold Industrial\n\nHeavy display typography on cinematic blue photography. Built to stop the scroll on Instagram and Facebook.\n\nBest for: maximum attention, engagement-driven growth, and turning cold viewers into qualified leads.\n\n⚠️ Scope: Instagram & Facebook only — no other platforms."
     },
     {
       keys:['option 2','option two','clean corporate','corporate','clean','white'],
-      answer:"💼 Option 2 — Clean Corporate\n\nClean white space, real people in the shots, executive-grade aesthetic. Built for LinkedIn and high-trust B2B feeds.\n\nBest for: enterprise clients, C-level buyers, and quiet authority over flashy reach."
+      answer:"💼 Option 2 — Clean Corporate\n\nClean white space, real people in the shots, executive-grade aesthetic. Built for high-trust Instagram & Facebook feeds.\n\nBest for: enterprise clients, C-level buyers, and quiet authority over flashy reach.\n\n⚠️ Scope: Instagram & Facebook only — no other platforms."
     },
     {
       keys:['option 3','option three','editorial','premium','magazine'],
@@ -3605,7 +3585,7 @@
     },
     {
       keys:['post per month','posts per month','how many posts','frequency','volume','how much content','deliverables'],
-      answer:"📅 Per-month content package:\n• 15 feed posts per month\n• 4 reels / short videos per month\n• 5 stories / animations per month\n• 5 permanent Instagram highlights\n• 24/7 brand monitoring & DM care\n\nAll across Instagram, LinkedIn, Facebook and TikTok."
+      answer:"📅 Per-month content package:\n• 15 feed posts per month\n• 4 reels / short videos per month\n• 5 stories / animations per month\n• 5 permanent Instagram highlights\n• 24/7 brand monitoring & DM care\n\n⚠️ Scope: Instagram & Facebook only. No other social media platforms (TikTok, LinkedIn, X/Twitter, YouTube, etc.) are managed under this engagement."
     },
     {
       keys:['quote','quotation','invoice','proposal price','total cost'],
@@ -3613,7 +3593,7 @@
     },
     {
       keys:['reel','video','short video','tiktok video'],
-      answer:"🎬 4 reels / short videos per month — vertical edits optimised for Instagram Reels, TikTok, and YouTube Shorts."
+      answer:"🎬 4 reels / short videos per month — vertical edits optimised for Instagram Reels and Facebook Reels.\n\n⚠️ Scope is Instagram & Facebook only. TikTok, YouTube Shorts and other platforms are not part of this engagement."
     },
     {
       keys:['story','stories','animation','motion'],
@@ -3628,8 +3608,8 @@
       answer:"⭐ Each option comes with 5 Instagram Story Highlight covers: Services · Fleet · Deliveries · Tracking · Clients. Each one is styled to match its option's visual language."
     },
     {
-      keys:['platform','where','channel','tiktok','linkedin','facebook','instagram'],
-      answer:"📱 Across Instagram, LinkedIn, Facebook and TikTok — organic + paid campaigns on Meta and LinkedIn."
+      keys:['platform','where','channel','tiktok','linkedin','facebook','instagram','youtube','twitter','threads'],
+      answer:"📱 Scope: Instagram & Facebook ONLY.\n\nThis engagement does NOT cover any other social media platforms — no TikTok, LinkedIn, X/Twitter, YouTube, Threads, Snapchat, etc. If you need those platforms managed, it requires a separate quotation."
     },
     {
       keys:['timeline','how long','when start','kickoff','launch','delivery time','start'],
@@ -3649,7 +3629,7 @@
     },
     {
       keys:['service','what services','what do you do','offering','provide'],
-      answer:"🛠️ Alvin offers:\n• Content Strategy\n• Creative Design (posts, reels, carousels, stories)\n• Paid Campaigns (Meta & LinkedIn)\n• Community & DM management\n\nFull list: www.alvinjampazar.com"
+      answer:"🛠️ For this ILS engagement, the scope is:\n• Content Strategy (Instagram & Facebook only)\n• Creative Design (posts, reels, carousels, stories)\n• Paid Campaigns (Meta — Instagram & Facebook ads)\n• Community & DM management on Instagram & Facebook\n\n⚠️ No other social media platforms (TikTok, LinkedIn, YouTube, X/Twitter, etc.) are included.\n\nFull profile: www.alvinjampazar.com"
     },
     {
       keys:['why','benefit','value','what makes','advantage'],
@@ -3657,7 +3637,7 @@
     },
     {
       keys:['monitor','monitoring','24/7','support'],
-      answer:"🔍 24/7 brand monitoring is included — Alvin keeps an eye on mentions, comments and DMs across all platforms."
+      answer:"🔍 24/7 brand monitoring is included — Alvin keeps an eye on mentions, comments and DMs on Instagram & Facebook (the only platforms covered in this engagement)."
     },
     {
       keys:['team','who','employees','staff','people'],

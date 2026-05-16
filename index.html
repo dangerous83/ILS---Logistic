@@ -3171,17 +3171,21 @@
   // ===== AI VOICE — locked to a consistent male English voice across devices =====
   // Curated by platform, highest priority first.
   const MALE_VOICE_NAMES = [
-    // Edge / Chromium "Natural" neural voices (best quality, all desktops)
+    // === TOP PICK: Ryan (Natural) — the original desktop voice ===
+    'Microsoft Ryan Online (Natural) - English (United Kingdom)',
+    'Microsoft Ryan Online (Natural) - English (United States)',
+    'Microsoft Ryan Online (Natural)',
+    'Microsoft Ryan',
+    // Edge / Chromium "Natural" neural voices (other strong UK/US males)
+    'Microsoft Thomas Online (Natural) - English (United Kingdom)',
     'Microsoft Guy Online (Natural) - English (United States)',
     'Microsoft Brandon Online (Natural) - English (United States)',
     'Microsoft Christopher Online (Natural) - English (United States)',
     'Microsoft Eric Online (Natural) - English (United States)',
     'Microsoft Tony Online (Natural) - English (United States)',
-    'Microsoft Ryan Online (Natural) - English (United Kingdom)',
-    'Microsoft Thomas Online (Natural) - English (United Kingdom)',
     'Microsoft William Online (Natural) - English (Australia)',
     // Chromium fallback names
-    'Microsoft Guy', 'Microsoft Mark', 'Microsoft David', 'Microsoft Ryan', 'Microsoft Brandon',
+    'Microsoft Guy', 'Microsoft Mark', 'Microsoft David', 'Microsoft Brandon',
     // Chrome / Android — Google
     'Google UK English Male',
     'Google US English Male',
@@ -3223,10 +3227,9 @@
         || voices[0];
   }
 
-  // Consistent tuning for the AI voice — slightly lower pitch and steady rate
-  // so the persona feels the same on phone, tablet, and desktop.
-  const AI_VOICE_RATE  = 0.95;
-  const AI_VOICE_PITCH = 0.9;
+  // Consistent tuning — matches the original Ryan Natural delivery on desktop.
+  const AI_VOICE_RATE  = 0.98;
+  const AI_VOICE_PITCH = 1.0;
 
   function setPlayingUI(playing){
     isPlaying = playing;

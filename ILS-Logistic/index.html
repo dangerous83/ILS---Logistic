@@ -1,0 +1,3798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ILS · Social Media Management Presentation</title>
+<link rel="icon" type="image/jpeg" href="Assets/ILS-Icon.jpg">
+<link rel="shortcut icon" type="image/jpeg" href="Assets/ILS-Icon.jpg">
+<link rel="apple-touch-icon" href="Assets/ILS-Icon.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --brand:#1e4dd8;
+    --brand-dark:#0b2a8a;
+    --brand-light:#3d6bff;
+    --ink:#0a1230;
+    --ink-soft:#3a4365;
+    --muted:#6b7390;
+    --bg:#ffffff;
+    --bg-soft:#f4f7ff;
+    --line:#e6ecff;
+    --shadow: 0 30px 60px -25px rgba(20,40,120,.25), 0 12px 24px -16px rgba(20,40,120,.18);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;scroll-behavior:smooth}
+
+  /* Animated background accents */
+  .bg-decor{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .bg-decor::before,.bg-decor::after{
+    content:"";position:absolute;border-radius:50%;
+    filter:blur(80px);opacity:.35;
+    animation:float 14s ease-in-out infinite;
+  }
+  .bg-decor::before{width:520px;height:520px;background:radial-gradient(circle,#dbe5ff 0%,transparent 70%);top:-150px;right:-100px}
+  .bg-decor::after{width:600px;height:600px;background:radial-gradient(circle,#e7eeff 0%,transparent 70%);bottom:-200px;left:-150px;animation-delay:-7s}
+  @keyframes float{
+    0%,100%{transform:translate(0,0) scale(1)}
+    50%{transform:translate(20px,-20px) scale(1.08)}
+  }
+
+  .grid-pattern{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(30,77,216,.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(30,77,216,.04) 1px,transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(ellipse at center, black 40%, transparent 80%);
+  }
+
+  /* Main container */
+  .deck{position:relative;z-index:1;max-width:1320px;margin:0 auto;padding:36px 40px 80px}
+
+  /* ===== TOP NAV / LOGO ===== */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 22px;border-radius:18px;
+    background:rgba(255,255,255,.85);backdrop-filter:blur(14px);
+    border:1px solid var(--line);
+    box-shadow:0 4px 24px -10px rgba(20,40,120,.12);
+    animation:slideDown .8s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .logo-wrap{display:flex;align-items:center;gap:14px}
+  .logo-wrap img{height:54px;width:auto;display:block}
+  .nav-pills{display:flex;gap:6px;background:#f3f6ff;padding:6px;border-radius:999px}
+  .nav-pills a{
+    font-size:13px;font-weight:600;color:var(--ink-soft);
+    padding:8px 16px;border-radius:999px;text-decoration:none;
+    transition:all .3s ease;
+  }
+  .nav-pills a:hover{color:var(--brand);background:#fff}
+  .nav-pills a.active{background:var(--brand);color:#fff;box-shadow:0 6px 14px -4px rgba(30,77,216,.4)}
+  .cta-mini{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 18px;border-radius:999px;
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    color:#fff;font-weight:600;font-size:13px;text-decoration:none;
+    box-shadow:0 8px 18px -6px rgba(30,77,216,.5);
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .cta-mini:hover{transform:translateY(-2px);box-shadow:0 14px 26px -8px rgba(30,77,216,.6)}
+
+  @keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ===== HERO ===== */
+  .hero{
+    margin-top:48px;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;
+  }
+  .hero-left{animation:fadeUp 1s .15s cubic-bezier(.2,.8,.2,1) both}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:8px 16px;border-radius:999px;
+    background:#eef3ff;color:var(--brand-dark);
+    font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    border:1px solid #dbe5ff;
+  }
+  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 4px rgba(30,77,216,.18);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(30,77,216,.18)}50%{box-shadow:0 0 0 8px rgba(30,77,216,.05)}}
+
+  h1.hero-title{
+    font-family:'Manrope',sans-serif;
+    font-size:clamp(42px,5.2vw,68px);
+    line-height:1.05;letter-spacing:-.02em;font-weight:800;
+    margin-top:18px;color:var(--ink);
+  }
+  h1.hero-title .accent{
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    position:relative;display:inline-block;
+  }
+  h1.hero-title .accent::after{
+    content:"";position:absolute;left:0;right:0;bottom:-4px;height:6px;
+    background:linear-gradient(90deg,var(--brand) 0%,var(--brand-light) 100%);
+    border-radius:6px;opacity:.18;transform-origin:left;
+    animation:underline 1.4s .9s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes underline{from{transform:scaleX(0);opacity:0}to{transform:scaleX(1);opacity:.18}}
+
+  .hero-sub{
+    margin-top:22px;font-size:18px;line-height:1.65;color:var(--ink-soft);
+    max-width:560px;
+  }
+  .hero-actions{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 26px;border-radius:14px;font-weight:600;font-size:15px;
+    text-decoration:none;cursor:pointer;border:0;transition:all .3s cubic-bezier(.2,.8,.2,1);
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    color:#fff;
+    box-shadow:0 14px 30px -10px rgba(30,77,216,.5);
+  }
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 22px 40px -12px rgba(30,77,216,.6)}
+  .btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--brand);color:var(--brand);transform:translateY(-3px)}
+
+  .hero-stats{
+    margin-top:42px;display:flex;gap:36px;flex-wrap:wrap;
+  }
+  .stat .num{
+    font-family:'Manrope',sans-serif;font-size:34px;font-weight:800;color:var(--ink);
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .stat .lbl{font-size:13px;color:var(--muted);margin-top:4px;font-weight:500}
+
+  /* Hero visual: Instagram post mockup inside phone */
+  .hero-right{animation:fadeUp 1s .35s cubic-bezier(.2,.8,.2,1) both;position:relative;height:640px}
+
+  .phone{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:310px;height:620px;border-radius:46px;
+    background:linear-gradient(160deg,#101936 0%,#1a2654 100%);
+    padding:12px;
+    box-shadow:
+      0 40px 80px -20px rgba(20,40,120,.45),
+      0 18px 36px -16px rgba(20,40,120,.3),
+      inset 0 0 0 2px rgba(255,255,255,.08);
+    z-index:3;
+  }
+  .phone::before{
+    content:"";position:absolute;top:16px;left:50%;transform:translateX(-50%);
+    width:100px;height:22px;background:#0a1230;border-radius:14px;z-index:5;
+  }
+  .phone-screen{
+    width:100%;height:100%;border-radius:36px;overflow:hidden;
+    background:#fff;position:relative;display:flex;flex-direction:column;
+  }
+  /* Instagram top bar */
+  .ig-top{
+    height:42px;padding:0 14px;display:flex;align-items:center;justify-content:space-between;
+    border-bottom:1px solid #efefef;flex-shrink:0;padding-top:28px;
+  }
+  .ig-logo{
+    font-family:'Billabong','Brush Script MT','Lucida Handwriting',cursive;
+    font-size:24px;font-weight:400;color:#262626;
+    letter-spacing:.3px;font-style:italic;line-height:1;
+  }
+  .ig-icons{display:flex;gap:10px;color:#262626}
+  .ig-icons svg{width:18px;height:18px}
+
+  /* Instagram post header */
+  .ig-post-head{
+    padding:9px 12px;display:flex;align-items:center;gap:9px;flex-shrink:0;
+  }
+  .ig-avatar{
+    width:30px;height:30px;border-radius:50%;
+    background:linear-gradient(135deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
+    padding:1.5px;flex-shrink:0;
+  }
+  .ig-avatar-inner{
+    width:100%;height:100%;border-radius:50%;background:#fff;padding:1.5px;
+  }
+  .ig-avatar-inner img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+  .ig-user{flex:1;display:flex;flex-direction:column;line-height:1.15}
+  .ig-username{display:flex;align-items:center;gap:4px;font-size:12.5px;font-weight:600;color:#262626}
+  .ig-username svg{width:11px;height:11px;color:#0095f6}
+  .ig-loc{font-size:10.5px;color:#737373}
+  .ig-more{color:#262626}
+  .ig-more svg{width:16px;height:16px}
+
+  /* Instagram post image area — design must be fully visible, not cropped */
+  .ig-image{
+    flex:1;background:#fff;position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .ig-image img{
+    width:100%;height:100%;object-fit:contain;display:block;
+    position:absolute;inset:0;opacity:0;
+    animation:phoneCycle 12s infinite;
+  }
+  .ig-image img:nth-child(1){animation-delay:0s}
+  .ig-image img:nth-child(2){animation-delay:-4s}
+  .ig-image img:nth-child(3){animation-delay:-8s}
+  @keyframes phoneCycle{
+    0%,28%,100%{opacity:1}
+    33%,95%{opacity:0}
+  }
+
+  /* Instagram actions bar */
+  .ig-actions{
+    padding:8px 12px 4px;display:flex;align-items:center;gap:12px;flex-shrink:0;
+  }
+  .ig-actions svg{width:21px;height:21px;color:#262626;cursor:pointer;transition:transform .2s}
+  .ig-actions svg:hover{transform:scale(1.15)}
+  .ig-bookmark{margin-left:auto}
+  .ig-heart.liked{color:#ed4956;fill:#ed4956}
+
+  .ig-likes{padding:0 12px;font-size:12px;font-weight:600;color:#262626;flex-shrink:0}
+  .ig-caption{
+    padding:4px 12px 0;font-size:11.5px;color:#262626;line-height:1.4;flex-shrink:0;
+  }
+  .ig-caption b{font-weight:600;margin-right:4px}
+  .ig-tags{
+    padding:3px 12px 10px;font-size:11.5px;color:#00376b;flex-shrink:0;font-weight:500;
+  }
+
+  /* Floating cards behind phone */
+  .float-card{
+    position:absolute;width:170px;border-radius:18px;overflow:hidden;
+    background:#fff;border:1px solid var(--line);
+    box-shadow:0 24px 50px -18px rgba(20,40,120,.35);
+    z-index:2;
+  }
+  .float-card img{width:100%;height:auto;display:block}
+  .float-card.fc-1{top:30px;left:-10px;width:160px;transform:rotate(-8deg);animation:floatA 6s ease-in-out infinite}
+  .float-card.fc-2{bottom:40px;right:0;width:175px;transform:rotate(7deg);animation:floatB 7s ease-in-out infinite}
+  @keyframes floatA{
+    0%,100%{transform:rotate(-8deg) translateY(0)}
+    50%{transform:rotate(-6deg) translateY(-14px)}
+  }
+  @keyframes floatB{
+    0%,100%{transform:rotate(7deg) translateY(0)}
+    50%{transform:rotate(9deg) translateY(-12px)}
+  }
+
+  /* Floating engagement bubbles */
+  .bubble{
+    position:absolute;display:flex;align-items:center;gap:8px;
+    background:#fff;padding:10px 14px;border-radius:14px;
+    box-shadow:0 14px 30px -10px rgba(20,40,120,.25);
+    border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--ink);
+    z-index:4;
+  }
+  .bubble svg{width:18px;height:18px}
+  .bubble.b1{top:60px;right:-10px;animation:bob 4s ease-in-out infinite}
+  .bubble.b2{bottom:120px;left:-20px;animation:bob 5s -1s ease-in-out infinite}
+  .bubble.b3{top:300px;right:-30px;animation:bob 4.5s -2s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+  /* ===== SECTION HEADERS ===== */
+  .section{margin-top:120px}
+  .section-head{text-align:center;max-width:680px;margin:0 auto 56px}
+  .section-tag{
+    display:inline-block;padding:6px 14px;border-radius:999px;
+    background:#eef3ff;color:var(--brand-dark);
+    font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  }
+  .section-title{
+    font-family:'Manrope',sans-serif;font-weight:800;
+    font-size:clamp(32px,3.6vw,46px);letter-spacing:-.02em;
+    margin-top:14px;line-height:1.15;
+  }
+  .section-sub{margin-top:14px;color:var(--ink-soft);font-size:17px;line-height:1.6}
+
+  /* ===== POST GRID (the main reference layout) ===== */
+  .posts-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:32px;
+    max-width:1100px;margin:0 auto;
+  }
+  .post{
+    position:relative;border-radius:22px;overflow:hidden;
+    background:#fff;border:1px solid var(--line);
+    box-shadow:var(--shadow);
+    transition:transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .5s ease;
+    cursor:pointer;
+    opacity:0;transform:translateY(40px);
+  }
+  .post.in{animation:postIn .9s cubic-bezier(.2,.8,.2,1) forwards}
+  @keyframes postIn{to{opacity:1;transform:translateY(0)}}
+  .post:hover{transform:translateY(-10px) scale(1.02);box-shadow:0 40px 70px -25px rgba(20,40,120,.35)}
+  .post-frame{
+    aspect-ratio:3/4;position:relative;overflow:hidden;
+  }
+  .post-frame img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .8s cubic-bezier(.2,.8,.2,1);
+  }
+  .post:hover .post-frame img{transform:scale(1.06)}
+  .post-overlay{
+    position:absolute;inset:0;
+    background:linear-gradient(180deg,transparent 55%,rgba(10,18,48,.85) 100%);
+    opacity:0;transition:opacity .4s ease;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:22px;color:#fff;
+  }
+  .post:hover .post-overlay{opacity:1}
+  .post-overlay h4{font-size:18px;font-weight:700;font-family:'Manrope',sans-serif}
+  .post-overlay p{font-size:13px;opacity:.85;margin-top:4px;line-height:1.5}
+  .post-meta{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 20px;background:#fff;border-top:1px solid var(--line);
+  }
+  .post-label{font-size:14px;font-weight:700;color:var(--ink)}
+  .post-tag{
+    font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+    color:var(--brand);padding:5px 10px;border-radius:6px;background:#eef3ff;
+  }
+  .post-engagement{display:flex;gap:14px;font-size:12px;color:var(--muted);font-weight:500}
+  .post-engagement span{display:inline-flex;align-items:center;gap:5px}
+
+  /* ===== SERVICES ===== */
+  .services{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:22px;
+  }
+  .svc{
+    background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;
+    transition:all .4s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden;
+  }
+  .svc::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(30,77,216,.06) 0%,transparent 60%);
+    opacity:0;transition:opacity .4s ease;
+  }
+  .svc:hover{transform:translateY(-8px);border-color:var(--brand);box-shadow:0 24px 50px -20px rgba(30,77,216,.3)}
+  .svc:hover::before{opacity:1}
+  .svc-ico{
+    width:54px;height:54px;border-radius:14px;
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 12px 24px -10px rgba(30,77,216,.5);
+    margin-bottom:18px;
+    transition:transform .4s ease;
+  }
+  .svc:hover .svc-ico{transform:rotate(-8deg) scale(1.08)}
+  .svc h3{font-size:17px;font-weight:700;font-family:'Manrope',sans-serif}
+  .svc p{font-size:14px;color:var(--ink-soft);margin-top:8px;line-height:1.55}
+
+  /* ===== MOCKUP SHOWCASE ===== */
+  .mockup-section{
+    background:linear-gradient(135deg,#f6f9ff 0%,#eef3ff 100%);
+    border-radius:32px;padding:72px 48px;position:relative;overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .mockup-section::before{
+    content:"";position:absolute;top:-200px;right:-200px;width:500px;height:500px;
+    background:radial-gradient(circle,rgba(30,77,216,.12) 0%,transparent 70%);
+  }
+  .mockup-wrap{
+    display:grid;grid-template-columns:.9fr 1.1fr;gap:60px;align-items:center;position:relative;
+  }
+  .mockup-text h2{font-family:'Manrope',sans-serif;font-size:42px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+  .mockup-text p{margin-top:18px;font-size:16px;color:var(--ink-soft);line-height:1.65}
+  .feature-list{margin-top:28px;display:flex;flex-direction:column;gap:14px}
+  .feature-item{display:flex;align-items:flex-start;gap:14px;font-size:15px;color:var(--ink-soft)}
+  .feature-check{
+    flex-shrink:0;width:26px;height:26px;border-radius:8px;
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;
+    box-shadow:0 6px 14px -4px rgba(30,77,216,.4);
+  }
+
+  .mockup-stack{position:relative;height:520px}
+  .mock-laptop{
+    position:absolute;width:100%;left:0;top:30px;
+    border-radius:18px 18px 6px 6px;
+    background:#0a1230;padding:14px 14px 0;
+    box-shadow:0 40px 80px -20px rgba(20,40,120,.4);
+  }
+  .mock-laptop::after{
+    content:"";display:block;height:18px;background:#0a1230;
+    margin:0 -28px;border-radius:0 0 14px 14px;
+    box-shadow:inset 0 2px 0 rgba(255,255,255,.06);
+  }
+  .mock-screen{
+    background:#fff;border-radius:6px;overflow:hidden;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:14px;
+  }
+  .mock-screen img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:4px}
+
+  .mock-phone{
+    position:absolute;right:-10px;bottom:0;width:170px;height:340px;
+    border-radius:32px;background:#0a1230;padding:8px;
+    box-shadow:0 30px 60px -16px rgba(20,40,120,.45);
+    z-index:2;
+  }
+  .mock-phone::before{
+    content:"";position:absolute;top:14px;left:50%;transform:translateX(-50%);
+    width:64px;height:16px;background:#000;border-radius:10px;z-index:3;
+  }
+  .mock-phone-screen{
+    width:100%;height:100%;border-radius:24px;overflow:hidden;background:#fff;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .mock-phone-screen img{
+    width:100%;height:100%;object-fit:contain;display:block;
+  }
+
+  /* ===== PROCESS TIMELINE ===== */
+  .process{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;position:relative}
+  .process::before{
+    content:"";position:absolute;top:36px;left:8%;right:8%;height:2px;
+    background:linear-gradient(90deg,var(--brand) 0%,var(--brand-light) 100%);
+    opacity:.2;z-index:0;
+  }
+  .step{position:relative;text-align:center;z-index:1}
+  .step-num{
+    width:72px;height:72px;margin:0 auto;border-radius:50%;
+    background:#fff;border:2px solid var(--brand);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Manrope',sans-serif;font-size:24px;font-weight:800;color:var(--brand);
+    box-shadow:0 14px 30px -10px rgba(30,77,216,.3);
+    transition:all .4s ease;
+  }
+  .step:hover .step-num{
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    color:#fff;transform:scale(1.08);
+  }
+  .step h4{margin-top:18px;font-size:16px;font-weight:700;font-family:'Manrope',sans-serif}
+  .step p{margin-top:8px;font-size:13.5px;color:var(--ink-soft);line-height:1.55;padding:0 8px}
+
+  /* ===== CTA ===== */
+  .cta-card{
+    margin-top:80px;background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    border-radius:28px;padding:60px 48px;color:#fff;
+    display:grid;grid-template-columns:1.4fr .6fr;gap:48px;align-items:center;
+    position:relative;overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(30,77,216,.5);
+  }
+  .cta-card::before{
+    content:"";position:absolute;top:-100px;right:-100px;width:340px;height:340px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.18) 0%,transparent 70%);
+  }
+  .cta-card::after{
+    content:"";position:absolute;bottom:-150px;left:-100px;width:380px;height:380px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.1) 0%,transparent 70%);
+  }
+  .cta-card h2{font-family:'Manrope',sans-serif;font-size:38px;font-weight:800;letter-spacing:-.01em;line-height:1.1;position:relative}
+  .cta-card p{margin-top:14px;font-size:16px;opacity:.9;line-height:1.6;position:relative;max-width:560px}
+  .cta-actions{display:flex;flex-direction:column;gap:12px;position:relative}
+  .cta-btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    padding:16px 24px;border-radius:14px;font-weight:700;font-size:15px;text-decoration:none;
+    background:#fff;color:var(--brand);
+    transition:all .3s ease;
+  }
+  .cta-btn:hover{transform:translateY(-3px);box-shadow:0 16px 30px -8px rgba(0,0,0,.25)}
+  .cta-btn.ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4)}
+  .cta-btn.ghost:hover{background:rgba(255,255,255,.1)}
+
+  /* ===== FOOTER ===== */
+  footer{
+    margin-top:60px;padding:32px 0;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;
+    font-size:13px;color:var(--muted);
+  }
+  .foot-links{display:flex;gap:24px}
+  .foot-links a{color:var(--muted);text-decoration:none;transition:color .3s}
+  .foot-links a:hover{color:var(--brand)}
+
+  /* Common animation utility */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  .reveal{opacity:0;transform:translateY(30px);transition:all .9s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:translateY(0)}
+
+  /* ===== MODAL ===== */
+  .modal{
+    position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;
+    background:rgba(10,18,48,.7);backdrop-filter:blur(8px);padding:24px;
+    opacity:0;transition:opacity .3s ease;
+  }
+  .modal.show{display:flex;opacity:1}
+  .modal-card{
+    background:#fff;border-radius:24px;overflow:hidden;max-width:480px;width:100%;
+    display:grid;grid-template-rows:auto auto;
+    box-shadow:0 40px 80px -20px rgba(0,0,0,.4);
+    transform:scale(.92);transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .modal.show .modal-card{transform:scale(1)}
+  .modal-img{aspect-ratio:3/4;background:#000}
+  .modal-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .modal-body{padding:24px 28px 28px}
+  .modal-body h3{font-family:'Manrope',sans-serif;font-size:22px;font-weight:800}
+  .modal-body p{margin-top:8px;color:var(--ink-soft);font-size:14.5px;line-height:1.6}
+  .modal-close{
+    position:absolute;top:18px;right:18px;width:38px;height:38px;border-radius:50%;
+    background:rgba(255,255,255,.95);border:0;cursor:pointer;font-size:18px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 18px rgba(0,0,0,.2);
+  }
+
+  /* ===== VARIATION SWITCHER ===== */
+  .variation-switcher{
+    max-width:1100px;margin:0 auto 36px;
+    display:flex;flex-direction:column;gap:18px;
+  }
+  .variation-tabs{
+    display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+    background:rgba(255,255,255,.85);backdrop-filter:blur(14px);
+    border:1px solid var(--line);border-radius:18px;padding:10px;
+    box-shadow:0 4px 24px -10px rgba(20,40,120,.12);
+  }
+  .var-tab{
+    flex:1;min-width:200px;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    padding:14px 22px;border-radius:12px;cursor:pointer;
+    border:1.5px solid transparent;background:transparent;
+    font-family:'Inter',sans-serif;font-weight:600;font-size:14px;color:var(--ink-soft);
+    transition:all .3s cubic-bezier(.2,.8,.2,1);
+    position:relative;
+  }
+  .var-tab:hover:not(.disabled){background:#f3f6ff;color:var(--brand)}
+  .var-tab.active{
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    color:#fff;box-shadow:0 10px 24px -8px rgba(30,77,216,.5);
+  }
+  .var-tab .var-badge{
+    display:inline-block;padding:3px 9px;border-radius:999px;
+    background:rgba(255,255,255,.2);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  }
+  .var-tab:not(.active) .var-badge{background:#eef3ff;color:var(--brand)}
+  .var-tab.disabled{opacity:.55;cursor:not-allowed}
+  .var-tab.disabled .var-badge{background:#f1f1f5;color:var(--muted)}
+
+  .variation-panel{display:none}
+  .variation-panel.active{display:block;animation:fadeUp .6s cubic-bezier(.2,.8,.2,1)}
+
+  /* Dropdown toggle */
+  .reveal-toggle-wrap{
+    text-align:center;margin:0 auto 40px;max-width:680px;
+  }
+  .reveal-toggle{
+    position:relative;overflow:hidden;
+    display:inline-flex;align-items:center;gap:12px;
+    padding:16px 32px;border-radius:999px;cursor:pointer;border:0;
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    color:#fff;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;
+    box-shadow:0 16px 32px -10px rgba(30,77,216,.5);
+    transition:transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease;
+  }
+  /* Slow, smooth light sweep across the button — once every 6s */
+  .reveal-toggle::before{
+    content:"";position:absolute;top:0;left:0;width:60%;height:100%;
+    background:linear-gradient(110deg, transparent 0%, rgba(255,255,255,.0) 30%, rgba(255,255,255,.45) 50%, rgba(255,255,255,.0) 70%, transparent 100%);
+    transform:translateX(-220%) skewX(-18deg);
+    pointer-events:none;
+    animation: revealSweep 6s ease-in-out infinite;
+  }
+  .reveal-toggle.open::before{animation:none;display:none}
+  @keyframes revealSweep{
+    0%   { transform:translateX(-220%) skewX(-18deg); }
+    18%  { transform:translateX(260%)  skewX(-18deg); }
+    100% { transform:translateX(260%)  skewX(-18deg); }
+  }
+  .reveal-toggle:hover{transform:translateY(-3px);box-shadow:0 22px 40px -12px rgba(30,77,216,.6)}
+  .reveal-toggle .chev{transition:transform .4s ease}
+  .reveal-toggle.open .chev{transform:rotate(180deg)}
+
+  .reveal-toggle-hint{
+    margin-top:10px;font-size:13px;color:var(--muted);font-weight:500;
+  }
+
+  .collapsible{
+    max-height:0;overflow:hidden;opacity:0;
+    transition:max-height .9s cubic-bezier(.2,.8,.2,1), opacity .6s ease, margin .6s ease;
+  }
+  .collapsible.open{max-height:14000px;opacity:1}
+
+  /* "Why this option" reasoning panel */
+  .why-block{
+    max-width:1100px;margin:56px auto 0;
+    background:linear-gradient(135deg,#f6f9ff 0%,#eef3ff 100%);
+    border-radius:24px;padding:48px 40px;border:1px solid var(--line);
+    position:relative;overflow:hidden;
+  }
+  /* Option 2: pure white + crisp blue accents */
+  .why-block-light{
+    background:#ffffff;border:1px solid var(--line);
+    box-shadow:0 24px 60px -28px rgba(20,40,120,.18);
+  }
+  .why-block-light::before{display:none}
+  .why-block-light .why-card{
+    background:#f8faff;border:1px solid #e6ecff;
+  }
+  .why-block-light .why-card:hover{
+    background:#fff;border-color:var(--brand);
+  }
+  .mockup-light{
+    background:#ffffff !important;border:1px solid var(--line);
+    box-shadow:0 30px 70px -30px rgba(20,40,120,.2);
+  }
+  .mockup-light::before{display:none}
+  .mockup-light .feature-check{
+    background:linear-gradient(135deg,#fff 0%,#fff 100%);
+    color:var(--brand);border:1.5px solid var(--brand);
+    box-shadow:0 6px 14px -4px rgba(30,77,216,.25);
+  }
+  .mockup-light .section-tag{
+    background:#eef3ff;color:var(--brand);
+  }
+  .why-block::before{
+    content:"";position:absolute;top:-120px;right:-120px;width:340px;height:340px;
+    background:radial-gradient(circle,rgba(30,77,216,.12) 0%,transparent 70%);
+  }
+  .why-head{text-align:center;margin-bottom:36px;position:relative}
+  .why-head h3{
+    font-family:'Manrope',sans-serif;font-size:28px;font-weight:800;letter-spacing:-.01em;line-height:1.15;
+  }
+  .why-head h3 span{
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .why-head p{margin-top:10px;color:var(--ink-soft);font-size:15px;max-width:600px;margin-left:auto;margin-right:auto}
+  .why-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:22px;position:relative;
+  }
+  .why-card{
+    background:#fff;border-radius:18px;padding:24px;border:1px solid var(--line);
+    transition:transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease;
+  }
+  .why-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px -16px rgba(20,40,120,.25)}
+  .why-ico{
+    width:46px;height:46px;border-radius:12px;
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    margin-bottom:14px;box-shadow:0 10px 20px -8px rgba(30,77,216,.4);
+  }
+  .why-card h4{font-family:'Manrope',sans-serif;font-size:16px;font-weight:700;line-height:1.25}
+  .why-card p{margin-top:8px;font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+
+  /* ===== SPLASH / ENTRY SCREEN ===== */
+  .splash{
+    position:fixed;inset:0;z-index:200;
+    display:flex;align-items:center;justify-content:center;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(61,107,255,.35) 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(30,77,216,.45) 0%, transparent 60%),
+      linear-gradient(135deg,#0a1230 0%, #0b2a8a 55%, #1e4dd8 100%);
+    color:#fff;overflow:hidden;
+    transition:opacity .9s cubic-bezier(.2,.8,.2,1), visibility 0s linear .9s;
+  }
+  .splash.hidden{opacity:0;visibility:hidden;pointer-events:none}
+  .splash::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+    background-size:60px 60px;
+    mask-image:radial-gradient(ellipse at center, black 30%, transparent 75%);
+  }
+  .splash-orb{
+    position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;
+    animation:splashFloat 14s ease-in-out infinite;
+  }
+  .splash-orb.o1{width:520px;height:520px;background:radial-gradient(circle,#3d6bff 0%,transparent 70%);top:-160px;right:-120px}
+  .splash-orb.o2{width:600px;height:600px;background:radial-gradient(circle,#5b87ff 0%,transparent 70%);bottom:-220px;left:-180px;animation-delay:-7s}
+  @keyframes splashFloat{
+    0%,100%{transform:translate(0,0) scale(1)}
+    50%{transform:translate(30px,-30px) scale(1.1)}
+  }
+
+  /* Cargo network canvas (world map + routes) */
+  .splash-canvas{
+    position:absolute;inset:0;width:100%;height:100%;
+    z-index:1;opacity:1;pointer-events:none;
+  }
+  .splash-vignette{
+    position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse at center, transparent 30%, rgba(10,18,48,.65) 100%);
+  }
+  .splash-hud{
+    position:absolute;top:24px;left:24px;z-index:3;
+    display:flex;align-items:center;gap:10px;
+    padding:8px 14px;border-radius:999px;
+    background:rgba(10,18,48,.55);backdrop-filter:blur(12px);
+    border:1px solid rgba(127,177,255,.2);
+    color:rgba(255,255,255,.7);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    font-family:'JetBrains Mono','Courier New',monospace;
+  }
+  .splash-hud .live-dot{
+    width:8px;height:8px;border-radius:50%;background:#5bff8c;
+    box-shadow:0 0 0 4px rgba(91,255,140,.2);animation:pulse 1.6s infinite;
+  }
+  .splash-hud.right{left:auto;right:24px}
+
+  /* ===== PASSWORD GATE ===== */
+  .pw-stage{
+    display:none;flex-direction:column;align-items:center;text-align:center;
+    animation:fadeUp .6s cubic-bezier(.2,.8,.2,1);
+    width:100%;max-width:480px;margin:0 auto;
+  }
+  .pw-stage.active{display:flex}
+  .pw-stage h2{
+    font-family:'Manrope',sans-serif;font-weight:800;
+    font-size:clamp(28px,3.4vw,40px);line-height:1.1;letter-spacing:-.02em;
+    color:#fff;
+  }
+  .pw-stage h2 .accent{
+    background:linear-gradient(135deg,#a8c4ff 0%,#dbe5ff 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .pw-stage p.pw-sub{
+    margin-top:14px;font-size:15px;color:rgba(255,255,255,.7);line-height:1.6;max-width:380px;
+  }
+  .pw-form{
+    margin-top:32px;width:100%;max-width:380px;
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .pw-input-wrap{
+    position:relative;display:flex;align-items:center;
+    background:rgba(255,255,255,.08);backdrop-filter:blur(14px);
+    border:1.5px solid rgba(127,177,255,.25);border-radius:14px;
+    transition:all .3s ease;
+  }
+  .pw-input-wrap:focus-within{
+    border-color:rgba(127,177,255,.7);
+    background:rgba(255,255,255,.12);
+    box-shadow:0 0 0 4px rgba(127,177,255,.15);
+  }
+  .pw-input-wrap.error{
+    border-color:#ff7a8a;
+    background:rgba(255,90,110,.1);
+    animation:shake .5s cubic-bezier(.36,.07,.19,.97);
+  }
+  @keyframes shake{
+    0%,100%{transform:translateX(0)}
+    20%,60%{transform:translateX(-10px)}
+    40%,80%{transform:translateX(10px)}
+  }
+  .pw-input-wrap svg{
+    width:18px;height:18px;color:rgba(255,255,255,.5);margin-left:18px;flex-shrink:0;
+  }
+  .pw-input{
+    flex:1;background:transparent;border:0;outline:0;
+    padding:18px 18px 18px 14px;
+    color:#fff;font-family:'Inter',sans-serif;font-size:16px;font-weight:500;
+    letter-spacing:.04em;
+  }
+  .pw-input::placeholder{color:rgba(255,255,255,.35);font-weight:400;letter-spacing:.02em}
+  .pw-toggle{
+    background:transparent;border:0;cursor:pointer;color:rgba(255,255,255,.5);
+    padding:0 18px;display:flex;align-items:center;justify-content:center;
+    transition:color .2s ease;
+  }
+  .pw-toggle:hover{color:#fff}
+  .pw-toggle svg{width:18px;height:18px;margin:0}
+  .pw-submit{
+    margin-top:6px;
+    padding:16px 24px;border-radius:14px;cursor:pointer;border:0;
+    background:#fff;color:var(--brand-dark);
+    font-family:'Inter',sans-serif;font-size:15px;font-weight:700;
+    box-shadow:0 14px 30px -10px rgba(0,0,0,.4);
+    transition:all .3s cubic-bezier(.2,.8,.2,1);
+    display:flex;align-items:center;justify-content:center;gap:10px;
+  }
+  .pw-submit:hover{transform:translateY(-3px);box-shadow:0 22px 40px -12px rgba(0,0,0,.5)}
+  .pw-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+  .pw-error-msg{
+    height:18px;font-size:13px;color:#ff7a8a;font-weight:500;
+    opacity:0;transition:opacity .3s ease;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .pw-error-msg.show{opacity:1}
+  .pw-back{
+    margin-top:20px;background:transparent;border:0;cursor:pointer;
+    color:rgba(255,255,255,.45);font-size:12.5px;font-weight:500;letter-spacing:.06em;
+    font-family:'Inter',sans-serif;
+    transition:color .2s ease;
+  }
+  .pw-back:hover{color:#fff}
+
+  .splash-inner{
+    position:relative;z-index:2;text-align:center;max-width:720px;padding:0 32px;
+    animation:fadeUp 1.1s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .splash-logo{
+    height:80px;width:auto;display:block;margin:0 auto 30px;
+    background:#fff;border-radius:18px;padding:14px 22px;
+    box-shadow:0 20px 50px -16px rgba(10,18,48,.6);
+  }
+  .splash-eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:8px 18px;border-radius:999px;
+    background:rgba(255,255,255,.1);backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.18);
+    color:#fff;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  }
+  .splash-eyebrow .dot{
+    width:8px;height:8px;border-radius:50%;background:#7fb1ff;
+    box-shadow:0 0 0 4px rgba(127,177,255,.25);
+    animation:pulse 2s infinite;
+  }
+  .splash-title{
+    font-family:'Manrope',sans-serif;font-weight:800;
+    font-size:clamp(28px,4.4vw,62px);line-height:1.1;letter-spacing:-.02em;
+    margin-top:24px;color:#fff;
+  }
+  .splash-title .line{display:block;white-space:nowrap}
+  .splash-title .accent{
+    background:linear-gradient(135deg,#a8c4ff 0%,#dbe5ff 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .splash-sub{
+    margin:22px auto 0;font-size:17px;line-height:1.65;color:rgba(255,255,255,.78);max-width:560px;
+  }
+  .splash-cta{
+    margin-top:42px;display:inline-flex;align-items:center;gap:14px;
+    padding:20px 38px;border-radius:999px;cursor:pointer;border:0;
+    background:#fff;color:var(--brand-dark);
+    font-family:'Inter',sans-serif;font-size:16px;font-weight:700;letter-spacing:.01em;
+    box-shadow:0 30px 60px -18px rgba(0,0,0,.5);
+    transition:all .35s cubic-bezier(.2,.8,.2,1);
+    position:relative;overflow:hidden;
+  }
+  .splash-cta:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 40px 70px -16px rgba(0,0,0,.55)}
+  .splash-cta:active{transform:translateY(-1px) scale(1)}
+  .splash-cta .play-ico{
+    width:34px;height:34px;border-radius:50%;
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 18px -4px rgba(30,77,216,.5);
+    transition:transform .3s ease;
+  }
+  .splash-cta:hover .play-ico{transform:scale(1.1)}
+  .splash-hint{
+    margin-top:18px;font-size:12.5px;color:rgba(255,255,255,.55);letter-spacing:.08em;font-weight:500;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .splash-hint svg{width:14px;height:14px}
+
+  /* Lock the underlying scroll while splash is open */
+  body.splash-open{overflow:hidden;height:100vh}
+
+  /* ===== NAVBAR "MY SERVICES" CENTER BUTTON ===== */
+  .nav-services{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:10px 22px;border-radius:999px;
+    background:#fff;color:var(--brand-dark);
+    font-family:'Inter',sans-serif;font-weight:700;font-size:13px;
+    text-decoration:none;
+    border:1.5px solid var(--brand);
+    transition:all .3s cubic-bezier(.2,.8,.2,1);
+    position:relative;overflow:hidden;
+  }
+  .nav-services::before{
+    content:"";position:absolute;top:0;left:0;width:60%;height:100%;
+    background:linear-gradient(110deg, transparent 0%, rgba(30,77,216,.18) 50%, transparent 100%);
+    transform:translateX(-220%) skewX(-18deg);
+    animation: navSweep 7s ease-in-out infinite;pointer-events:none;
+  }
+  @keyframes navSweep{
+    0%   {transform:translateX(-220%) skewX(-18deg)}
+    16%  {transform:translateX(260%)  skewX(-18deg)}
+    100% {transform:translateX(260%)  skewX(-18deg)}
+  }
+  .nav-services:hover{
+    background:var(--brand);color:#fff;
+    transform:translateY(-2px);
+    box-shadow:0 14px 28px -10px rgba(30,77,216,.5);
+  }
+  .nav-services svg{width:14px;height:14px}
+
+  /* ===== "MY SERVICES" DIALOG ===== */
+  .services-dialog{
+    position:fixed;inset:0;z-index:200;
+    display:none;align-items:center;justify-content:center;
+    background:rgba(10,18,48,.72);backdrop-filter:blur(10px);
+    padding:24px;opacity:0;transition:opacity .3s ease;
+  }
+  .services-dialog.show{display:flex;opacity:1}
+  .services-card{
+    background:#fff;border-radius:24px;
+    width:100%;max-width:460px;
+    box-shadow:0 50px 100px -20px rgba(0,0,0,.5);
+    transform:scale(.92) translateY(20px);
+    transition:transform .4s cubic-bezier(.2,.8,.2,1);
+    overflow:hidden;position:relative;
+  }
+  .services-dialog.show .services-card{transform:scale(1) translateY(0)}
+  .services-head{
+    padding:32px 30px 22px;text-align:center;
+    background:linear-gradient(135deg,#0b2a8a 0%,#1e4dd8 100%);color:#fff;
+    position:relative;
+  }
+  .services-head::before{
+    content:"";position:absolute;top:-80px;right:-80px;width:240px;height:240px;
+    background:radial-gradient(circle,rgba(127,177,255,.3) 0%,transparent 70%);
+  }
+  .services-head h3{
+    font-family:'Manrope',sans-serif;font-size:22px;font-weight:800;
+    letter-spacing:-.01em;position:relative;
+  }
+  .services-head p{
+    margin-top:6px;font-size:13.5px;opacity:.85;position:relative;
+  }
+  .services-close{
+    position:absolute;top:14px;right:14px;
+    width:34px;height:34px;border-radius:50%;border:0;
+    background:rgba(255,255,255,.15);color:#fff;cursor:pointer;
+    font-size:18px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .2s ease;z-index:1;
+  }
+  .services-close:hover{background:rgba(255,255,255,.3)}
+  .services-options{
+    padding:22px 22px 26px;display:flex;flex-direction:column;gap:10px;
+  }
+  .services-option{
+    display:flex;align-items:center;gap:14px;
+    padding:16px 18px;border-radius:14px;
+    background:#f6f9ff;border:1.5px solid var(--line);
+    text-decoration:none;color:var(--ink);
+    transition:all .3s cubic-bezier(.2,.8,.2,1);
+    cursor:pointer;
+  }
+  .services-option:hover{
+    border-color:var(--brand);background:#fff;
+    transform:translateX(4px);
+    box-shadow:0 16px 30px -12px rgba(30,77,216,.25);
+  }
+  .services-option-ico{
+    width:44px;height:44px;border-radius:12px;flex-shrink:0;
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 16px -6px rgba(30,77,216,.5);
+    transition:transform .3s ease;
+  }
+  .services-option:hover .services-option-ico{transform:rotate(-6deg) scale(1.08)}
+  .services-option-ico svg{width:20px;height:20px}
+  .services-option-text{flex:1;line-height:1.3}
+  .services-option-text strong{
+    display:block;font-family:'Inter',sans-serif;font-size:14.5px;font-weight:700;color:var(--ink);
+  }
+  .services-option-text small{
+    display:block;margin-top:3px;font-size:12.5px;color:var(--muted);font-weight:500;
+  }
+  .services-option-arrow{
+    color:var(--muted);transition:transform .3s ease,color .3s ease;
+  }
+  .services-option:hover .services-option-arrow{color:var(--brand);transform:translateX(4px)}
+
+  /* ===== COPY-PROTECTION TOAST ===== */
+  body{
+    -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;
+  }
+  input,textarea,.pw-input,.ai-input{
+    -webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text;
+  }
+  img{-webkit-user-drag:none;user-drag:none;pointer-events:none}
+  .post img,.float-card img,.ig-image img,.mock-screen img,.mock-phone-screen img,.modal-img img{pointer-events:auto}
+  .copy-toast{
+    position:fixed;top:24px;left:50%;transform:translate(-50%,-150%);
+    z-index:300;
+    display:flex;align-items:center;gap:14px;
+    padding:16px 22px;border-radius:14px;
+    background:linear-gradient(135deg,#ff3b5c 0%,#c20a2a 100%);
+    color:#fff;font-weight:600;font-size:13.5px;
+    box-shadow:0 24px 48px -12px rgba(194,10,42,.6);
+    transition:transform .5s cubic-bezier(.2,.8,.2,1), opacity .3s ease;
+    opacity:0;max-width:480px;
+  }
+  .copy-toast.show{transform:translate(-50%,0);opacity:1}
+  .copy-toast svg{width:22px;height:22px;flex-shrink:0}
+  .copy-toast strong{font-weight:700;letter-spacing:.01em}
+
+  /* ===== QUOTATION WIDGET ===== */
+  .quote-fab{
+    position:fixed;bottom:84px;right:24px;z-index:95;
+    display:flex;align-items:center;gap:10px;
+    padding:14px 22px;border-radius:999px;cursor:pointer;border:0;
+    background:linear-gradient(135deg,#0f8a5f 0%,#0a6044 100%);
+    color:#fff;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:700;
+    box-shadow:0 18px 36px -10px rgba(15,138,95,.55);
+    transition:all .3s cubic-bezier(.2,.8,.2,1);
+  }
+  .quote-fab:hover{transform:translateY(-3px);box-shadow:0 24px 44px -12px rgba(15,138,95,.65)}
+  .quote-fab .quote-fab-ico{
+    width:30px;height:30px;border-radius:8px;
+    background:rgba(255,255,255,.18);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .quote-fab .quote-fab-ico svg{width:18px;height:18px}
+  .quote-fab .quote-price{
+    background:rgba(255,255,255,.22);padding:3px 9px;border-radius:999px;
+    font-size:11.5px;font-weight:800;letter-spacing:.02em;
+  }
+
+  .quote-dialog{
+    position:fixed;inset:0;z-index:210;
+    display:none;align-items:center;justify-content:center;
+    background:rgba(10,18,48,.78);backdrop-filter:blur(10px);
+    padding:24px;opacity:0;transition:opacity .3s ease;overflow-y:auto;
+  }
+  .quote-dialog.show{display:flex;opacity:1}
+  .quote-card{
+    background:#fff;border-radius:18px;
+    width:100%;max-width:720px;
+    box-shadow:0 50px 100px -20px rgba(0,0,0,.5);
+    transform:scale(.94) translateY(20px);
+    transition:transform .4s cubic-bezier(.2,.8,.2,1);
+    overflow:hidden;position:relative;
+    margin:auto;
+  }
+  .quote-dialog.show .quote-card{transform:scale(1) translateY(0)}
+  .quote-close-btn{
+    position:absolute;top:14px;right:14px;z-index:5;
+    width:34px;height:34px;border-radius:50%;border:0;
+    background:rgba(255,255,255,.95);color:var(--ink);cursor:pointer;
+    font-size:18px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 16px rgba(0,0,0,.18);
+    transition:background .2s ease;
+  }
+  .quote-close-btn:hover{background:#fff;color:var(--brand)}
+
+  /* Quotation paper styling */
+  .quote-paper{
+    padding:0;background:#fff;
+    font-family:'Inter',sans-serif;color:var(--ink);
+  }
+  .quote-paper-head{
+    padding:32px 36px 26px;
+    background:linear-gradient(135deg,#0b2a8a 0%,#1e4dd8 100%);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  }
+  .quote-brand{display:flex;align-items:center;gap:14px}
+  .quote-brand img{
+    height:54px;width:auto;background:#fff;border-radius:10px;padding:8px 12px;
+  }
+  .quote-brand-name{line-height:1.2}
+  .quote-brand-name strong{
+    font-family:'Manrope',sans-serif;font-size:16px;font-weight:800;display:block;letter-spacing:-.01em;
+  }
+  .quote-brand-name small{font-size:11.5px;opacity:.8;display:block;margin-top:3px}
+  .quote-title-block{text-align:right;line-height:1.15}
+  .quote-title-block .title{
+    font-family:'Manrope',sans-serif;font-size:30px;font-weight:800;letter-spacing:.08em;
+  }
+  .quote-title-block .sub{font-size:11.5px;opacity:.8;letter-spacing:.18em;text-transform:uppercase;margin-top:5px}
+
+  .quote-meta{
+    padding:22px 36px;display:grid;grid-template-columns:1fr 1fr;gap:24px;
+    background:#f6f9ff;border-bottom:1px solid var(--line);
+  }
+  .quote-meta-block label{
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);font-weight:700;
+  }
+  .quote-meta-block .val{
+    margin-top:5px;font-size:14px;font-weight:700;color:var(--ink);
+  }
+  .quote-meta-block .val.small{font-size:13px;font-weight:600;color:var(--ink-soft)}
+
+  .quote-body{padding:26px 36px}
+  .quote-body h4{
+    font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--brand-dark);
+    margin-bottom:14px;
+  }
+
+  /* Option selector chips */
+  .quote-options{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px;
+  }
+  .quote-opt{
+    padding:12px 14px;border-radius:10px;cursor:pointer;
+    border:1.5px solid var(--line);background:#fff;
+    font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;color:var(--ink-soft);
+    text-align:left;line-height:1.3;
+    transition:all .25s ease;
+  }
+  .quote-opt:hover{border-color:var(--brand);color:var(--brand)}
+  .quote-opt.active{
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    color:#fff;border-color:transparent;
+    box-shadow:0 8px 18px -6px rgba(30,77,216,.4);
+  }
+  .quote-opt strong{display:block;font-weight:700;font-size:13px}
+  .quote-opt small{display:block;font-size:11px;opacity:.85;margin-top:2px}
+
+  /* Items table */
+  .quote-items{
+    width:100%;border-collapse:collapse;margin-bottom:22px;
+    border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  }
+  .quote-items th,.quote-items td{
+    padding:14px 16px;text-align:left;font-size:13px;border-bottom:1px solid var(--line);
+  }
+  .quote-items th{
+    background:#f4f7ff;font-weight:700;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .quote-items td .item-name{font-weight:700;color:var(--ink)}
+  .quote-items td .item-desc{font-size:12px;color:var(--muted);margin-top:2px;font-weight:500}
+  .quote-items td.qty{text-align:right;font-weight:700;color:var(--brand);font-size:14px}
+  .quote-items tr:last-child td{border-bottom:0}
+
+  .quote-totals{
+    display:flex;justify-content:flex-end;align-items:center;gap:24px;
+    padding:18px 22px;border-radius:14px;
+    background:linear-gradient(135deg,#0b2a8a 0%,#1e4dd8 100%);color:#fff;
+    margin-bottom:22px;
+  }
+  .quote-totals .lbl{font-size:12px;opacity:.85;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .quote-totals .amt{
+    font-family:'Manrope',sans-serif;font-size:26px;font-weight:800;letter-spacing:-.01em;
+  }
+  .quote-totals .amt small{font-size:13px;opacity:.85;font-weight:600;margin-left:6px}
+
+  .quote-terms{
+    background:#f6f9ff;border-radius:12px;padding:18px 22px;border:1px solid var(--line);
+    margin-bottom:22px;
+  }
+  .quote-terms h5{
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--brand-dark);font-weight:800;margin-bottom:10px;
+  }
+  .quote-terms ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .quote-terms li{
+    position:relative;padding-left:18px;font-size:12.5px;color:var(--ink-soft);line-height:1.55;
+  }
+  .quote-terms li::before{
+    content:"";position:absolute;left:0;top:7px;width:6px;height:6px;
+    background:var(--brand);border-radius:50%;
+  }
+
+  .quote-sign{
+    display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:18px;
+    padding-top:18px;border-top:2px dashed var(--line);
+  }
+  .quote-sign-block{line-height:1.25}
+  .quote-sign-block .name{
+    font-family:'Manrope',sans-serif;font-size:18px;font-weight:800;color:var(--ink);
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .quote-sign-block .role{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px}
+  .quote-sign-block .scribble{
+    font-family:'Brush Script MT','Lucida Handwriting',cursive;
+    font-size:30px;color:var(--brand-dark);margin-bottom:-6px;font-style:italic;
+  }
+
+  .quote-actions{
+    padding:18px 36px 28px;display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;
+    border-top:1px solid var(--line);background:#fafbff;
+  }
+  .quote-actions .approve-btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 24px;border-radius:12px;cursor:pointer;border:0;
+    background:linear-gradient(135deg,#0f8a5f 0%,#0a6044 100%);
+    color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;
+    box-shadow:0 14px 28px -10px rgba(15,138,95,.55);
+    transition:all .3s ease;
+  }
+  .quote-actions .approve-btn:hover{transform:translateY(-3px);box-shadow:0 20px 36px -12px rgba(15,138,95,.65)}
+  .quote-actions .approve-btn svg{width:16px;height:16px}
+  .quote-actions .ghost-btn{
+    background:#fff;color:var(--ink);border:1.5px solid var(--line);
+    padding:14px 22px;border-radius:12px;cursor:pointer;
+    font-family:'Inter',sans-serif;font-size:14px;font-weight:600;
+    transition:all .25s ease;
+  }
+  .quote-actions .ghost-btn:hover{border-color:var(--brand);color:var(--brand)}
+
+  @media (max-width:600px){
+    .quote-fab{bottom:74px;right:14px;font-size:12px;padding:11px 14px}
+    .quote-fab .quote-fab-ico{width:26px;height:26px}
+    .quote-paper-head{padding:24px 22px;flex-direction:column;align-items:flex-start;text-align:left}
+    .quote-title-block{text-align:left}
+    .quote-meta,.quote-body,.quote-actions{padding-left:22px;padding-right:22px}
+    .quote-meta{grid-template-columns:1fr}
+    .quote-options{grid-template-columns:1fr}
+    .quote-items th,.quote-items td{padding:11px 12px;font-size:12.5px}
+    .quote-totals .amt{font-size:22px}
+  }
+
+  /* ===== AI AGENT WIDGET ===== */
+  .ai-fab{
+    position:fixed;bottom:24px;right:24px;z-index:95;
+    display:flex;align-items:center;gap:10px;
+    padding:14px 22px;border-radius:999px;cursor:pointer;border:0;
+    background:linear-gradient(135deg,#0b2a8a 0%,#1e4dd8 100%);
+    color:#fff;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:700;
+    box-shadow:0 18px 36px -10px rgba(30,77,216,.55);
+    transition:all .3s cubic-bezier(.2,.8,.2,1);
+  }
+  .ai-fab:hover{transform:translateY(-3px);box-shadow:0 24px 44px -12px rgba(30,77,216,.65)}
+  .ai-fab.hidden{display:none}
+  .ai-fab .ai-fab-ico{
+    width:30px;height:30px;border-radius:50%;
+    background:rgba(255,255,255,.18);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .ai-fab .ai-fab-ico::after{
+    content:"";position:absolute;top:0;right:0;
+    width:9px;height:9px;border-radius:50%;background:#5bff8c;
+    box-shadow:0 0 0 2px #0b2a8a, 0 0 6px rgba(91,255,140,.8);
+    animation:pulse 2s infinite;
+  }
+  .ai-fab svg{width:18px;height:18px}
+
+  .ai-panel{
+    position:fixed;bottom:24px;right:24px;z-index:96;
+    width:380px;max-width:calc(100vw - 36px);
+    max-height:min(620px, calc(100vh - 60px));
+    background:#fff;border-radius:22px;
+    box-shadow:0 40px 80px -20px rgba(10,18,48,.45);
+    border:1px solid var(--line);
+    display:flex;flex-direction:column;overflow:hidden;
+    opacity:0;transform:translateY(20px) scale(.96);
+    pointer-events:none;transition:opacity .35s ease, transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .ai-panel.open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+  .ai-head{
+    display:flex;align-items:center;gap:12px;
+    padding:18px 20px;
+    background:linear-gradient(135deg,#0b2a8a 0%,#1e4dd8 100%);
+    color:#fff;
+  }
+  .ai-avatar{
+    width:42px;height:42px;border-radius:50%;
+    background:linear-gradient(135deg,#fff 0%,#dbe5ff 100%);
+    color:var(--brand-dark);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Manrope',sans-serif;font-weight:800;font-size:18px;
+    box-shadow:0 6px 14px -4px rgba(0,0,0,.3);position:relative;
+  }
+  .ai-avatar::after{
+    content:"";position:absolute;bottom:1px;right:1px;
+    width:11px;height:11px;border-radius:50%;background:#5bff8c;
+    box-shadow:0 0 0 2px #1e4dd8;
+    animation:pulse 2s infinite;
+  }
+  .ai-head-text{flex:1;line-height:1.2}
+  .ai-head-text strong{font-family:'Manrope',sans-serif;font-size:15px;font-weight:700;display:block}
+  .ai-head-text small{font-size:11.5px;opacity:.78;display:flex;align-items:center;gap:5px;margin-top:3px}
+  .ai-head-text small .dot{width:6px;height:6px;border-radius:50%;background:#5bff8c}
+  .ai-close-btn{
+    background:rgba(255,255,255,.15);border:0;color:#fff;cursor:pointer;
+    width:30px;height:30px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;
+    transition:background .2s ease;
+  }
+  .ai-close-btn:hover{background:rgba(255,255,255,.28)}
+
+  .ai-messages{
+    flex:1;overflow-y:auto;padding:18px 18px 14px;
+    display:flex;flex-direction:column;gap:10px;
+    background:#f6f9ff;
+  }
+  .ai-msg{
+    max-width:85%;padding:11px 14px;border-radius:14px;
+    font-size:13.5px;line-height:1.5;color:var(--ink);
+    background:#fff;border:1px solid var(--line);
+    align-self:flex-start;
+    box-shadow:0 4px 10px -4px rgba(20,40,120,.08);
+    white-space:pre-wrap;word-wrap:break-word;
+    animation:msgIn .3s cubic-bezier(.2,.8,.2,1);
+  }
+  .ai-msg.user{
+    align-self:flex-end;
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    color:#fff;border-color:transparent;
+  }
+  .ai-msg.typing{
+    display:flex;gap:4px;align-items:center;
+  }
+  .ai-msg.typing .typing-dot{
+    width:6px;height:6px;border-radius:50%;background:var(--muted);
+    animation:typingDot 1.2s ease-in-out infinite;
+  }
+  .ai-msg.typing .typing-dot:nth-child(2){animation-delay:.15s}
+  .ai-msg.typing .typing-dot:nth-child(3){animation-delay:.3s}
+  @keyframes typingDot{
+    0%,60%,100%{transform:translateY(0);opacity:.4}
+    30%{transform:translateY(-4px);opacity:1}
+  }
+  @keyframes msgIn{
+    from{opacity:0;transform:translateY(8px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  .ai-quick-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;
+    padding:0 18px 12px;
+  }
+  .ai-quick-btn{
+    padding:10px 12px;border-radius:10px;cursor:pointer;border:1px solid var(--line);
+    background:#fff;color:var(--ink);
+    font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;
+    text-align:left;line-height:1.3;
+    transition:all .25s ease;
+    display:flex;align-items:center;gap:8px;
+  }
+  .ai-quick-btn:hover{
+    border-color:var(--brand);color:var(--brand);
+    background:#f4f7ff;transform:translateY(-2px);
+  }
+  .ai-quick-btn svg{width:14px;height:14px;flex-shrink:0;color:var(--brand)}
+
+  .ai-input-form{
+    display:flex;gap:8px;padding:12px 14px 14px;
+    border-top:1px solid var(--line);background:#fff;
+  }
+  .ai-input{
+    flex:1;background:#f4f7ff;border:1px solid var(--line);outline:0;
+    padding:11px 14px;border-radius:10px;
+    font-family:'Inter',sans-serif;font-size:13.5px;color:var(--ink);
+    transition:all .25s ease;
+  }
+  .ai-input:focus{border-color:var(--brand);background:#fff;box-shadow:0 0 0 3px rgba(30,77,216,.12)}
+  .ai-send{
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    color:#fff;border:0;cursor:pointer;
+    width:42px;height:42px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 16px -6px rgba(30,77,216,.5);
+    transition:transform .2s ease;
+  }
+  .ai-send:hover{transform:translateY(-2px)}
+  .ai-send svg{width:18px;height:18px}
+
+  @media (max-width:600px){
+    .ai-panel{right:12px;left:12px;bottom:12px;width:auto;max-height:80vh}
+    .ai-fab{bottom:14px;right:14px;font-size:12px;padding:11px 16px}
+    .ai-fab .ai-fab-ico{width:26px;height:26px}
+    .voice-widget{bottom:14px;left:14px;right:auto}
+    .nav-services{display:none}
+  }
+
+  /* ===== INSTAGRAM HIGHLIGHTS (per option) ===== */
+  .highlights-block{
+    max-width:1100px;margin:56px auto 0;
+    background:#fff;border:1px solid var(--line);border-radius:24px;
+    padding:48px 32px;
+    box-shadow:0 24px 60px -28px rgba(20,40,120,.18);
+    position:relative;overflow:hidden;
+  }
+  .highlights-mini-ig{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    margin:0 auto 28px;padding:8px 14px;border-radius:999px;
+    background:#f4f7ff;border:1px solid var(--line);
+    width:fit-content;font-size:12.5px;color:var(--ink-soft);font-weight:600;
+  }
+  .highlights-mini-ig img{width:22px;height:22px;border-radius:50%;object-fit:cover}
+  .highlights-grid{
+    display:flex;justify-content:center;gap:32px;flex-wrap:wrap;
+    margin-top:8px;
+  }
+  .highlight{
+    display:flex;flex-direction:column;align-items:center;gap:14px;
+    cursor:pointer;transition:transform .4s cubic-bezier(.2,.8,.2,1);
+  }
+  .highlight:hover{transform:translateY(-6px) scale(1.04)}
+  .highlight-ring{
+    width:92px;height:92px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    transition:box-shadow .4s ease, transform .4s ease;
+  }
+  .highlight-inner{
+    width:100%;height:100%;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
+  }
+  .hl-ico{width:36px;height:36px;position:relative;z-index:1}
+  .highlight-label{
+    font-size:13px;font-weight:600;color:var(--ink);letter-spacing:.01em;
+  }
+
+  /* ---- Option 1 · Bold Industrial highlights ---- */
+  .highlight-bold .highlight-ring{
+    padding:3px;
+    background:conic-gradient(from 35deg, #3d6bff, #ffffff, #1e4dd8, #5b87ff, #0b2a8a, #3d6bff);
+    box-shadow:
+      0 14px 30px -10px rgba(30,77,216,.55),
+      inset 0 0 0 2px rgba(255,255,255,.85);
+  }
+  .highlight-bold:hover .highlight-ring{box-shadow:0 22px 40px -12px rgba(30,77,216,.7), inset 0 0 0 2px rgba(255,255,255,.95)}
+  .highlight-bold .highlight-inner{
+    background:radial-gradient(circle at 30% 25%, #1a2654 0%, #050a1f 100%);
+    color:#a8c4ff;
+    box-shadow:inset 0 0 18px rgba(127,177,255,.35);
+  }
+  .highlight-bold .hl-ico{filter:drop-shadow(0 0 8px rgba(127,177,255,.75))}
+
+  /* ---- Option 2 · Clean Corporate highlights ---- */
+  .highlight-clean .highlight-ring{
+    padding:0;
+    background:#fff;
+    border:2px solid var(--brand);
+    box-shadow:0 10px 22px -10px rgba(20,40,120,.2);
+  }
+  .highlight-clean:hover .highlight-ring{
+    box-shadow:0 18px 32px -12px rgba(30,77,216,.35);
+    border-color:var(--brand-dark);
+  }
+  .highlight-clean .highlight-inner{
+    background:#fff;color:var(--brand);
+  }
+  .highlight-clean .hl-ico{stroke-width:2.2}
+  .highlight-clean .highlight-label{color:var(--ink-soft);font-weight:600}
+
+  /* ---- Option 3 · Editorial Premium highlights ---- */
+  .highlight-editorial .highlight-ring{
+    padding:2px;
+    background:linear-gradient(135deg, #e9cf9c 0%, #fff4d8 35%, #c9a96e 70%, #8a6a3a 100%);
+    box-shadow:
+      0 16px 34px -12px rgba(80,55,20,.4),
+      0 0 0 1px rgba(255,255,255,.55) inset;
+  }
+  .highlight-editorial:hover .highlight-ring{
+    box-shadow:0 22px 40px -12px rgba(80,55,20,.55), 0 0 0 1px rgba(255,255,255,.7) inset;
+  }
+  .highlight-editorial .highlight-inner{
+    background:linear-gradient(160deg, #050a1f 0%, #14245c 55%, #1e4dd8 130%);
+    color:#f6e2b8;
+  }
+  .highlight-editorial .highlight-inner::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 28% 22%, rgba(255,255,255,.22) 0%, transparent 55%);
+    pointer-events:none;
+  }
+  .highlight-editorial .hl-ico{filter:drop-shadow(0 0 6px rgba(246,226,184,.4))}
+  .highlight-editorial .highlight-label{
+    font-family:'Manrope',sans-serif;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:11.5px;
+  }
+
+  @media (max-width:600px){
+    .highlights-grid{gap:18px}
+    .highlight-ring{width:74px;height:74px}
+    .hl-ico{width:28px;height:28px}
+    .highlights-block{padding:36px 18px}
+  }
+
+  /* ===== VOICE-OVER WIDGET ===== */
+  .voice-widget{
+    position:fixed;bottom:24px;left:24px;z-index:90;
+    display:flex;align-items:center;gap:10px;
+    padding:12px 18px;border-radius:999px;cursor:pointer;border:0;
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+    color:#fff;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;
+    box-shadow:0 14px 30px -8px rgba(30,77,216,.5);
+    transition:all .3s ease;
+  }
+  .voice-widget:hover{transform:translateY(-3px);box-shadow:0 20px 36px -10px rgba(30,77,216,.6)}
+  .voice-widget .voice-ico{width:18px;height:18px;display:flex;align-items:center;justify-content:center}
+  .voice-widget .voice-bars{display:none;align-items:center;gap:2px;height:14px}
+  .voice-widget.playing .voice-bars{display:inline-flex}
+  .voice-widget.playing .voice-ico{display:none}
+  .voice-widget .vb{width:3px;background:#fff;border-radius:2px;animation:vbAnim 1s ease-in-out infinite}
+  .voice-widget .vb:nth-child(1){animation-delay:-.4s;height:60%}
+  .voice-widget .vb:nth-child(2){animation-delay:-.2s;height:100%}
+  .voice-widget .vb:nth-child(3){animation-delay:0s;height:75%}
+  .voice-widget .vb:nth-child(4){animation-delay:-.3s;height:90%}
+  @keyframes vbAnim{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+
+  /* Auto-play prompt banner */
+  .audio-prompt{
+    position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-120%);
+    z-index:95;
+    display:flex;align-items:center;gap:14px;
+    padding:14px 22px;border-radius:14px;
+    background:#0a1230;color:#fff;
+    box-shadow:0 18px 40px -12px rgba(10,18,48,.5);
+    transition:transform .5s cubic-bezier(.2,.8,.2,1);
+    font-size:13.5px;font-weight:500;
+  }
+  .audio-prompt.show{transform:translateX(-50%) translateY(0)}
+  .audio-prompt button{
+    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-light) 100%);
+    color:#fff;border:0;border-radius:10px;padding:8px 16px;
+    font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;
+  }
+  .audio-prompt .dismiss{
+    background:transparent;color:rgba(255,255,255,.6);padding:6px 10px;font-weight:500;
+  }
+  .audio-prompt .dismiss:hover{color:#fff}
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:1080px){
+    .hero{grid-template-columns:1fr;gap:32px}
+    .hero-right{height:480px}
+    .posts-grid{grid-template-columns:repeat(2,1fr)}
+    .services{grid-template-columns:repeat(2,1fr)}
+    .mockup-wrap{grid-template-columns:1fr;gap:48px}
+    .process{grid-template-columns:repeat(2,1fr);gap:32px}
+    .process::before{display:none}
+    .cta-card{grid-template-columns:1fr;padding:40px 28px}
+    .why-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:600px){
+    .deck{padding:20px 18px 60px}
+    .posts-grid{grid-template-columns:1fr}
+    .services{grid-template-columns:1fr}
+    .hero-stats{gap:22px}
+    .mockup-section{padding:48px 24px}
+    .why-grid{grid-template-columns:1fr}
+    .why-block{padding:32px 22px}
+    .var-tab{min-width:100%}
+    .voice-widget{bottom:16px;right:16px;font-size:12px;padding:10px 14px}
+    .audio-prompt{flex-direction:column;text-align:center;left:16px;right:16px;transform:translateY(-160%)}
+    .audio-prompt.show{transform:translateY(0)}
+  }
+</style>
+</head>
+<body class="splash-open">
+
+<!-- SPLASH / ENTRY SCREEN -->
+<div class="splash" id="splash">
+  <div class="splash-orb o1"></div>
+  <div class="splash-orb o2"></div>
+  <canvas class="splash-canvas" id="splashCanvas"></canvas>
+  <div class="splash-vignette"></div>
+
+  <div class="splash-hud"><span class="live-dot"></span>ILS · GLOBAL NETWORK LIVE</div>
+  <div class="splash-hud right">12 ACTIVE LANES · 24/7</div>
+
+  <div class="splash-inner">
+    <!-- STAGE 1: Intro -->
+    <div class="pw-stage active" id="stageIntro">
+      <img class="splash-logo" src="Assets/logo.jpg" alt="International Logistics Services">
+      <span class="splash-eyebrow"><span class="dot"></span>Social Media Management Proposal</span>
+      <h1 class="splash-title"><span class="line">Welcome to ILS.</span><span class="line accent">Your social proposal.</span></h1>
+      <p class="splash-sub">Three on-brand campaign variations, engineered for global trade — built for International Logistics Services.</p>
+      <button class="splash-cta" id="splashEnter" aria-label="Enter the proposal">
+        <span class="play-ico">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+        </span>
+        Enter the Proposal
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <div class="splash-hint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Secure access · password required
+      </div>
+    </div>
+
+    <!-- STAGE 2: Password -->
+    <div class="pw-stage" id="stagePassword">
+      <img class="splash-logo" src="Assets/logo.jpg" alt="International Logistics Services">
+      <span class="splash-eyebrow"><span class="dot"></span>Secure Access</span>
+      <h2 style="margin-top:24px">Please enter the<br><span class="accent">access password</span></h2>
+      <p class="pw-sub">This proposal is private. Enter the password shared with you to continue.</p>
+
+      <form class="pw-form" id="pwForm" autocomplete="off">
+        <div class="pw-input-wrap" id="pwInputWrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input class="pw-input" id="pwInput" type="password" placeholder="Enter password" autocomplete="off" spellcheck="false" autocapitalize="off" />
+          <button type="button" class="pw-toggle" id="pwToggle" aria-label="Show password">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div class="pw-error-msg" id="pwError">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>Incorrect password. Please try again.</span>
+        </div>
+        <button type="submit" class="pw-submit" id="pwSubmit">
+          Unlock Proposal
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+      <button class="pw-back" id="pwBack">← Back</button>
+    </div>
+  </div>
+</div>
+
+<div class="grid-pattern"></div>
+<div class="bg-decor"></div>
+
+<div class="deck">
+
+  <!-- TOP NAV -->
+  <header class="topbar">
+    <div class="logo-wrap">
+      <img src="Assets/logo.jpg" alt="ILS — International Logistics Services">
+    </div>
+    <button type="button" class="nav-services" id="myServicesBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      My Services
+    </button>
+    <a href="https://wa.me/971561643886" target="_blank" rel="noopener" class="cta-mini">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8 8 0 0 0 4.06 14l-1.06 4 4.1-1.07A8 8 0 0 0 17.6 6.32zM12 19.5a7.5 7.5 0 0 1-3.83-1.05l-.27-.16-2.43.64.65-2.37-.18-.28A7.5 7.5 0 1 1 12 19.5zm4.34-5.62c-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.54.12s-.62.77-.76.93c-.14.16-.28.18-.52.06a6.18 6.18 0 0 1-3.06-2.68c-.23-.4.23-.37.66-1.24a.42.42 0 0 0 0-.4c-.06-.12-.54-1.3-.74-1.78s-.4-.4-.54-.4h-.46a.88.88 0 0 0-.64.3 2.68 2.68 0 0 0-.84 2c0 1.18.86 2.32 1 2.48s1.68 2.56 4.06 3.6c.57.24 1 .39 1.36.5a3.3 3.3 0 0 0 1.51.1 2.46 2.46 0 0 0 1.62-1.14 2 2 0 0 0 .14-1.14c-.06-.1-.22-.16-.46-.28z"/></svg>
+      Contact Alvin
+    </a>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <span class="eyebrow"><span class="dot"></span>Social Media Management Proposal</span>
+      <h1 class="hero-title">
+        Moving cargo, <br>
+        <span class="accent">moving stories.</span>
+      </h1>
+      <p class="hero-sub">
+        A full creative system that turns ILS into a recognisable, scroll-stopping logistics brand —
+        across Instagram, LinkedIn, Facebook and TikTok. Built for speed, trust, and global reach.
+      </p>
+      <div class="hero-actions">
+        <a href="#showcase" class="btn btn-primary">
+          See the Creatives
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="https://wa.me/971561643886" target="_blank" rel="noopener" class="btn btn-ghost">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8 8 0 0 0 4.06 14l-1.06 4 4.1-1.07A8 8 0 0 0 17.6 6.32zM12 19.5a7.5 7.5 0 0 1-3.83-1.05l-.27-.16-2.43.64.65-2.37-.18-.28A7.5 7.5 0 1 1 12 19.5zm4.34-5.62c-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.54.12s-.62.77-.76.93c-.14.16-.28.18-.52.06a6.18 6.18 0 0 1-3.06-2.68c-.23-.4.23-.37.66-1.24a.42.42 0 0 0 0-.4c-.06-.12-.54-1.3-.74-1.78s-.4-.4-.54-.4h-.46a.88.88 0 0 0-.64.3 2.68 2.68 0 0 0-.84 2c0 1.18.86 2.32 1 2.48s1.68 2.56 4.06 3.6c.57.24 1 .39 1.36.5a3.3 3.3 0 0 0 1.51.1 2.46 2.46 0 0 0 1.62-1.14 2 2 0 0 0 .14-1.14c-.06-.1-.22-.16-.46-.28z"/></svg>
+          Talk to Alvin
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat"><div class="num" data-target="5">0</div><div class="lbl">Stories / Animations · month</div></div>
+        <div class="stat"><div class="num" data-target="4">0</div><div class="lbl">Reels / Videos · month</div></div>
+        <div class="stat"><div class="num" data-target="15">0</div><div class="lbl">Feed Posts · month</div></div>
+        <div class="stat"><div class="num" data-target="24" data-suffix="/7">0</div><div class="lbl">Brand monitoring</div></div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <!-- Floating reference cards behind the phone -->
+      <div class="float-card fc-1"><img src="Assets/A3.png" alt=""></div>
+      <div class="float-card fc-2"><img src="Assets/B1.png" alt=""></div>
+
+      <!-- Phone mockup with Instagram post UI -->
+      <div class="phone">
+        <div class="phone-screen">
+          <!-- Instagram top bar -->
+          <div class="ig-top">
+            <span class="ig-logo">Instagram</span>
+            <div class="ig-icons">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </div>
+          </div>
+          <!-- Post header -->
+          <div class="ig-post-head">
+            <div class="ig-avatar"><div class="ig-avatar-inner"><img src="Assets/ILS-Icon.jpg" alt=""></div></div>
+            <div class="ig-user">
+              <span class="ig-username">ils_cargo
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 9.5 4 6.5 3.5 5.5 6.5 3 8l1 3-1 3 2.5 1.5 1 3 3-.5L12 22l2.5-2 3 .5 1-3L21 16l-1-3 1-3-2.5-1.5-1-3-3 .5L12 2zm-1 14-4-4 1.4-1.4L11 13.2l5.6-5.6L18 9l-7 7z"/></svg>
+              </span>
+              <span class="ig-loc">Global · Logistics</span>
+            </div>
+            <div class="ig-more"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></div>
+          </div>
+          <!-- Post image -->
+          <div class="ig-image">
+            <img src="Assets/A1.png" alt="">
+            <img src="Assets/A2.png" alt="">
+            <img src="Assets/B2.png" alt="">
+          </div>
+          <!-- Actions -->
+          <div class="ig-actions">
+            <svg class="ig-heart liked" viewBox="0 0 24 24"><path d="M12 21s-7-4.35-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.65-7 10-7 10z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            <svg class="ig-bookmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="ig-likes">1,247 likes</div>
+          <div class="ig-caption"><b>ils_cargo</b>Container solutions built for global trade.</div>
+          <div class="ig-tags">#CargoSolutions #InMotion #GlobalLogistics</div>
+        </div>
+      </div>
+
+      <!-- Engagement bubbles -->
+      <div class="bubble b1">
+        <svg viewBox="0 0 24 24" fill="#ff3366" stroke="none"><path d="M12 21s-7-4.35-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.65-7 10-7 10z"/></svg>
+        +1.2k likes
+      </div>
+      <div class="bubble b2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1e4dd8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        New comment
+      </div>
+      <div class="bubble b3">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Post scheduled
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOWCASE / VARIATIONS -->
+  <section class="section" id="showcase">
+    <div class="section-head reveal">
+      <span class="section-tag">Three Creative Directions</span>
+      <h2 class="section-title">Pick the visual route that fits ILS best</h2>
+      <p class="section-sub">
+        We built three distinct variations of the campaign set. Reveal the first option below, then compare side-by-side.
+      </p>
+    </div>
+
+    <!-- Dropdown toggle to reveal all creative variations -->
+    <div class="reveal-toggle-wrap reveal">
+      <button class="reveal-toggle" id="revealToggle">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+        <span class="reveal-label">Reveal Creative Variations</span>
+        <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="reveal-toggle-hint">Three full creative directions · compare them side-by-side.</div>
+    </div>
+
+    <!-- Collapsible content -->
+    <div class="collapsible" id="optionPanel">
+
+      <!-- Variation tabs -->
+      <div class="variation-switcher">
+        <div class="variation-tabs">
+          <button class="var-tab active" data-var="1">
+            <span class="var-badge">Option 1</span>
+            <span>Bold Industrial</span>
+          </button>
+          <button class="var-tab" data-var="2">
+            <span class="var-badge">Option 2</span>
+            <span>Clean Corporate</span>
+          </button>
+          <button class="var-tab" data-var="3">
+            <span class="var-badge">Option 3</span>
+            <span>Editorial Premium</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Variation 1 panel -->
+      <div class="variation-panel active" data-panel="1">
+        <div class="section-head" style="margin-bottom:40px">
+          <span class="section-tag">Variation 1 · The Campaign Set</span>
+          <h3 class="section-title" style="font-size:clamp(26px,3vw,36px);margin-top:10px">Six on-brand creatives, one cohesive system</h3>
+          <p class="section-sub">A unified visual language across air, sea and road — designed for high engagement on every feed.</p>
+        </div>
+
+        <div class="posts-grid">
+          <article class="post" data-img="Assets/A1.png" data-title="Container Solutions Made Simple" data-desc="Hero post for ocean freight services. Bold typography, layered ship imagery, key trust badges.">
+            <div class="post-frame"><img src="Assets/A1.png" alt="A1"><div class="post-overlay"><h4>Container Solutions</h4><p>Hero post · Ocean freight</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">A1 · Ocean</div></div>
+              <span class="post-tag">Feed Post</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/A2.png" data-title="Air Cargo Network" data-desc="Speed-focused creative for air freight. High contrast, dynamic angle, made for awareness campaigns.">
+            <div class="post-frame"><img src="Assets/A2.png" alt="A2"><div class="post-overlay"><h4>Air Cargo Network</h4><p>Awareness · Air freight</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">A2 · Air</div></div>
+              <span class="post-tag">Reel Cover</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/A3.png" data-title="Smart Container Logistics" data-desc="Soft-edge layout for thought-leadership and case-study posts. Pairs perfectly with carousel decks.">
+            <div class="post-frame"><img src="Assets/A3.png" alt="A3"><div class="post-overlay"><h4>Smart Logistics</h4><p>Case study · Carousel</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">A3 · Smart</div></div>
+              <span class="post-tag">Carousel</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/B1.png" data-title="Road Cargo Solutions" data-desc="Bold trucking creative built for testimonial and lane-launch announcements.">
+            <div class="post-frame"><img src="Assets/B1.png" alt="B1"><div class="post-overlay"><h4>Road Cargo Solutions</h4><p>Promotional · Trucking</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">B1 · Road</div></div>
+              <span class="post-tag">Promo</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/B2.png" data-title="Vision That Moves Cargo" data-desc="Founder / leadership post template. Builds authority, perfect for LinkedIn first-impressions.">
+            <div class="post-frame"><img src="Assets/B2.png" alt="B2"><div class="post-overlay"><h4>Vision That Moves Cargo</h4><p>Leadership · LinkedIn</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">B2 · Leadership</div></div>
+              <span class="post-tag">LinkedIn</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/B3.png" data-title="Global Cargo Solutions" data-desc="Master brand post. Use for milestones, anniversaries and global reach announcements.">
+            <div class="post-frame"><img src="Assets/B3.png" alt="B3"><div class="post-overlay"><h4>Global Cargo Solutions</h4><p>Brand · Milestones</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">B3 · Global</div></div>
+              <span class="post-tag">Brand</span>
+            </div>
+          </article>
+        </div>
+
+        <!-- Why this option -->
+        <div class="why-block">
+          <div class="why-head">
+            <span class="section-tag">Why Option 1</span>
+            <h3 style="margin-top:14px">Built to <span>stop the scroll</span> in a B2B feed</h3>
+            <p>Logistics audiences see hundreds of bland corporate posts a week. Option 1 is engineered to break through that noise — without losing the trust signals decision-makers expect from a freight forwarder.</p>
+          </div>
+
+          <div class="why-grid">
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+              <h4>Scroll-stopping contrast</h4>
+              <p>Heavy display type on cinematic blue photography — proven to hold attention 2-3x longer than flat layouts in feed tests.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+              <h4>One system, every mode</h4>
+              <p>Air, ocean, road and smart-logistics templates share the same DNA — your feed reads as one brand, not six disconnected posts.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15 15 0 0 1 0 20"/><path d="M2 12h20"/></svg></div>
+              <h4>Global trade trust signals</h4>
+              <p>Built-in badges for Fast · Secure · Worldwide reinforce credibility every time a prospect lands on your profile.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 5-5"/></svg></div>
+              <h4>Made for paid + organic</h4>
+              <p>Every template doubles as a Meta/LinkedIn ad creative — no extra production cost when you switch on a paid campaign.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+              <h4>LinkedIn-ready leadership</h4>
+              <p>Founder/exec posts (B2) are formatted to build authority and pull in qualified B2B inbound — not just generic awareness.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+              <h4>Editable. Scalable. Yours.</h4>
+              <p>Master files included — your team (or any future agency) can extend the system without re-doing the brand from scratch.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instagram Highlights · Option 1 -->
+        <div class="highlights-block">
+          <div class="section-head" style="margin-bottom:24px">
+            <span class="section-tag">Instagram Highlights · Option 1</span>
+            <h3 class="section-title" style="font-size:clamp(22px,2.4vw,30px);margin-top:10px">Five permanent highlight covers</h3>
+            <p class="section-sub">Bold, glowing covers that match the industrial campaign system — always pinned above the fold.</p>
+          </div>
+          <div class="highlights-mini-ig">
+            <img src="Assets/ILS-Icon.jpg" alt="">
+            <span>@ils_cargo · Story Highlights</span>
+          </div>
+          <div class="highlights-grid">
+            <div class="highlight highlight-bold">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              </div></div>
+              <span class="highlight-label">Services</span>
+            </div>
+            <div class="highlight highlight-bold">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="15" height="11" rx="1"/><polygon points="16 9 20 9 23 12 23 17 16 17 16 9"/><circle cx="5.5" cy="18" r="2"/><circle cx="18.5" cy="18" r="2"/></svg>
+              </div></div>
+              <span class="highlight-label">Fleet</span>
+            </div>
+            <div class="highlight highlight-bold">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              </div></div>
+              <span class="highlight-label">Deliveries</span>
+            </div>
+            <div class="highlight highlight-bold">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div></div>
+              <span class="highlight-label">Tracking</span>
+            </div>
+            <div class="highlight highlight-bold">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div></div>
+              <span class="highlight-label">Clients</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Brand system mockup (Option 1 only) -->
+        <div class="mockup-section" style="margin-top:56px" id="campaign">
+          <div class="mockup-wrap">
+            <div class="mockup-text">
+              <span class="section-tag">Brand System</span>
+              <h2 style="margin-top:14px;font-family:'Manrope',sans-serif;font-size:clamp(28px,3.4vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.1">One look. <br>Every screen. <br>Zero compromise.</h2>
+              <p>
+                Every creative is engineered to work as a feed post, a story, a reel cover and a paid ad —
+                so the ILS brand stays consistent from a 9:16 phone screen to a billboard pitch deck.
+              </p>
+              <div class="feature-list">
+                <div class="feature-item"><div class="feature-check">✓</div>Templated layouts for Air · Sea · Road · Smart Logistics</div>
+                <div class="feature-item"><div class="feature-check">✓</div>Reusable colour, typography and iconography system</div>
+                <div class="feature-item"><div class="feature-check">✓</div>Ready-to-publish asset bundles delivered every Monday</div>
+                <div class="feature-item"><div class="feature-check">✓</div>Editable source files included — no vendor lock-in</div>
+              </div>
+            </div>
+
+            <div class="mockup-stack">
+              <div class="mock-laptop">
+                <div class="mock-screen">
+                  <img src="Assets/A1.png" alt="">
+                  <img src="Assets/A2.png" alt="">
+                  <img src="Assets/A3.png" alt="">
+                  <img src="Assets/B1.png" alt="">
+                  <img src="Assets/B2.png" alt="">
+                  <img src="Assets/B3.png" alt="">
+                </div>
+              </div>
+              <div class="mock-phone">
+                <div class="mock-phone-screen"><img src="Assets/B3.png" alt=""></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Per-option CTA (Option 1) -->
+        <div class="cta-card" id="contact" style="margin-top:56px">
+          <div>
+            <h2>Ready to lock in Option 1 — Bold Industrial?</h2>
+            <p>Let's run a quick 30-minute kickoff. We'll walk you through the calendar, the deliverables and the rollout timeline — and you can decide from there.</p>
+          </div>
+          <div class="cta-actions">
+            <a href="https://wa.me/971561643886" target="_blank" rel="noopener" class="cta-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8 8 0 0 0 4.06 14l-1.06 4 4.1-1.07A8 8 0 0 0 17.6 6.32zM12 19.5a7.5 7.5 0 0 1-3.83-1.05l-.27-.16-2.43.64.65-2.37-.18-.28A7.5 7.5 0 1 1 12 19.5zm4.34-5.62c-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.54.12s-.62.77-.76.93c-.14.16-.28.18-.52.06a6.18 6.18 0 0 1-3.06-2.68c-.23-.4.23-.37.66-1.24a.42.42 0 0 0 0-.4c-.06-.12-.54-1.3-.74-1.78s-.4-.4-.54-.4h-.46a.88.88 0 0 0-.64.3 2.68 2.68 0 0 0-.84 2c0 1.18.86 2.32 1 2.48s1.68 2.56 4.06 3.6c.57.24 1 .39 1.36.5a3.3 3.3 0 0 0 1.51.1 2.46 2.46 0 0 0 1.62-1.14 2 2 0 0 0 .14-1.14c-.06-.1-.22-.16-.46-.28z"/></svg>
+              Contact Alvin on WhatsApp
+            </a>
+            <a href="#showcase" class="cta-btn ghost">Review the creatives again</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Variation 2 panel — Clean Corporate -->
+      <div class="variation-panel" data-panel="2">
+        <div class="section-head" style="margin-bottom:40px">
+          <span class="section-tag">Variation 2 · The Campaign Set</span>
+          <h3 class="section-title" style="font-size:clamp(26px,3vw,36px);margin-top:10px">Premium corporate creatives, built on trust</h3>
+          <p class="section-sub">A clean white &amp; blue system — premium, executive-friendly, made to win on LinkedIn and high-trust feeds.</p>
+        </div>
+
+        <div class="posts-grid">
+          <article class="post" data-img="Assets/C1.png" data-title="Strong Partnership. Boundless Possibilities." data-desc="Leadership / partnership creative. Humanises the brand and signals C-suite credibility.">
+            <div class="post-frame"><img src="Assets/C1.png" alt="C1"><div class="post-overlay"><h4>Strong Partnership</h4><p>Leadership · Trust</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">C1 · Partnership</div></div>
+              <span class="post-tag">Feed Post</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/C2.png" data-title="Global Trade Made Simple" data-desc="Hero post for global coverage. Map-led layout telegraphing reach across Asia, Africa and Europe.">
+            <div class="post-frame"><img src="Assets/C2.png" alt="C2"><div class="post-overlay"><h4>Global Trade Made Simple</h4><p>Reach · Global coverage</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">C2 · Global</div></div>
+              <span class="post-tag">Hero Post</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/C3.png" data-title="Leading Global Cargo Together" data-desc="Team-led leadership creative. Pairs perfectly with hiring, milestones and LinkedIn announcements.">
+            <div class="post-frame"><img src="Assets/C3.png" alt="C3"><div class="post-overlay"><h4>Leading Global Cargo</h4><p>Team · LinkedIn</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">C3 · Team</div></div>
+              <span class="post-tag">LinkedIn</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/C4.png" data-title="Moving Heavy. Delivering Success." data-desc="Heavy-haul promotional creative for oversize-load and project-cargo announcements.">
+            <div class="post-frame"><img src="Assets/C4.png" alt="C4"><div class="post-overlay"><h4>Moving Heavy</h4><p>Heavy haul · Promo</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">C4 · Heavy Haul</div></div>
+              <span class="post-tag">Promo</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/C5.png" data-title="Powering Cargo Forward" data-desc="People-first operations creative. Builds credibility through your team on the ground.">
+            <div class="post-frame"><img src="Assets/C5.png" alt="C5"><div class="post-overlay"><h4>Powering Cargo Forward</h4><p>People · Operations</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">C5 · People</div></div>
+              <span class="post-tag">Reel Cover</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/C6.png" data-title="Moving Heavy. Delivering Success." data-desc="Project-cargo creative with heavy equipment. Pairs with infrastructure and energy-sector lanes.">
+            <div class="post-frame"><img src="Assets/C6.png" alt="C6"><div class="post-overlay"><h4>Project Cargo</h4><p>Infrastructure · Energy</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">C6 · Project</div></div>
+              <span class="post-tag">Carousel</span>
+            </div>
+          </article>
+        </div>
+
+        <!-- Why Option 2 -->
+        <div class="why-block why-block-light">
+          <div class="why-head">
+            <span class="section-tag">Why Option 2</span>
+            <h3 style="margin-top:14px">Built to <span>win the trust</span> of executive buyers</h3>
+            <p>Where Option 1 stops the scroll with intensity, Option 2 builds quiet authority — clean white space, people-first photography, and corporate restraint that maps directly to how C-level logistics buyers prefer to see vendors.</p>
+          </div>
+
+          <div class="why-grid">
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+              <h4>People-first credibility</h4>
+              <p>Real faces — leadership, ops, drivers — turn a faceless freight company into a brand prospects can place trust in.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+              <h4>Executive-grade aesthetic</h4>
+              <p>Generous white space and corporate typography signal premium positioning — the look big-ticket logistics buyers expect.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+              <h4>LinkedIn-native</h4>
+              <p>Engineered for the LinkedIn feed first — clean, scannable, built to drive enterprise B2B inbound, not vanity metrics.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15 15 0 0 1 0 20"/><path d="M2 12h20"/></svg></div>
+              <h4>Map-led storytelling</h4>
+              <p>The C2 hero uses a real geographic story to make global reach tangible — not just claimed in copy, but visible at a glance.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+              <h4>Heavy-cargo authority</h4>
+              <p>Oversize-load and project-cargo creatives signal you're equipped for high-margin, high-complexity work — not just standard freight.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+              <h4>Future-proof &amp; flexible</h4>
+              <p>Neutral white &amp; blue palette ages well — the same templates work across hiring, partnerships and milestones for years.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instagram Highlights · Option 2 -->
+        <div class="highlights-block">
+          <div class="section-head" style="margin-bottom:24px">
+            <span class="section-tag">Instagram Highlights · Option 2</span>
+            <h3 class="section-title" style="font-size:clamp(22px,2.4vw,30px);margin-top:10px">Five clean, corporate covers</h3>
+            <p class="section-sub">Minimal white covers with a crisp blue outline — perfectly aligned to the Clean Corporate aesthetic.</p>
+          </div>
+          <div class="highlights-mini-ig">
+            <img src="Assets/ILS-Icon.jpg" alt="">
+            <span>@ils_cargo · Story Highlights</span>
+          </div>
+          <div class="highlights-grid">
+            <div class="highlight highlight-clean">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              </div></div>
+              <span class="highlight-label">Services</span>
+            </div>
+            <div class="highlight highlight-clean">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="15" height="11" rx="1"/><polygon points="16 9 20 9 23 12 23 17 16 17 16 9"/><circle cx="5.5" cy="18" r="2"/><circle cx="18.5" cy="18" r="2"/></svg>
+              </div></div>
+              <span class="highlight-label">Fleet</span>
+            </div>
+            <div class="highlight highlight-clean">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              </div></div>
+              <span class="highlight-label">Deliveries</span>
+            </div>
+            <div class="highlight highlight-clean">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div></div>
+              <span class="highlight-label">Tracking</span>
+            </div>
+            <div class="highlight highlight-clean">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div></div>
+              <span class="highlight-label">Clients</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option 2 mockup -->
+        <div class="mockup-section mockup-light" style="margin-top:56px">
+          <div class="mockup-wrap">
+            <div class="mockup-text">
+              <span class="section-tag">Brand System · Option 2</span>
+              <h2 style="margin-top:14px;font-family:'Manrope',sans-serif;font-size:clamp(28px,3.4vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.1">Clean lines. <br>Premium feel. <br>Trust by default.</h2>
+              <p>
+                A restrained white &amp; blue system — engineered for executive feeds, corporate decks and partnership announcements.
+                The same set scales from a LinkedIn post to a tradeshow banner without losing polish.
+              </p>
+              <div class="feature-list">
+                <div class="feature-item"><div class="feature-check">✓</div>People-led photography across leadership, ops &amp; drivers</div>
+                <div class="feature-item"><div class="feature-check">✓</div>Corporate type system with breathing white space</div>
+                <div class="feature-item"><div class="feature-check">✓</div>Map-led hero formats for global reach storytelling</div>
+                <div class="feature-item"><div class="feature-check">✓</div>Editable templates — your team owns the master files</div>
+              </div>
+            </div>
+
+            <div class="mockup-stack">
+              <div class="mock-laptop">
+                <div class="mock-screen">
+                  <img src="Assets/C1.png" alt="">
+                  <img src="Assets/C2.png" alt="">
+                  <img src="Assets/C3.png" alt="">
+                  <img src="Assets/C4.png" alt="">
+                  <img src="Assets/C5.png" alt="">
+                  <img src="Assets/C6.png" alt="">
+                </div>
+              </div>
+              <div class="mock-phone">
+                <div class="mock-phone-screen"><img src="Assets/C2.png" alt=""></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Per-option CTA (Option 2) -->
+        <div class="cta-card" style="margin-top:56px">
+          <div>
+            <h2>Ready to lock in Option 2 — Clean Corporate?</h2>
+            <p>Let's run a quick 30-minute kickoff. We'll walk you through the calendar, the deliverables and the rollout timeline — and you can decide from there.</p>
+          </div>
+          <div class="cta-actions">
+            <a href="https://wa.me/971561643886" target="_blank" rel="noopener" class="cta-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8 8 0 0 0 4.06 14l-1.06 4 4.1-1.07A8 8 0 0 0 17.6 6.32zM12 19.5a7.5 7.5 0 0 1-3.83-1.05l-.27-.16-2.43.64.65-2.37-.18-.28A7.5 7.5 0 1 1 12 19.5zm4.34-5.62c-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.54.12s-.62.77-.76.93c-.14.16-.28.18-.52.06a6.18 6.18 0 0 1-3.06-2.68c-.23-.4.23-.37.66-1.24a.42.42 0 0 0 0-.4c-.06-.12-.54-1.3-.74-1.78s-.4-.4-.54-.4h-.46a.88.88 0 0 0-.64.3 2.68 2.68 0 0 0-.84 2c0 1.18.86 2.32 1 2.48s1.68 2.56 4.06 3.6c.57.24 1 .39 1.36.5a3.3 3.3 0 0 0 1.51.1 2.46 2.46 0 0 0 1.62-1.14 2 2 0 0 0 .14-1.14c-.06-.1-.22-.16-.46-.28z"/></svg>
+              Contact Alvin on WhatsApp
+            </a>
+            <a href="#showcase" class="cta-btn ghost">Review the creatives again</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Variation 3 panel — Editorial Premium -->
+      <div class="variation-panel" data-panel="3">
+        <div class="section-head" style="margin-bottom:40px">
+          <span class="section-tag">Variation 3 · The Campaign Set</span>
+          <h3 class="section-title" style="font-size:clamp(26px,3vw,36px);margin-top:10px">Editorial-grade creatives, magazine-level polish</h3>
+          <p class="section-sub">A high-end editorial system — cinematic photography, refined typography, premium feel. Built for ILS to look like the most expensive logistics brand in the room.</p>
+        </div>
+
+        <div class="posts-grid">
+          <article class="post" data-img="Assets/D1.png" data-title="Vision Above the Horizon" data-desc="Founder-hero creative. Pairs Dubai skyline with executive portrait — built for thought-leadership and milestone posts.">
+            <div class="post-frame"><img src="Assets/D1.png" alt="D1"><div class="post-overlay"><h4>Vision Above the Horizon</h4><p>Leadership · Vision</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">D1 · Vision</div></div>
+              <span class="post-tag">Feed Post</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/D2.png" data-title="Elevating Air Cargo" data-desc="Cinematic air-freight hero. Editorial layout, refined headline — ideal for service launches and route announcements.">
+            <div class="post-frame"><img src="Assets/D2.png" alt="D2"><div class="post-overlay"><h4>Elevating Air Cargo</h4><p>Air freight · Hero</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">D2 · Air</div></div>
+              <span class="post-tag">Hero Post</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/D3.png" data-title="Leading Beyond Boundaries" data-desc="Premium executive portrait creative. Designed to position ILS leadership at the level of global trade-press features.">
+            <div class="post-frame"><img src="Assets/D3.png" alt="D3"><div class="post-overlay"><h4>Leading Beyond Boundaries</h4><p>Executive · LinkedIn</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">D3 · Leadership</div></div>
+              <span class="post-tag">LinkedIn</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/D4.png" data-title="Advancing Road Freight" data-desc="Editorial trucking creative. Built for testimonials, lane launches and high-end carrier announcements.">
+            <div class="post-frame"><img src="Assets/D4.png" alt="D4"><div class="post-overlay"><h4>Advancing Road Freight</h4><p>Road · Editorial</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">D4 · Road</div></div>
+              <span class="post-tag">Promo</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/D5.png" data-title="Empowering Field Operations" data-desc="Team-led operations creative. Reinforces ILS's on-the-ground capacity — perfect for hiring and trust posts.">
+            <div class="post-frame"><img src="Assets/D5.png" alt="D5"><div class="post-overlay"><h4>Empowering Field Operations</h4><p>Team · Operations</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">D5 · Operations</div></div>
+              <span class="post-tag">Reel Cover</span>
+            </div>
+          </article>
+
+          <article class="post" data-img="Assets/D6.png" data-title="Navigating Ocean Cargo" data-desc="Editorial ocean-freight creative. Cinematic vessel photography paired with premium typography for global trade campaigns.">
+            <div class="post-frame"><img src="Assets/D6.png" alt="D6"><div class="post-overlay"><h4>Navigating Ocean Cargo</h4><p>Ocean · Editorial</p></div></div>
+            <div class="post-meta">
+              <div><div class="post-label">D6 · Ocean</div></div>
+              <span class="post-tag">Carousel</span>
+            </div>
+          </article>
+        </div>
+
+        <!-- Why Option 3 -->
+        <div class="why-block">
+          <div class="why-head">
+            <span class="section-tag">Why Option 3</span>
+            <h3 style="margin-top:14px">Built to feel like a <span>magazine cover</span>, not a feed post</h3>
+            <p>This is the most premium of the three directions. Where Option 1 stops the scroll and Option 2 builds trust, Option 3 makes ILS look like the freight forwarder that gets profiled in Lloyd's List or featured on the cover of a trade journal — instantly recognised as a tier-one player.</p>
+          </div>
+
+          <div class="why-grid">
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+              <h4>Editorial-grade prestige</h4>
+              <p>Magazine-cover composition and refined typography position ILS in the top-tier bracket — the look that wins enterprise mandates, not just engagement.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+              <h4>Dubai skyline anchor</h4>
+              <p>Iconic UAE backdrops baked into the hero shots — every post reinforces ILS as a Dubai-headquartered global player without saying a word.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></div>
+              <h4>Founder-as-brand</h4>
+              <p>Built around executive portraiture — turns ILS leadership into the face of the brand, the strongest trust signal in B2B logistics.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+              <h4>Long-form storytelling</h4>
+              <p>Editorial layouts are made for carousels and reels with depth — case studies, profiles, route stories. Engagement that converts.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v6m0 6v6"/><path d="M1 12h6m6 0h6"/><path d="M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24"/><path d="M19.78 4.22l-4.24 4.24m-7.08 7.08l-4.24 4.24"/></svg></div>
+              <h4>Awards-ready aesthetic</h4>
+              <p>Polished enough to submit to industry awards, trade publications and PR features — same assets, multiplied reach beyond the feed.</p>
+            </div>
+            <div class="why-card">
+              <div class="why-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+              <h4>Multi-channel ready</h4>
+              <p>Works as a feed post, carousel cover, reel still, pitch-deck slide and tradeshow banner — every format keeps the editorial weight.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instagram Highlights · Option 3 -->
+        <div class="highlights-block">
+          <div class="section-head" style="margin-bottom:24px">
+            <span class="section-tag">Instagram Highlights · Option 3</span>
+            <h3 class="section-title" style="font-size:clamp(22px,2.4vw,30px);margin-top:10px">Five editorial-grade highlight covers</h3>
+            <p class="section-sub">Champagne-gold rings on deep navy — the same magazine polish carried into every highlight on your profile.</p>
+          </div>
+          <div class="highlights-mini-ig">
+            <img src="Assets/ILS-Icon.jpg" alt="">
+            <span>@ils_cargo · Story Highlights</span>
+          </div>
+          <div class="highlights-grid">
+            <div class="highlight highlight-editorial">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              </div></div>
+              <span class="highlight-label">Services</span>
+            </div>
+            <div class="highlight highlight-editorial">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="15" height="11" rx="1"/><polygon points="16 9 20 9 23 12 23 17 16 17 16 9"/><circle cx="5.5" cy="18" r="2"/><circle cx="18.5" cy="18" r="2"/></svg>
+              </div></div>
+              <span class="highlight-label">Fleet</span>
+            </div>
+            <div class="highlight highlight-editorial">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              </div></div>
+              <span class="highlight-label">Deliveries</span>
+            </div>
+            <div class="highlight highlight-editorial">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div></div>
+              <span class="highlight-label">Tracking</span>
+            </div>
+            <div class="highlight highlight-editorial">
+              <div class="highlight-ring"><div class="highlight-inner">
+                <svg class="hl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div></div>
+              <span class="highlight-label">Clients</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option 3 mockup -->
+        <div class="mockup-section" style="margin-top:56px">
+          <div class="mockup-wrap">
+            <div class="mockup-text">
+              <span class="section-tag">Brand System · Option 3</span>
+              <h2 style="margin-top:14px;font-family:'Manrope',sans-serif;font-size:clamp(28px,3.4vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.1">Editorial weight. <br>Cinematic feel. <br>Tier-one presence.</h2>
+              <p>
+                A premium magazine-grade system — engineered for ILS to lead the conversation, not chase it.
+                The same set runs across feed posts, carousels, reels and pitch decks without losing its editorial polish.
+              </p>
+              <div class="feature-list">
+                <div class="feature-item"><div class="feature-check">✓</div>Cinematic photography across air, ocean and road</div>
+                <div class="feature-item"><div class="feature-check">✓</div>Editorial type system with magazine-cover hierarchy</div>
+                <div class="feature-item"><div class="feature-check">✓</div>Founder &amp; leadership portraiture baked in</div>
+                <div class="feature-item"><div class="feature-check">✓</div>Awards-ready · multi-channel master files included</div>
+              </div>
+            </div>
+
+            <div class="mockup-stack">
+              <div class="mock-laptop">
+                <div class="mock-screen">
+                  <img src="Assets/D1.png" alt="">
+                  <img src="Assets/D2.png" alt="">
+                  <img src="Assets/D3.png" alt="">
+                  <img src="Assets/D4.png" alt="">
+                  <img src="Assets/D5.png" alt="">
+                  <img src="Assets/D6.png" alt="">
+                </div>
+              </div>
+              <div class="mock-phone">
+                <div class="mock-phone-screen"><img src="Assets/D1.png" alt=""></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Per-option CTA (Option 3) -->
+        <div class="cta-card" style="margin-top:56px">
+          <div>
+            <h2>Ready to lock in Option 3 — Editorial Premium?</h2>
+            <p>Let's run a quick 30-minute kickoff. We'll walk you through the calendar, the deliverables and the rollout timeline — and you can decide from there.</p>
+          </div>
+          <div class="cta-actions">
+            <a href="https://wa.me/971561643886" target="_blank" rel="noopener" class="cta-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8 8 0 0 0 4.06 14l-1.06 4 4.1-1.07A8 8 0 0 0 17.6 6.32zM12 19.5a7.5 7.5 0 0 1-3.83-1.05l-.27-.16-2.43.64.65-2.37-.18-.28A7.5 7.5 0 1 1 12 19.5zm4.34-5.62c-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.54.12s-.62.77-.76.93c-.14.16-.28.18-.52.06a6.18 6.18 0 0 1-3.06-2.68c-.23-.4.23-.37.66-1.24a.42.42 0 0 0 0-.4c-.06-.12-.54-1.3-.74-1.78s-.4-.4-.54-.4h-.46a.88.88 0 0 0-.64.3 2.68 2.68 0 0 0-.84 2c0 1.18.86 2.32 1 2.48s1.68 2.56 4.06 3.6c.57.24 1 .39 1.36.5a3.3 3.3 0 0 0 1.51.1 2.46 2.46 0 0 0 1.62-1.14 2 2 0 0 0 .14-1.14c-.06-.1-.22-.16-.46-.28z"/></svg>
+              Contact Alvin on WhatsApp
+            </a>
+            <a href="#showcase" class="cta-btn ghost">Review the creatives again</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>© 2026 International Logistics Services · Crafted for global trade.</div>
+    <div class="foot-links">
+      <a href="#showcase">Showcase</a>
+      <a href="https://wa.me/971561643886" target="_blank" rel="noopener">Contact Alvin</a>
+    </div>
+  </footer>
+</div>
+
+<!-- VOICE-OVER WIDGET -->
+<button class="voice-widget" id="voiceWidget" aria-label="Play voice introduction">
+  <span class="voice-ico">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.08"/></svg>
+  </span>
+  <span class="voice-bars" aria-hidden="true">
+    <span class="vb"></span><span class="vb"></span><span class="vb"></span><span class="vb"></span>
+  </span>
+  <span class="voice-label">Play Voice Intro</span>
+</button>
+
+<!-- COPY / DOWNLOAD WARNING TOAST -->
+<div class="copy-toast" id="copyToast" role="alert">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+  <div>
+    <strong>Content Protected</strong><br>
+    You are not allowed to download or copy Alvin's proposal. <strong>© All rights reserved.</strong>
+  </div>
+</div>
+
+<!-- "MY SERVICES" DIALOG -->
+<div class="services-dialog" id="servicesDialog" role="dialog" aria-label="Alvin's services">
+  <div class="services-card">
+    <div class="services-head">
+      <button class="services-close" id="servicesClose" aria-label="Close">×</button>
+      <h3>Connect with Alvin</h3>
+      <p>Pick the easiest way to get in touch</p>
+    </div>
+    <div class="services-options">
+      <a href="https://www.alvinjampazar.com" target="_blank" rel="noopener" class="services-option" data-act="web">
+        <div class="services-option-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="services-option-text">
+          <strong>Visit My Website</strong>
+          <small>www.alvinjampazar.com</small>
+        </div>
+        <span class="services-option-arrow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <a href="https://wa.me/971561643886" target="_blank" rel="noopener" class="services-option" data-act="whatsapp">
+        <div class="services-option-ico">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8 8 0 0 0 4.06 14l-1.06 4 4.1-1.07A8 8 0 0 0 17.6 6.32zM12 19.5a7.5 7.5 0 0 1-3.83-1.05l-.27-.16-2.43.64.65-2.37-.18-.28A7.5 7.5 0 1 1 12 19.5zm4.34-5.62c-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.54.12s-.62.77-.76.93c-.14.16-.28.18-.52.06a6.18 6.18 0 0 1-3.06-2.68c-.23-.4.23-.37.66-1.24a.42.42 0 0 0 0-.4c-.06-.12-.54-1.3-.74-1.78s-.4-.4-.54-.4h-.46a.88.88 0 0 0-.64.3 2.68 2.68 0 0 0-.84 2c0 1.18.86 2.32 1 2.48s1.68 2.56 4.06 3.6c.57.24 1 .39 1.36.5a3.3 3.3 0 0 0 1.51.1 2.46 2.46 0 0 0 1.62-1.14 2 2 0 0 0 .14-1.14c-.06-.1-.22-.16-.46-.28z"/></svg>
+        </div>
+        <div class="services-option-text">
+          <strong>Message on WhatsApp</strong>
+          <small>+971 56 164 3886</small>
+        </div>
+        <span class="services-option-arrow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <a href="tel:+971522235776" class="services-option" data-act="call">
+        <div class="services-option-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div class="services-option-text">
+          <strong>Call Directly</strong>
+          <small>+971 52 223 5776</small>
+        </div>
+        <span class="services-option-arrow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- QUOTATION WIDGET (sits above AI agent) -->
+<button class="quote-fab" id="quoteFab" aria-label="View quotation">
+  <span class="quote-fab-ico">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+  </span>
+  <span>Get Quotation</span>
+  <span class="quote-price">2,000 AED</span>
+</button>
+
+<!-- QUOTATION DIALOG -->
+<div class="quote-dialog" id="quoteDialog" role="dialog" aria-label="Service Quotation">
+  <div class="quote-card">
+    <button class="quote-close-btn" id="quoteClose" aria-label="Close">×</button>
+
+    <div class="quote-paper" id="quotePaper">
+      <div class="quote-paper-head">
+        <div class="quote-brand">
+          <img src="Assets/logo.jpg" alt="ILS" id="quoteLogo">
+          <div class="quote-brand-name">
+            <strong>International Logistics Services</strong>
+            <small>Social Media Management · Monthly Package</small>
+          </div>
+        </div>
+        <div class="quote-title-block">
+          <div class="title">QUOTATION</div>
+          <div class="sub">Confidential · For client review</div>
+        </div>
+      </div>
+
+      <div class="quote-meta">
+        <div class="quote-meta-block">
+          <label>Quote Number</label>
+          <div class="val" id="quoteNumber">Q-2026-001</div>
+        </div>
+        <div class="quote-meta-block">
+          <label>Date Issued</label>
+          <div class="val" id="quoteDate">—</div>
+        </div>
+        <div class="quote-meta-block">
+          <label>Prepared By</label>
+          <div class="val">Alvin Jampazar · Art Director</div>
+        </div>
+        <div class="quote-meta-block">
+          <label>Valid For</label>
+          <div class="val">1 Month from approval</div>
+        </div>
+      </div>
+
+      <div class="quote-body">
+        <h4>Selected Creative Option</h4>
+        <div class="quote-options" id="quoteOptions">
+          <button type="button" class="quote-opt active" data-opt="1"><strong>Option 1</strong><small>Bold Industrial</small></button>
+          <button type="button" class="quote-opt" data-opt="2"><strong>Option 2</strong><small>Clean Corporate</small></button>
+          <button type="button" class="quote-opt" data-opt="3"><strong>Option 3</strong><small>Editorial Premium</small></button>
+        </div>
+
+        <h4>Service Breakdown · 1 Month</h4>
+        <table class="quote-items">
+          <thead>
+            <tr><th>Item</th><th style="text-align:right">Quantity</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="item-name">Stories &amp; Animations</div>
+                <div class="item-desc">Branded vertical story frames + motion animations</div>
+              </td>
+              <td class="qty">5 / month</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="item-name">Reels &amp; Short Videos</div>
+                <div class="item-desc">Vertical video edits for Reels, TikTok &amp; Shorts</div>
+              </td>
+              <td class="qty">4 / month</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="item-name">Feed Posts</div>
+                <div class="item-desc">Branded posts across Instagram, LinkedIn &amp; Facebook</div>
+              </td>
+              <td class="qty">15 / month</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="item-name">Brand Monitoring &amp; DM Care</div>
+                <div class="item-desc">Comment + DM handling across all platforms · 24/7</div>
+              </td>
+              <td class="qty">Included</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="item-name">Design System &amp; Templates</div>
+                <div class="item-desc">Follows the selected option's colour &amp; brand style</div>
+              </td>
+              <td class="qty">Included</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="quote-totals">
+          <div class="lbl">Total · 1 month</div>
+          <div class="amt">2,000 <small>AED</small></div>
+        </div>
+
+        <div class="quote-terms">
+          <h5>Terms &amp; Conditions</h5>
+          <ul>
+            <li><strong>Service period:</strong> 1 month from approval date — renewable on a monthly basis.</li>
+            <li><strong>Creative direction:</strong> design follows the colour, typography and visual style of the option selected above (Option 1, 2 or 3).</li>
+            <li><strong>Revisions:</strong> 2 rounds of revisions included per asset before publishing.</li>
+            <li><strong>Deliverables:</strong> all final assets handed over as editable master files — full ownership transferred to ILS.</li>
+            <li><strong>Payment:</strong> 50% on approval to start production · 50% on completion of the monthly batch.</li>
+            <li><strong>Quotation validity:</strong> this quotation is valid for 30 days from the date of issue.</li>
+            <li><strong>Copyright:</strong> all design IP belongs to ILS upon final payment.</li>
+          </ul>
+        </div>
+
+        <div class="quote-sign">
+          <div class="quote-sign-block">
+            <div class="scribble">Alvin</div>
+            <div class="name">Alvin Jampazar</div>
+            <div class="role">Art Director</div>
+          </div>
+          <div class="quote-sign-block" style="text-align:right">
+            <div class="role">Authorized signatory</div>
+            <div class="role" style="font-size:11px">© ILS — All rights reserved</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-actions">
+      <button type="button" class="ghost-btn" id="quoteCancel">Close</button>
+      <button type="button" class="approve-btn" id="quoteApprove">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Approve &amp; Download PDF
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- AI AGENT (floating widget + chat panel) -->
+<button class="ai-fab" id="aiFab" aria-label="Open AI assistant">
+  <span class="ai-fab-ico">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+  </span>
+  <span>Ask Alvin's AI</span>
+</button>
+
+<div class="ai-panel" id="aiPanel" role="dialog" aria-label="AI assistant chat">
+  <div class="ai-head">
+    <div class="ai-avatar">A</div>
+    <div class="ai-head-text">
+      <strong>Alvin's AI Agent</strong>
+      <small><span class="dot"></span> Online · Ready to help</small>
+    </div>
+    <button class="ai-close-btn" id="aiClose" aria-label="Close">×</button>
+  </div>
+
+  <div class="ai-messages" id="aiMessages">
+    <div class="ai-msg">👋 Hi! I'm Alvin's AI agent. Ask me anything about this proposal — options, pricing, timeline, or use one of the quick actions below.</div>
+  </div>
+
+  <div class="ai-quick-grid">
+    <button class="ai-quick-btn" data-action="revision">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+      Any Revision
+    </button>
+    <button class="ai-quick-btn" data-action="other-services">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Want Another Service
+    </button>
+    <button class="ai-quick-btn" data-action="approve">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Approved · What Option
+    </button>
+    <button class="ai-quick-btn" data-action="expert">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      Speak to Expert
+    </button>
+  </div>
+
+  <form class="ai-input-form" id="aiForm" autocomplete="off">
+    <input class="ai-input" id="aiInput" type="text" placeholder="Ask anything about this proposal..." autocomplete="off" />
+    <button type="submit" class="ai-send" aria-label="Send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </form>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+    <div class="modal-img"><img id="modalImg" src="" alt=""></div>
+    <div class="modal-body">
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal, .post').forEach(el=>io.observe(el));
+
+  // Counter animation
+  const counters = document.querySelectorAll('.stat .num');
+  const cio = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseInt(el.dataset.target,10);
+      const suffix = el.dataset.suffix || '';
+      const dur = 1400;
+      const start = performance.now();
+      const animate=(now)=>{
+        const p = Math.min((now-start)/dur,1);
+        const eased = 1 - Math.pow(1-p,3);
+        el.textContent = Math.round(target*eased) + (p===1?suffix:'');
+        if(p<1) requestAnimationFrame(animate);
+      };
+      requestAnimationFrame(animate);
+      cio.unobserve(el);
+    });
+  },{threshold:.4});
+  counters.forEach(c=>cio.observe(c));
+
+  // Modal interactions
+  const modal = document.getElementById('modal');
+  const modalImg = document.getElementById('modalImg');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDesc = document.getElementById('modalDesc');
+  document.querySelectorAll('.post').forEach(p=>{
+    p.addEventListener('click',()=>{
+      modalImg.src = p.dataset.img;
+      modalTitle.textContent = p.dataset.title;
+      modalDesc.textContent = p.dataset.desc;
+      modal.classList.add('show');
+    });
+  });
+  document.getElementById('modalClose').addEventListener('click',()=>modal.classList.remove('show'));
+  modal.addEventListener('click',(e)=>{ if(e.target===modal) modal.classList.remove('show'); });
+  document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') modal.classList.remove('show'); });
+
+  // Dropdown reveal toggle for Option 1
+  const revealToggle = document.getElementById('revealToggle');
+  const optionPanel = document.getElementById('optionPanel');
+  const revealLabel = revealToggle.querySelector('.reveal-label');
+  // Per-option voice-over scripts
+  const OPTION_VOICE = {
+    "1":
+      "Option One: Bold Industrial. This is the scroll-stopping direction. " +
+      "Heavy display typography on cinematic blue photography — engineered to break through the noise of a B2B logistics feed. " +
+      "It works as one complete system across air, sea, and road, with built-in trust badges for fast, secure, and worldwide service. " +
+      "Choose Option One if your goal is maximum attention and engagement on Instagram, TikTok, and paid Meta campaigns — " +
+      "where you need to stop the thumb mid-scroll and turn cold viewers into qualified leads.",
+    "2":
+      "Option Two: Clean Corporate. This is the premium, executive-grade direction. " +
+      "Clean white space, real people in the shots, and corporate restraint that signals quiet authority. " +
+      "It's engineered for LinkedIn and high-trust B2B feeds, where C-level logistics buyers expect polish and credibility. " +
+      "Choose Option Two if your priority is building authority, attracting enterprise clients, " +
+      "and looking like a partner that big shippers can rely on for years to come.",
+    "3":
+      "Option Three: Editorial Premium. This is the most prestigious of the three directions. " +
+      "Cinematic photography, magazine-grade typography, and Dubai skyline anchors — built to make ILS look like the tier-one freight forwarder that gets profiled in trade press. " +
+      "Founder and leadership portraiture is baked into the system, turning your executives into the face of the brand — the strongest trust signal in B2B logistics. " +
+      "Choose Option Three if you want ILS to lead the conversation, win enterprise mandates, " +
+      "and look award-ready across feed posts, carousels, reels, and pitch decks."
+  };
+
+  revealToggle.addEventListener('click',()=>{
+    const isOpen = optionPanel.classList.toggle('open');
+    revealToggle.classList.toggle('open', isOpen);
+    revealLabel.textContent = isOpen
+      ? 'Hide Creative Variations'
+      : 'Reveal Creative Variations';
+    if(isOpen){
+      setTimeout(()=>{
+        optionPanel.scrollIntoView({behavior:'smooth', block:'start'});
+      }, 280);
+      // Speak the explanation for the currently active option (defaults to Option 1)
+      const activeTab = document.querySelector('.var-tab.active');
+      const v = activeTab ? activeTab.dataset.var : "1";
+      setTimeout(()=> speakOnce(OPTION_VOICE[v] || OPTION_VOICE["1"]), 900);
+    } else {
+      // Stop any narration when the panel is collapsed
+      if('speechSynthesis' in window) window.speechSynthesis.cancel();
+    }
+  });
+
+  // Variation tab switcher — also plays the matching voice explanation
+  document.querySelectorAll('.var-tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      if(tab.classList.contains('disabled')) return;
+      const wasActive = tab.classList.contains('active');
+      document.querySelectorAll('.var-tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      const v = tab.dataset.var;
+      document.querySelectorAll('.variation-panel').forEach(p=>{
+        p.classList.toggle('active', p.dataset.panel === v);
+      });
+      // Re-narrate only when the user switches to a different tab
+      if(!wasActive && OPTION_VOICE[v]){
+        speakOnce(OPTION_VOICE[v]);
+      }
+    });
+  });
+
+  // ===== VOICE-OVER (Web Speech API) =====
+  // Tries to use a natural-sounding English voice (Microsoft Ryan / Google UK on supported browsers).
+  const voiceWidget = document.getElementById('voiceWidget');
+  const voiceLabel = voiceWidget.querySelector('.voice-label');
+
+  const VOICE_SCRIPT =
+    "Welcome to the social media management proposal for International Logistics Services. " +
+    "We have prepared three creative variations for you to choose from: " +
+    "Option One — Bold Industrial, Option Two — Clean Corporate, and Option Three — Editorial Premium. " +
+    "Tap reveal creative variations below to compare all three side by side. " +
+    "Each option includes six on-brand creatives, a full reasoning panel, and a brand system mockup. " +
+    "When you're ready, contact Alvin directly on WhatsApp to discuss next steps. Enjoy the walkthrough.";
+
+  let selectedVoice = null;
+  let utterance = null;
+  let isPlaying = false;
+
+  function pickVoice(){
+    if(!('speechSynthesis' in window)) return null;
+    const voices = window.speechSynthesis.getVoices();
+    if(!voices.length) return null;
+    // Preference order — natural neural voices first
+    const prefs = [
+      v=>/ryan/i.test(v.name),
+      v=>/guy|jenny|aria|davis/i.test(v.name) && /en[-_]US/i.test(v.lang),
+      v=>/natural|neural|online/i.test(v.name) && /en[-_]GB/i.test(v.lang),
+      v=>/natural|neural|online/i.test(v.name) && /^en/i.test(v.lang),
+      v=>/google.*(uk|us)/i.test(v.name),
+      v=>/^en[-_]GB/i.test(v.lang),
+      v=>/^en[-_]US/i.test(v.lang),
+      v=>/^en/i.test(v.lang),
+    ];
+    for(const pref of prefs){
+      const m = voices.find(pref);
+      if(m) return m;
+    }
+    return voices[0];
+  }
+
+  function setPlayingUI(playing){
+    isPlaying = playing;
+    voiceWidget.classList.toggle('playing', playing);
+    voiceLabel.textContent = playing ? 'Stop Voice Intro' : 'Play Voice Intro';
+  }
+
+  function speak(){
+    if(!('speechSynthesis' in window)){
+      alert('Voice playback is not supported in this browser. Please try Chrome, Edge, or Safari.');
+      return;
+    }
+    if(isPlaying){
+      window.speechSynthesis.cancel();
+      setPlayingUI(false);
+      return;
+    }
+    selectedVoice = selectedVoice || pickVoice();
+    utterance = new SpeechSynthesisUtterance(VOICE_SCRIPT);
+    if(selectedVoice) utterance.voice = selectedVoice;
+    utterance.rate = 0.98;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    utterance.onend = ()=> setPlayingUI(false);
+    utterance.onerror = ()=> setPlayingUI(false);
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+    setPlayingUI(true);
+  }
+
+  // voices load asynchronously in some browsers
+  if('speechSynthesis' in window){
+    if(window.speechSynthesis.getVoices().length === 0){
+      window.speechSynthesis.addEventListener('voiceschanged', ()=>{
+        selectedVoice = pickVoice();
+      }, { once:true });
+    } else {
+      selectedVoice = pickVoice();
+    }
+  }
+
+  voiceWidget.addEventListener('click', ()=>{ playSfx('click'); speak(); });
+
+  // ===== SOUND EFFECTS (Web Audio API) =====
+  // Synthesized UI sounds — no external files needed.
+  let _audioCtx = null;
+  function getAudioCtx(){
+    if(_audioCtx) return _audioCtx;
+    try{
+      _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }catch(e){ return null; }
+    return _audioCtx;
+  }
+  function tone(freqStart, freqEnd, duration, volume, type){
+    const ctx = getAudioCtx(); if(!ctx) return;
+    if(ctx.state === 'suspended') ctx.resume();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.setValueAtTime(freqStart, ctx.currentTime);
+    if(freqEnd && freqEnd !== freqStart){
+      osc.frequency.exponentialRampToValueAtTime(freqEnd, ctx.currentTime + duration);
+    }
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime + duration + 0.05);
+  }
+  function playSfx(kind){
+    switch(kind){
+      case 'click':    tone(720, 480, 0.06, 0.08, 'triangle'); break;
+      case 'hover':    tone(900, 900, 0.04, 0.03, 'sine'); break;
+      case 'success':  tone(520, 880, 0.10, 0.10, 'sine');
+                       setTimeout(()=>tone(880,1320, 0.15, 0.08,'sine'), 90); break;
+      case 'error':    tone(320, 180, 0.18, 0.10, 'sawtooth'); break;
+      case 'unlock':   tone(440, 880, 0.12, 0.09, 'sine');
+                       setTimeout(()=>tone(660,1100, 0.10, 0.08,'sine'), 110);
+                       setTimeout(()=>tone(880,1320, 0.16, 0.08,'sine'), 220); break;
+      case 'whoosh':   tone(900, 200, 0.35, 0.07, 'sine'); break;
+    }
+  }
+  // Attach click sound to all interactive controls automatically.
+  function attachClickSfx(){
+    const selector = 'button, .post, .var-tab, .reveal-toggle, .splash-cta, .btn, .cta-btn, .cta-mini, .nav-pills a, .voice-widget, .modal-close, .foot-links a, .pw-toggle, .pw-back, .pw-submit';
+    document.querySelectorAll(selector).forEach(el=>{
+      if(el.dataset.sfxBound) return;
+      el.dataset.sfxBound = '1';
+      el.addEventListener('pointerdown', ()=> playSfx('click'));
+    });
+  }
+  attachClickSfx();
+  // Re-attach after dynamic content (modal, etc.) is ready.
+  document.addEventListener('click', ()=> attachClickSfx(), true);
+
+  // ===== SPLASH: cargo network canvas =====
+  const splash = document.getElementById('splash');
+  const splashCanvas = document.getElementById('splashCanvas');
+  const sctx = splashCanvas.getContext('2d');
+  let cw = 0, ch = 0;
+
+  // Major ILS ports / hubs (normalized 0..1 on a 2:1 world projection)
+  const PORTS = [
+    { name:'Dubai',       x:0.595, y:0.45, hq:true },
+    { name:'Jebel Ali',   x:0.600, y:0.46 },
+    { name:'Singapore',   x:0.755, y:0.55 },
+    { name:'Shanghai',    x:0.815, y:0.40 },
+    { name:'Hong Kong',   x:0.793, y:0.46 },
+    { name:'Tokyo',       x:0.855, y:0.38 },
+    { name:'Mumbai',      x:0.665, y:0.48 },
+    { name:'Rotterdam',   x:0.495, y:0.28 },
+    { name:'Hamburg',     x:0.510, y:0.27 },
+    { name:'New York',    x:0.275, y:0.36 },
+    { name:'Los Angeles', x:0.155, y:0.40 },
+    { name:'Santos',      x:0.345, y:0.65 },
+    { name:'Cape Town',   x:0.530, y:0.72 },
+    { name:'Sydney',      x:0.875, y:0.74 },
+    { name:'Lagos',       x:0.495, y:0.55 },
+  ];
+  // Cargo routes (all radiate from Dubai HQ)
+  const ROUTES = [
+    [0,2],[0,3],[0,4],[0,5],[0,6],[0,7],[0,9],[0,10],[0,12],[0,13],[0,14],
+    [3,9],[2,10],[7,9],[11,12]
+  ];
+  // Virtual map box (2:1 equirectangular) that ports map into
+  let mapDx=0, mapDy=0, mapDw=0, mapDh=0;
+  function computeMapBounds(){
+    const mapAspect = 2;
+    const canvasAspect = cw / ch;
+    if(canvasAspect > mapAspect){
+      mapDh = ch * 0.82;
+      mapDw = mapDh * mapAspect;
+      mapDx = (cw - mapDw) / 2;
+      mapDy = (ch - mapDh) / 2;
+    } else {
+      mapDw = cw * 0.94;
+      mapDh = mapDw / mapAspect;
+      mapDx = (cw - mapDw) / 2;
+      mapDy = (ch - mapDh) / 2;
+    }
+  }
+
+  // Procedural continent dot field — soft, cyber-styled
+  let continentDots = [];
+  function buildContinents(){
+    continentDots = [];
+    const blob = (cx,cy,rx,ry,n)=>{
+      for(let i=0;i<n;i++){
+        const ang = Math.random()*Math.PI*2;
+        const rad = Math.pow(Math.random(),0.65);
+        continentDots.push({
+          x: cx + Math.cos(ang)*rx*rad,
+          y: cy + Math.sin(ang)*ry*rad + (Math.random()-.5)*0.008,
+        });
+      }
+    };
+    blob(0.16,0.30,0.10,0.10,160);   // North America
+    blob(0.20,0.42,0.05,0.04,30);
+    blob(0.30,0.60,0.04,0.12,100);   // South America
+    blob(0.50,0.30,0.05,0.05,60);    // Europe
+    blob(0.53,0.55,0.07,0.13,140);   // Africa
+    blob(0.59,0.45,0.04,0.04,30);    // Middle East
+    blob(0.70,0.36,0.13,0.10,200);   // Asia
+    blob(0.80,0.45,0.05,0.05,45);
+    blob(0.78,0.58,0.05,0.04,50);    // SE Asia
+    blob(0.85,0.71,0.05,0.04,60);    // Australia
+    blob(0.40,0.18,0.03,0.04,20);    // Greenland
+  }
+  buildContinents();
+
+  function resizeCanvas(){
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cw = splashCanvas.clientWidth;
+    ch = splashCanvas.clientHeight;
+    splashCanvas.width  = cw * dpr;
+    splashCanvas.height = ch * dpr;
+    sctx.setTransform(dpr,0,0,dpr,0,0);
+    computeMapBounds();
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  // Travelling cargo pulses on each route
+  const cargoPulses = ROUTES.map((r,i)=>({ route:r, t: Math.random(), speed: 0.12 + Math.random()*0.18 }));
+
+  // Map coordinates (0..1) -> canvas pixels inside the rendered map box
+  function px(n){ return mapDx + n * mapDw; }
+  function py(n){ return mapDy + n * mapDh; }
+
+  // Quadratic bezier point (great-circle style arc)
+  function arcPoint(p1, p2, t){
+    const mx = (p1.x + p2.x)/2;
+    const my = (p1.y + p2.y)/2;
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    const dist = Math.hypot(dx, dy);
+    const lift = Math.min(0.18, dist*0.35);
+    // Perpendicular lift (upward bow)
+    const cx = mx;
+    const cy = my - lift;
+    const it = 1 - t;
+    return {
+      x: it*it*p1.x + 2*it*t*cx + t*t*p2.x,
+      y: it*it*p1.y + 2*it*t*cy + t*t*p2.y,
+    };
+  }
+
+  let lastT = performance.now();
+  function drawNetwork(now){
+    const dt = Math.min(0.05, (now - lastT)/1000);
+    lastT = now;
+    sctx.clearRect(0,0,cw,ch);
+
+    // Continent dot field — subtle cyber backdrop
+    sctx.save();
+    sctx.fillStyle = 'rgba(127,177,255,0.32)';
+    continentDots.forEach(d=>{
+      sctx.beginPath();
+      sctx.arc(px(d.x), py(d.y), 1.5, 0, Math.PI*2);
+      sctx.fill();
+    });
+    sctx.restore();
+
+    // Routes (bezier arcs)
+    sctx.lineWidth = 1.2;
+    ROUTES.forEach(([a,b])=>{
+      const p1 = PORTS[a], p2 = PORTS[b];
+      const grad = sctx.createLinearGradient(px(p1.x),py(p1.y),px(p2.x),py(p2.y));
+      grad.addColorStop(0,'rgba(127,177,255,0.55)');
+      grad.addColorStop(0.5,'rgba(168,196,255,0.75)');
+      grad.addColorStop(1,'rgba(127,177,255,0.55)');
+      sctx.strokeStyle = grad;
+      sctx.setLineDash([4,4]);
+      sctx.beginPath();
+      const steps = 36;
+      for(let i=0;i<=steps;i++){
+        const t = i/steps;
+        const pt = arcPoint(p1, p2, t);
+        if(i===0) sctx.moveTo(px(pt.x), py(pt.y));
+        else sctx.lineTo(px(pt.x), py(pt.y));
+      }
+      sctx.stroke();
+    });
+    sctx.setLineDash([]);
+
+    // Travelling cargo pulses
+    cargoPulses.forEach(cp=>{
+      cp.t += cp.speed * dt;
+      if(cp.t > 1) cp.t -= 1;
+      const [a,b] = cp.route;
+      const pt = arcPoint(PORTS[a], PORTS[b], cp.t);
+      // Glow
+      const g = sctx.createRadialGradient(px(pt.x), py(pt.y), 0, px(pt.x), py(pt.y), 14);
+      g.addColorStop(0,'rgba(168,196,255,0.95)');
+      g.addColorStop(1,'rgba(168,196,255,0)');
+      sctx.fillStyle = g;
+      sctx.beginPath();
+      sctx.arc(px(pt.x), py(pt.y), 14, 0, Math.PI*2);
+      sctx.fill();
+      // Core
+      sctx.fillStyle = '#ffffff';
+      sctx.beginPath();
+      sctx.arc(px(pt.x), py(pt.y), 2.4, 0, Math.PI*2);
+      sctx.fill();
+    });
+
+    // Port nodes (pulse rings)
+    const tNow = now/1000;
+    PORTS.forEach((p,i)=>{
+      const pulse = (tNow*0.6 + i*0.13) % 1;
+      const r = 4 + pulse*22;
+      const a = 0.55 * (1 - pulse);
+      sctx.strokeStyle = `rgba(168,196,255,${a})`;
+      sctx.lineWidth = 1.4;
+      sctx.beginPath();
+      sctx.arc(px(p.x), py(p.y), r, 0, Math.PI*2);
+      sctx.stroke();
+
+      // Node
+      sctx.fillStyle = p.hq ? '#ffffff' : '#a8c4ff';
+      sctx.beginPath();
+      sctx.arc(px(p.x), py(p.y), p.hq ? 4 : 2.6, 0, Math.PI*2);
+      sctx.fill();
+      if(p.hq){
+        sctx.strokeStyle = 'rgba(168,196,255,0.9)';
+        sctx.lineWidth = 1.5;
+        sctx.beginPath();
+        sctx.arc(px(p.x), py(p.y), 8, 0, Math.PI*2);
+        sctx.stroke();
+      }
+    });
+
+    requestAnimationFrame(drawNetwork);
+  }
+  requestAnimationFrame(drawNetwork);
+
+  // ===== SPLASH: stage transitions & password gate =====
+  const stageIntro    = document.getElementById('stageIntro');
+  const stagePassword = document.getElementById('stagePassword');
+  const splashEnter   = document.getElementById('splashEnter');
+  const pwForm        = document.getElementById('pwForm');
+  const pwInput       = document.getElementById('pwInput');
+  const pwInputWrap   = document.getElementById('pwInputWrap');
+  const pwError       = document.getElementById('pwError');
+  const pwToggle      = document.getElementById('pwToggle');
+  const pwBack        = document.getElementById('pwBack');
+
+  function showStage(which){
+    [stageIntro, stagePassword].forEach(s=>s.classList.remove('active'));
+    which.classList.add('active');
+  }
+
+  function speakOnce(text, opts){
+    if(!('speechSynthesis' in window)) return;
+    selectedVoice = selectedVoice || pickVoice();
+    const u = new SpeechSynthesisUtterance(text);
+    if(selectedVoice) u.voice = selectedVoice;
+    u.rate = (opts && opts.rate) || 1.0;
+    u.pitch = (opts && opts.pitch) || 1.0;
+    u.volume = 1.0;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }
+
+  splashEnter.addEventListener('click', ()=>{
+    // Unlock audio context on first user gesture
+    const ctx = getAudioCtx(); if(ctx && ctx.state === 'suspended') ctx.resume();
+    playSfx('whoosh');
+    showStage(stagePassword);
+    setTimeout(()=> pwInput.focus(), 350);
+    setTimeout(()=> speakOnce('Please enter the password to proceed.'), 200);
+  });
+
+  pwBack.addEventListener('click', ()=>{
+    playSfx('click');
+    if('speechSynthesis' in window) window.speechSynthesis.cancel();
+    pwError.classList.remove('show');
+    pwInputWrap.classList.remove('error');
+    pwInput.value = '';
+    showStage(stageIntro);
+  });
+
+  pwToggle.addEventListener('click', ()=>{
+    playSfx('click');
+    const isPw = pwInput.type === 'password';
+    pwInput.type = isPw ? 'text' : 'password';
+    pwToggle.innerHTML = isPw
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  });
+
+  pwForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const v = (pwInput.value || '').trim().toLowerCase();
+    if(v === 'ils'){
+      playSfx('unlock');
+      pwInputWrap.classList.remove('error');
+      pwError.classList.remove('show');
+      // Successful unlock — fade splash and start voice intro
+      setTimeout(()=>{
+        splash.classList.add('hidden');
+        document.body.classList.remove('splash-open');
+        setTimeout(()=> speak(), 450);
+      }, 350);
+    } else {
+      playSfx('error');
+      pwInputWrap.classList.add('error');
+      pwError.classList.add('show');
+      pwInput.select();
+      speakOnce('Access denied. Please try again.', { rate: 1.05 });
+      setTimeout(()=> pwInputWrap.classList.remove('error'), 600);
+    }
+  });
+  pwInput.addEventListener('input', ()=>{
+    pwError.classList.remove('show');
+  });
+
+  // Stop speech when user navigates away
+  window.addEventListener('beforeunload', ()=>{
+    if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  });
+
+  // ===== "MY SERVICES" navbar button — opens connect dialog =====
+  const myServicesBtn = document.getElementById('myServicesBtn');
+  const servicesDialog = document.getElementById('servicesDialog');
+  const servicesClose = document.getElementById('servicesClose');
+  let lastNavSpoken = 0;
+
+  function openServicesDialog(){
+    servicesDialog.classList.add('show');
+    const now = Date.now();
+    if(now - lastNavSpoken > 4000){
+      lastNavSpoken = now;
+      speakOnce("How would you like to connect with Alvin? Pick the option that works best for you.");
+    }
+  }
+  function closeServicesDialog(){
+    servicesDialog.classList.remove('show');
+    if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  }
+
+  if(myServicesBtn) myServicesBtn.addEventListener('click', openServicesDialog);
+  if(servicesClose) servicesClose.addEventListener('click', closeServicesDialog);
+  servicesDialog.addEventListener('click', (e)=>{
+    if(e.target === servicesDialog) closeServicesDialog();
+  });
+  // Close any time an option is picked
+  servicesDialog.querySelectorAll('.services-option').forEach(opt=>{
+    opt.addEventListener('click', ()=>{
+      playSfx('click');
+      setTimeout(closeServicesDialog, 250);
+    });
+  });
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape' && servicesDialog.classList.contains('show')) closeServicesDialog();
+  });
+
+  // ===== COPY / DOWNLOAD / SCREENSHOT PROTECTION =====
+  const copyToast = document.getElementById('copyToast');
+  let toastTimer = null;
+  let lastWarnSpoken = 0;
+  function showCopyWarning(){
+    if(!copyToast) return;
+    copyToast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=> copyToast.classList.remove('show'), 3500);
+    playSfx('error');
+    const now = Date.now();
+    if(now - lastWarnSpoken > 6000){
+      lastWarnSpoken = now;
+      speakOnce("You are not allowed to download or copy Alvin's proposal. This content is protected by copyright.");
+    }
+  }
+
+  // Block right-click context menu
+  document.addEventListener('contextmenu', (e)=>{
+    e.preventDefault();
+    showCopyWarning();
+  });
+
+  // Block common shortcuts: copy, save, print, view source, dev tools, screenshot
+  document.addEventListener('keydown', (e)=>{
+    const k = e.key.toLowerCase();
+    const ctrl = e.ctrlKey || e.metaKey;
+    // Allow shortcuts inside the AI input or password field
+    const tag = (e.target && e.target.tagName) || '';
+    const isTyping = tag === 'INPUT' || tag === 'TEXTAREA';
+
+    // Block: Ctrl/Cmd + S, P, U, A (copy-all), C (copy outside inputs), X
+    if(ctrl && ['s','p','u'].includes(k)){
+      e.preventDefault(); showCopyWarning(); return;
+    }
+    if(ctrl && ['a','c','x'].includes(k) && !isTyping){
+      e.preventDefault(); showCopyWarning(); return;
+    }
+    // Block: F12, Ctrl+Shift+I/J/C (dev tools)
+    if(k === 'f12' || (ctrl && e.shiftKey && ['i','j','c'].includes(k))){
+      e.preventDefault(); showCopyWarning(); return;
+    }
+    // PrintScreen — best-effort (OS captures still happen)
+    if(k === 'printscreen' || k === 'print'){
+      e.preventDefault(); showCopyWarning();
+      try{ navigator.clipboard.writeText(''); }catch(_){}
+      return;
+    }
+  });
+
+  // Block drag-saving of images
+  document.addEventListener('dragstart', (e)=>{
+    if(e.target && e.target.tagName === 'IMG'){
+      e.preventDefault(); showCopyWarning();
+    }
+  });
+
+  // Intercept print attempts
+  window.addEventListener('beforeprint', ()=>{
+    showCopyWarning();
+    // Throwing here is messy; rely on print CSS to blank the page
+  });
+  // Print CSS — blank the page when printing
+  const printStyle = document.createElement('style');
+  printStyle.textContent = '@media print { body * { visibility: hidden !important; } body::after { content: "This proposal is copyright protected by Alvin Jampazar. Printing is not permitted."; visibility: visible; position: fixed; top: 40%; left: 0; right: 0; text-align: center; font-family: sans-serif; font-size: 18px; color: #c20a2a; } }';
+  document.head.appendChild(printStyle);
+
+  // ===== QUOTATION DIALOG =====
+  const quoteFab     = document.getElementById('quoteFab');
+  const quoteDialog  = document.getElementById('quoteDialog');
+  const quoteClose   = document.getElementById('quoteClose');
+  const quoteCancel  = document.getElementById('quoteCancel');
+  const quoteApprove = document.getElementById('quoteApprove');
+  const quoteDateEl  = document.getElementById('quoteDate');
+  const quoteNumEl   = document.getElementById('quoteNumber');
+  const quoteOpts    = document.querySelectorAll('.quote-opt');
+  const quoteLogo    = document.getElementById('quoteLogo');
+
+  // Date & quote number
+  const _now = new Date();
+  const _months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const _dateStr = `${String(_now.getDate()).padStart(2,'0')} ${_months[_now.getMonth()]} ${_now.getFullYear()}`;
+  const _quoteNum = `Q-${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,'0')}${String(_now.getDate()).padStart(2,'0')}`;
+  if(quoteDateEl) quoteDateEl.textContent = _dateStr;
+  if(quoteNumEl)  quoteNumEl.textContent  = _quoteNum;
+
+  let chosenOption = "1";
+  const OPTION_NAMES = { "1":"Bold Industrial", "2":"Clean Corporate", "3":"Editorial Premium" };
+
+  function openQuoteDialog(){
+    // sync chosen option with the active variation tab if available
+    const activeTab = document.querySelector('.var-tab.active');
+    if(activeTab){
+      const v = activeTab.dataset.var;
+      if(OPTION_NAMES[v]){
+        chosenOption = v;
+        quoteOpts.forEach(o=>o.classList.toggle('active', o.dataset.opt === v));
+      }
+    }
+    quoteDialog.classList.add('show');
+    speakOnce("Here is your professional quotation. Review the details, then click approve and download to receive your PDF.");
+  }
+  function closeQuoteDialog(){
+    quoteDialog.classList.remove('show');
+    if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  }
+  if(quoteFab)     quoteFab.addEventListener('click', openQuoteDialog);
+  if(quoteClose)   quoteClose.addEventListener('click', closeQuoteDialog);
+  if(quoteCancel)  quoteCancel.addEventListener('click', closeQuoteDialog);
+  quoteDialog.addEventListener('click', (e)=>{
+    if(e.target === quoteDialog) closeQuoteDialog();
+  });
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape' && quoteDialog.classList.contains('show')) closeQuoteDialog();
+  });
+  quoteOpts.forEach(opt=>{
+    opt.addEventListener('click', ()=>{
+      quoteOpts.forEach(o=>o.classList.remove('active'));
+      opt.classList.add('active');
+      chosenOption = opt.dataset.opt;
+      playSfx('click');
+    });
+  });
+
+  // Load the ILS logo as a base64 data URL so jsPDF can embed it
+  let logoDataUrl = null;
+  function loadLogoDataUrl(){
+    return new Promise((resolve)=>{
+      const img = new Image();
+      img.onload = ()=>{
+        try{
+          const canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(0,0,canvas.width,canvas.height);
+          ctx.drawImage(img, 0, 0);
+          resolve(canvas.toDataURL('image/jpeg', 0.92));
+        }catch(_){ resolve(null); }
+      };
+      img.onerror = ()=> resolve(null);
+      img.src = 'Assets/logo.jpg';
+    });
+  }
+  loadLogoDataUrl().then(d=>{ logoDataUrl = d; });
+
+  // PDF generation
+  function generateQuotationPDF(){
+    if(!window.jspdf){
+      alert('PDF library not loaded. Please refresh and try again.');
+      return;
+    }
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit:'pt', format:'a4' });
+    const W = doc.internal.pageSize.getWidth();
+    const H = doc.internal.pageSize.getHeight();
+    const M = 44;
+
+    // Header band
+    doc.setFillColor(11, 42, 138);
+    doc.rect(0, 0, W, 110, 'F');
+    doc.setFillColor(30, 77, 216);
+    doc.triangle(W-180, 0, W, 0, W, 110, 'F');
+
+    // Logo (or fallback text block)
+    if(logoDataUrl){
+      try{
+        doc.setFillColor(255,255,255);
+        doc.roundedRect(M, 28, 92, 50, 6, 6, 'F');
+        doc.addImage(logoDataUrl, 'JPEG', M+8, 33, 76, 40, undefined, 'FAST');
+      }catch(_){}
+    } else {
+      doc.setFillColor(255,255,255);
+      doc.roundedRect(M, 28, 70, 50, 6, 6, 'F');
+      doc.setTextColor(11,42,138);
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(18);
+      doc.text('ILS', M+35, 60, { align:'center' });
+    }
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(13);
+    doc.text('International Logistics Services', M+108, 50);
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(9.5);
+    doc.text('Social Media Management · Monthly Package', M+108, 66);
+
+    // QUOTATION title (right)
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(26);
+    doc.text('QUOTATION', W-M, 56, { align:'right' });
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(8.5);
+    doc.text('CONFIDENTIAL · FOR CLIENT REVIEW', W-M, 72, { align:'right' });
+
+    // Meta info box
+    let y = 130;
+    doc.setFillColor(246, 249, 255);
+    doc.roundedRect(M, y, W-M*2, 70, 8, 8, 'F');
+
+    doc.setFontSize(8);
+    doc.setTextColor(120,120,140);
+    doc.setFont('helvetica','bold');
+    const colW = (W-M*2)/4;
+    const labels = ['QUOTE NUMBER','DATE ISSUED','PREPARED BY','VALID FOR'];
+    const values = [_quoteNum, _dateStr, 'Alvin Jampazar', '1 Month from approval'];
+    labels.forEach((lab,i)=>{
+      doc.setTextColor(120,120,140);
+      doc.setFontSize(8);
+      doc.setFont('helvetica','bold');
+      doc.text(lab, M+14+colW*i, y+22);
+      doc.setTextColor(10,18,48);
+      doc.setFontSize(11);
+      doc.text(values[i], M+14+colW*i, y+42);
+      if(i===2){
+        doc.setFontSize(8.5);
+        doc.setTextColor(110,115,144);
+        doc.setFont('helvetica','normal');
+        doc.text('Art Director', M+14+colW*i, y+56);
+      }
+    });
+
+    y += 90;
+
+    // Selected option
+    doc.setFontSize(10);
+    doc.setFont('helvetica','bold');
+    doc.setTextColor(11,42,138);
+    doc.text('SELECTED CREATIVE OPTION', M, y);
+    y += 16;
+    doc.setFillColor(11, 42, 138);
+    doc.roundedRect(M, y, W-M*2, 38, 6, 6, 'F');
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(13);
+    doc.text(`Option ${chosenOption}  ·  ${OPTION_NAMES[chosenOption]}`, M+14, y+24);
+    y += 56;
+
+    // Service breakdown
+    doc.setFontSize(10);
+    doc.setFont('helvetica','bold');
+    doc.setTextColor(11,42,138);
+    doc.text('SERVICE BREAKDOWN · 1 MONTH', M, y);
+    y += 14;
+
+    const items = [
+      ['Stories & Animations', 'Branded vertical story frames + motion animations', '5 / month'],
+      ['Reels & Short Videos', 'Vertical video edits for Reels, TikTok & Shorts',     '4 / month'],
+      ['Feed Posts',           'Branded posts across Instagram, LinkedIn & Facebook',  '15 / month'],
+      ['Brand Monitoring & DM Care', 'Comment + DM handling across all platforms · 24/7', 'Included'],
+      ['Design System & Templates',  "Follows the selected option's colour & brand style", 'Included'],
+    ];
+    // table header
+    doc.setFillColor(244, 247, 255);
+    doc.rect(M, y, W-M*2, 22, 'F');
+    doc.setTextColor(80,80,100);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(8.5);
+    doc.text('ITEM', M+12, y+14);
+    doc.text('QUANTITY', W-M-12, y+14, { align:'right' });
+    y += 22;
+    // table rows
+    items.forEach((row,i)=>{
+      const rowH = 36;
+      if(i%2 === 1){ doc.setFillColor(252,253,255); doc.rect(M, y, W-M*2, rowH, 'F'); }
+      doc.setDrawColor(230,236,255);
+      doc.line(M, y+rowH, W-M, y+rowH);
+      doc.setTextColor(10,18,48);
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(10);
+      doc.text(row[0], M+12, y+15);
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(110,115,144);
+      doc.text(row[1], M+12, y+28);
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(11);
+      doc.setTextColor(30,77,216);
+      doc.text(row[2], W-M-12, y+22, { align:'right' });
+      y += rowH;
+    });
+    y += 10;
+
+    // Totals bar
+    doc.setFillColor(11, 42, 138);
+    doc.roundedRect(M, y, W-M*2, 44, 8, 8, 'F');
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(9);
+    doc.text('TOTAL · 1 MONTH', M+18, y+27);
+    doc.setFontSize(20);
+    doc.text('2,000 AED', W-M-18, y+29, { align:'right' });
+    y += 60;
+
+    // Terms
+    if(y > H-220){ doc.addPage(); y = M; }
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(10);
+    doc.setTextColor(11,42,138);
+    doc.text('TERMS & CONDITIONS', M, y);
+    y += 14;
+    const terms = [
+      "Service period: 1 month from approval date - renewable on a monthly basis.",
+      "Creative direction: design follows the colour, typography and visual style of the option selected above.",
+      "Revisions: 2 rounds of revisions included per asset before publishing.",
+      "Deliverables: all final assets handed over as editable master files - full ownership transferred to ILS.",
+      "Payment: 50% on approval to start production - 50% on completion of the monthly batch.",
+      "Quotation validity: this quotation is valid for 30 days from the date of issue.",
+      "Copyright: all design IP belongs to ILS upon final payment.",
+    ];
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(9);
+    doc.setTextColor(80,85,110);
+    terms.forEach(t=>{
+      const lines = doc.splitTextToSize('• ' + t, W-M*2-10);
+      doc.text(lines, M, y);
+      y += lines.length * 12 + 2;
+    });
+
+    y += 14;
+    if(y > H-90){ doc.addPage(); y = M; }
+
+    // Signature
+    doc.setDrawColor(200,210,235);
+    doc.setLineDashPattern([3,3],0);
+    doc.line(M, y, W-M, y);
+    doc.setLineDashPattern([],0);
+    y += 18;
+    doc.setFont('times','italic');
+    doc.setFontSize(22);
+    doc.setTextColor(11,42,138);
+    doc.text('Alvin', M, y);
+    y += 16;
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(13);
+    doc.setTextColor(10,18,48);
+    doc.text('Alvin Jampazar', M, y);
+    y += 12;
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(9);
+    doc.setTextColor(110,115,144);
+    doc.text('Art Director', M, y);
+
+    // Right-side
+    doc.setFontSize(9);
+    doc.setTextColor(110,115,144);
+    doc.text('Authorized signatory', W-M, y-26, { align:'right' });
+    doc.setFontSize(8);
+    doc.text('© ILS — All rights reserved', W-M, y-14, { align:'right' });
+
+    // Footer
+    doc.setDrawColor(230,236,255);
+    doc.line(M, H-40, W-M, H-40);
+    doc.setFontSize(8);
+    doc.setTextColor(140,145,170);
+    doc.text(`Quote ${_quoteNum} · Issued ${_dateStr}`, M, H-24);
+    doc.text('Contact: WhatsApp +971 56 164 3886 · www.alvinjampazar.com', W-M, H-24, { align:'right' });
+
+    // Save
+    const fname = `ILS_Quotation_Option${chosenOption}_${_quoteNum}.pdf`;
+    doc.save(fname);
+  }
+
+  if(quoteApprove){
+    quoteApprove.addEventListener('click', ()=>{
+      playSfx('unlock');
+      speakOnce("Quotation approved. Downloading your PDF now. Thank you for choosing Alvin Jampazar.");
+      setTimeout(()=>{
+        try{ generateQuotationPDF(); }
+        catch(err){ console.error(err); alert('Could not generate PDF. Try again.'); }
+      }, 200);
+    });
+  }
+
+  // ===== AI AGENT — knowledge base + intent matching =====
+  const AI_INTENTS = [
+    {
+      keys:['option 1','option one','bold industrial','industrial','bold'],
+      answer:"📦 Option 1 — Bold Industrial\n\nHeavy display typography on cinematic blue photography. Built to stop the scroll on Instagram, TikTok and paid Meta campaigns.\n\nBest for: maximum attention, engagement-driven growth, and turning cold viewers into qualified leads."
+    },
+    {
+      keys:['option 2','option two','clean corporate','corporate','clean','white'],
+      answer:"💼 Option 2 — Clean Corporate\n\nClean white space, real people in the shots, executive-grade aesthetic. Built for LinkedIn and high-trust B2B feeds.\n\nBest for: enterprise clients, C-level buyers, and quiet authority over flashy reach."
+    },
+    {
+      keys:['option 3','option three','editorial','premium','magazine'],
+      answer:"📰 Option 3 — Editorial Premium\n\nCinematic photography, magazine-grade typography, Dubai skyline anchors and founder portraiture.\n\nBest for: tier-one prestige, awards-ready presence, and winning enterprise mandates."
+    },
+    {
+      keys:['price','cost','budget','how much','pricing','rate','fee'],
+      answer:"💬 Pricing depends on the option and scope you choose. Best to discuss directly with Alvin on WhatsApp: +971561643886"
+    },
+    {
+      keys:['post per month','posts per month','how many posts','frequency','volume','how much content','deliverables'],
+      answer:"📅 Monthly content package:\n• 15 feed posts\n• 4 reels / short videos\n• 5 stories / animations\n• 24/7 brand monitoring & DM care\n\nAll across Instagram, LinkedIn, Facebook and TikTok."
+    },
+    {
+      keys:['quote','quotation','invoice','proposal price','total cost'],
+      answer:"💰 The full package is 2,000 AED for 1 month.\n\nTap the green 'Get Quotation' button on the right to view the full professional quotation and download it as a PDF."
+    },
+    {
+      keys:['reel','video','short video','tiktok video'],
+      answer:"🎬 4 reels / short videos per month — vertical edits optimised for Instagram Reels, TikTok, and YouTube Shorts."
+    },
+    {
+      keys:['story','stories','animation','motion'],
+      answer:"✨ 5 branded stories / motion animations per month — perfect for keeping the @ils_cargo profile alive between feed posts."
+    },
+    {
+      keys:['which option','best option','recommend','should i choose','which one','which variation'],
+      answer:"🎯 Quick guide:\n• Engagement & growth → Option 1 (Bold Industrial)\n• Enterprise B2B leads → Option 2 (Clean Corporate)\n• Premium brand authority → Option 3 (Editorial Premium)\n\nWant to talk it through? Message Alvin: +971561643886"
+    },
+    {
+      keys:['highlight','instagram highlight','story highlight','story cover'],
+      answer:"⭐ Each option comes with 5 Instagram Story Highlight covers: Services · Fleet · Deliveries · Tracking · Clients. Each one is styled to match its option's visual language."
+    },
+    {
+      keys:['platform','where','channel','tiktok','linkedin','facebook','instagram'],
+      answer:"📱 Across Instagram, LinkedIn, Facebook and TikTok — organic + paid campaigns on Meta and LinkedIn."
+    },
+    {
+      keys:['timeline','how long','when start','kickoff','launch','delivery time','start'],
+      answer:"⏱️ Standard kickoff is a 30-minute call to align on the calendar and deliverables. First asset batch ships within a week of approval."
+    },
+    {
+      keys:['contact','alvin','whatsapp','reach','message','call','phone','number'],
+      answer:"📱 WhatsApp Alvin directly: +971561643886\n🌐 More services: www.alvinjampazar.com"
+    },
+    {
+      keys:['revise','revision','change','edit','modify','update'],
+      answer:"✏️ All revisions are handled directly with Alvin on WhatsApp: +971561643886\n\nSend a quick note describing the change — he'll loop back with the update."
+    },
+    {
+      keys:['approve','approval','accept','agree','go ahead','let\'s go','sign off','choose'],
+      answer:"🎉 Excellent! Message Alvin on WhatsApp at +971561643886 and let him know which option you've chosen (1, 2, or 3). He'll kick off onboarding immediately."
+    },
+    {
+      keys:['service','what services','what do you do','offering','provide'],
+      answer:"🛠️ Alvin offers:\n• Content Strategy\n• Creative Design (posts, reels, carousels, stories)\n• Paid Campaigns (Meta & LinkedIn)\n• Community & DM management\n\nFull list: www.alvinjampazar.com"
+    },
+    {
+      keys:['why','benefit','value','what makes','advantage'],
+      answer:"🚀 Each option has 6 dedicated reasons in its 'Why Option' section. Pick the option that matches your goal:\n• Scroll-stopping engagement → Option 1\n• Executive trust → Option 2\n• Magazine-grade prestige → Option 3"
+    },
+    {
+      keys:['monitor','monitoring','24/7','support'],
+      answer:"🔍 24/7 brand monitoring is included — Alvin keeps an eye on mentions, comments and DMs across all platforms."
+    },
+    {
+      keys:['team','who','employees','staff','people'],
+      answer:"👤 The proposal is led directly by Alvin Jampazar. He handles strategy, creative direction and client communication personally. Specialist talent is brought in for production as needed."
+    },
+    {
+      keys:['fleet','deliveries','tracking','clients','services tab'],
+      answer:"📌 Those are the 5 Instagram Story Highlight categories included in every option: Services · Fleet · Deliveries · Tracking · Clients. Each option has its own cover style for these."
+    },
+    {
+      keys:['logo','brand','identity'],
+      answer:"🎨 The brand system is included in every option — type, colour, iconography and templates. Editable master files come with the package, so your team owns them long-term."
+    },
+    {
+      keys:['report','analytics','metrics','results','performance'],
+      answer:"📊 Monthly performance review is included — reach, engagement and lead-quality insights so you can see what's working and where to double down."
+    },
+    {
+      keys:['hello','hi','hey','howdy','greetings','good morning','good afternoon'],
+      answer:"👋 Hi there! I'm Alvin's AI agent. Ask me anything about this proposal, or tap one of the quick actions below to skip ahead."
+    },
+    {
+      keys:['thank','thanks','appreciate'],
+      answer:"You're very welcome! Anything else I can help with? Or if you're ready, tap 'Speak to Expert' and chat with Alvin directly."
+    },
+    {
+      keys:['who is alvin','who are you','about alvin'],
+      answer:"🤖 I'm Alvin Jampazar's AI agent — built to help you navigate this proposal. Alvin is the creative director behind this work; you can learn more at www.alvinjampazar.com"
+    },
+    {
+      keys:['copyright','copy','download','protected','steal'],
+      answer:"🔒 This proposal is copyright-protected. Downloading, copying or screenshotting is not permitted. If you'd like the assets, contact Alvin directly — he'll send you what you need."
+    },
+  ];
+
+  function answerQuestion(q){
+    const text = (q||'').toLowerCase().trim();
+    if(!text) return null;
+    // Best match — longest keyword wins to prefer specific over generic
+    let best = null;
+    let bestLen = 0;
+    for(const intent of AI_INTENTS){
+      for(const k of intent.keys){
+        if(text.includes(k) && k.length > bestLen){
+          best = intent.answer; bestLen = k.length;
+        }
+      }
+    }
+    if(best) return best;
+    // Default fallback
+    return "Great question — for specifics I don't have, message Alvin directly on WhatsApp at +971561643886. He'll get you a clear answer fast.\n\nOr try asking me about: options, pricing, timeline, platforms, revisions, or approval.";
+  }
+
+  // ===== AI AGENT — UI wiring =====
+  const aiFab      = document.getElementById('aiFab');
+  const aiPanel    = document.getElementById('aiPanel');
+  const aiClose    = document.getElementById('aiClose');
+  const aiMessages = document.getElementById('aiMessages');
+  const aiForm     = document.getElementById('aiForm');
+  const aiInput    = document.getElementById('aiInput');
+
+  function openAiPanel(){
+    aiPanel.classList.add('open');
+    aiFab.classList.add('hidden');
+    setTimeout(()=> aiInput.focus(), 350);
+    playSfx('click');
+  }
+  function closeAiPanel(){
+    aiPanel.classList.remove('open');
+    aiFab.classList.remove('hidden');
+    playSfx('click');
+  }
+  aiFab.addEventListener('click', openAiPanel);
+  aiClose.addEventListener('click', closeAiPanel);
+
+  function addAiMessage(text, who){
+    const div = document.createElement('div');
+    div.className = 'ai-msg' + (who === 'user' ? ' user' : '');
+    div.textContent = text;
+    aiMessages.appendChild(div);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+  }
+  function addTyping(){
+    const t = document.createElement('div');
+    t.className = 'ai-msg typing';
+    t.id = '__typing';
+    t.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+    aiMessages.appendChild(t);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+  }
+  function removeTyping(){
+    const t = document.getElementById('__typing');
+    if(t) t.remove();
+  }
+  function aiReply(text){
+    addTyping();
+    // Scale think-time with answer length so longer answers feel more "considered"
+    const base = 1300; // ~1.3s minimum thinking time
+    const lengthBonus = Math.min(800, (text || '').length * 4);
+    const jitter = Math.random() * 300;
+    setTimeout(()=>{
+      removeTyping();
+      addAiMessage(text, 'ai');
+    }, base + lengthBonus * 0.25 + jitter);
+  }
+
+  // Quick action buttons — fire window.open after the AI "finishes thinking"
+  const QUICK_OPEN_DELAY = 2400; // ~1s after the reply lands
+  document.querySelectorAll('.ai-quick-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const action = btn.dataset.action;
+      const label = btn.textContent.trim();
+      addAiMessage(label, 'user');
+      if(action === 'revision'){
+        aiReply("✏️ Got it! Tap WhatsApp below and tell Alvin which option you want revised and what you'd like to change.\n\n👉 wa.me/971561643886");
+        setTimeout(()=> window.open('https://wa.me/971561643886?text=Hi%20Alvin%2C%20I%27d%20like%20to%20request%20a%20revision%20on%20the%20proposal.', '_blank'), QUICK_OPEN_DELAY);
+      } else if(action === 'other-services'){
+        aiReply("🌐 Awesome! Explore Alvin's full service list at:\n\n👉 www.alvinjampazar.com\n\nOpening it for you now.");
+        setTimeout(()=> window.open('https://www.alvinjampazar.com', '_blank'), QUICK_OPEN_DELAY);
+      } else if(action === 'approve'){
+        aiReply("🎉 Excellent! Let Alvin know which option you've approved on WhatsApp and he'll kick off onboarding right away.\n\n👉 wa.me/971561643886");
+        setTimeout(()=> window.open('https://wa.me/971561643886?text=Hi%20Alvin%2C%20I%27ve%20approved%20the%20proposal.%20My%20chosen%20option%20is%3A%20', '_blank'), QUICK_OPEN_DELAY);
+      } else if(action === 'expert'){
+        aiReply("📱 Connecting you to Alvin directly. He'll respond on WhatsApp within minutes.\n\n👉 wa.me/971561643886");
+        setTimeout(()=> window.open('https://wa.me/971561643886?text=Hi%20Alvin%2C%20I%27d%20like%20to%20speak%20to%20an%20expert%20about%20the%20proposal.', '_blank'), QUICK_OPEN_DELAY);
+      }
+    });
+  });
+
+  // Free-text Q&A
+  aiForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const q = aiInput.value.trim();
+    if(!q) return;
+    addAiMessage(q, 'user');
+    aiInput.value = '';
+    const a = answerQuestion(q);
+    aiReply(a);
+  });
+
+  // Subtle parallax on hero phone
+  const phone = document.querySelector('.phone');
+  const heroRight = document.querySelector('.hero-right');
+  if(heroRight && window.matchMedia('(min-width: 1080px)').matches){
+    heroRight.addEventListener('mousemove',(e)=>{
+      const r = heroRight.getBoundingClientRect();
+      const x = ((e.clientX-r.left)/r.width - .5)*14;
+      const y = ((e.clientY-r.top)/r.height - .5)*14;
+      phone.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotateY(${x*0.4}deg) rotateX(${-y*0.4}deg)`;
+    });
+    heroRight.addEventListener('mouseleave',()=>{
+      phone.style.transform = 'translate(-50%,-50%)';
+    });
+  }
+</script>
+</body>
+</html>

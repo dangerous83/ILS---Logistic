@@ -11,6 +11,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+  // Apply saved theme before paint to avoid a flash
+  try{
+    var __t = localStorage.getItem('ils-theme');
+    if(__t === 'dim') document.documentElement.setAttribute('data-theme','dim');
+  }catch(_){}
+</script>
 <style>
   :root{
     --brand:#1e4dd8;
@@ -82,6 +89,95 @@
     transition:transform .3s ease, box-shadow .3s ease;
   }
   .cta-mini:hover{transform:translateY(-2px);box-shadow:0 14px 26px -8px rgba(30,77,216,.6)}
+
+  /* Theme toggle (light / dim) */
+  .theme-toggle{
+    width:42px;height:42px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;
+    background:#f3f6ff;border:1px solid var(--line);
+    color:var(--brand-dark);cursor:pointer;
+    transition:transform .35s cubic-bezier(.2,.8,.2,1), background .25s ease, color .25s ease, box-shadow .25s ease;
+    position:relative;overflow:hidden;
+  }
+  .theme-toggle:hover{
+    background:#e7eeff;color:var(--brand);transform:translateY(-2px) rotate(-12deg);
+    box-shadow:0 10px 24px -10px rgba(30,77,216,.35);
+  }
+  .theme-toggle svg{width:18px;height:18px;transition:opacity .25s ease, transform .35s ease}
+  .theme-toggle .ico-moon{position:absolute;opacity:0;transform:rotate(-90deg) scale(.6)}
+  .theme-toggle .ico-sun{opacity:1;transform:rotate(0) scale(1)}
+  [data-theme="dim"] .theme-toggle .ico-sun{opacity:0;transform:rotate(90deg) scale(.6)}
+  [data-theme="dim"] .theme-toggle .ico-moon{opacity:1;transform:rotate(0) scale(1)}
+
+  /* ===== DIM (night) THEME — applied via [data-theme="dim"] on <html> ===== */
+  :root[data-theme="dim"]{
+    --bg:#0d122c;
+    --line:rgba(255,255,255,.08);
+  }
+  :root[data-theme="dim"] body{ background:#0d122c; color:#e3e8fb }
+  :root[data-theme="dim"] .bg-decor::before{
+    background:radial-gradient(circle,rgba(30,77,216,.32) 0%,transparent 70%);
+    filter:blur(10px);
+  }
+  :root[data-theme="dim"] .bg-decor::after{
+    background:radial-gradient(circle,rgba(61,107,255,.22) 0%,transparent 70%);
+    filter:blur(10px);
+  }
+  :root[data-theme="dim"] .grid-pattern{
+    opacity:.35;
+    background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
+  }
+  :root[data-theme="dim"] .topbar{
+    background:rgba(18,26,58,.78);
+    border-color:rgba(255,255,255,.08);
+    box-shadow:0 8px 30px -14px rgba(0,0,0,.55);
+  }
+  :root[data-theme="dim"] .nav-services{
+    background:rgba(255,255,255,.06);
+    color:#e3e8fb;border-color:rgba(255,255,255,.1);
+  }
+  :root[data-theme="dim"] .nav-services:hover{
+    background:rgba(255,255,255,.12);color:#fff;
+  }
+  :root[data-theme="dim"] .theme-toggle{
+    background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);color:#ffe07a;
+  }
+  :root[data-theme="dim"] .theme-toggle:hover{
+    background:rgba(255,255,255,.14);color:#ffd24a;
+  }
+  /* Hero text */
+  :root[data-theme="dim"] .eyebrow{color:#cdd5ee}
+  :root[data-theme="dim"] .hero-left h1{color:#fff}
+  :root[data-theme="dim"] .hero-sub{color:#b8c1de}
+  :root[data-theme="dim"] .hero-sub em{color:#9eb1ff !important}
+  :root[data-theme="dim"] .stat .lbl{color:#9aa4c4}
+  :root[data-theme="dim"] .btn-ghost{
+    background:rgba(255,255,255,.06);color:#e3e8fb;border-color:rgba(255,255,255,.12);
+  }
+  :root[data-theme="dim"] .btn-ghost:hover{
+    background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.2);
+  }
+  /* Section titles & subs sitting on the dimmed page */
+  :root[data-theme="dim"] .section-tag{color:#a9b7e8}
+  :root[data-theme="dim"] .section-title{color:#fff}
+  :root[data-theme="dim"] .section-sub{color:#b8c1de}
+  /* Variation tab strip */
+  :root[data-theme="dim"] .variation-tabs{
+    background:rgba(18,26,58,.7);border-color:rgba(255,255,255,.08);
+  }
+  :root[data-theme="dim"] .var-tab{color:#cdd5ee}
+  :root[data-theme="dim"] .var-tab:hover:not(.disabled){
+    background:rgba(255,255,255,.07);color:#fff;
+  }
+  /* Audio prompt + reveal toggles read fine already */
+  :root[data-theme="dim"] .reveal-toggle{
+    background:rgba(255,255,255,.06);color:#e3e8fb;border-color:rgba(255,255,255,.1);
+  }
+  :root[data-theme="dim"] .reveal-toggle:hover{background:rgba(255,255,255,.12);color:#fff}
+  /* Footer-ish chrome */
+  :root[data-theme="dim"] .foot{color:#9aa4c4}
+  :root[data-theme="dim"] .foot a{color:#cdd5ee}
 
   @keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
 
@@ -1722,10 +1818,21 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
       My Services
     </button>
-    <a href="https://wa.me/971561643886" target="_blank" rel="noopener" class="cta-mini">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8 8 0 0 0 4.06 14l-1.06 4 4.1-1.07A8 8 0 0 0 17.6 6.32zM12 19.5a7.5 7.5 0 0 1-3.83-1.05l-.27-.16-2.43.64.65-2.37-.18-.28A7.5 7.5 0 1 1 12 19.5zm4.34-5.62c-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.54.12s-.62.77-.76.93c-.14.16-.28.18-.52.06a6.18 6.18 0 0 1-3.06-2.68c-.23-.4.23-.37.66-1.24a.42.42 0 0 0 0-.4c-.06-.12-.54-1.3-.74-1.78s-.4-.4-.54-.4h-.46a.88.88 0 0 0-.64.3 2.68 2.68 0 0 0-.84 2c0 1.18.86 2.32 1 2.48s1.68 2.56 4.06 3.6c.57.24 1 .39 1.36.5a3.3 3.3 0 0 0 1.51.1 2.46 2.46 0 0 0 1.62-1.14 2 2 0 0 0 .14-1.14c-.06-.1-.22-.16-.46-.28z"/></svg>
-      Contact Alvin
-    </a>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle light / dim theme" title="Toggle light / dim theme">
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/>
+          <path d="M12 2v2.5M12 19.5V22M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2 12h2.5M19.5 12H22M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/>
+        </svg>
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+        </svg>
+      </button>
+      <a href="https://wa.me/971561643886" target="_blank" rel="noopener" class="cta-mini">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8 8 0 0 0 4.06 14l-1.06 4 4.1-1.07A8 8 0 0 0 17.6 6.32zM12 19.5a7.5 7.5 0 0 1-3.83-1.05l-.27-.16-2.43.64.65-2.37-.18-.28A7.5 7.5 0 1 1 12 19.5zm4.34-5.62c-.24-.12-1.4-.69-1.62-.77-.22-.08-.38-.12-.54.12s-.62.77-.76.93c-.14.16-.28.18-.52.06a6.18 6.18 0 0 1-3.06-2.68c-.23-.4.23-.37.66-1.24a.42.42 0 0 0 0-.4c-.06-.12-.54-1.3-.74-1.78s-.4-.4-.54-.4h-.46a.88.88 0 0 0-.64.3 2.68 2.68 0 0 0-.84 2c0 1.18.86 2.32 1 2.48s1.68 2.56 4.06 3.6c.57.24 1 .39 1.36.5a3.3 3.3 0 0 0 1.51.1 2.46 2.46 0 0 0 1.62-1.14 2 2 0 0 0 .14-1.14c-.06-.1-.22-.16-.46-.28z"/></svg>
+        Contact Alvin
+      </a>
+    </div>
   </header>
 
   <!-- HERO -->
@@ -2752,6 +2859,25 @@
 </div>
 
 <script>
+  // ===== THEME TOGGLE (light / dim) =====
+  (function(){
+    const root   = document.documentElement;
+    const btn    = document.getElementById('themeToggle');
+    if(!btn) return;
+    function setTheme(t){
+      if(t === 'dim'){ root.setAttribute('data-theme','dim'); }
+      else            { root.removeAttribute('data-theme'); }
+      try{ localStorage.setItem('ils-theme', t); }catch(_){}
+      btn.setAttribute('aria-pressed', t === 'dim' ? 'true' : 'false');
+    }
+    // Sync initial aria state with whatever the early script applied
+    btn.setAttribute('aria-pressed', root.getAttribute('data-theme') === 'dim' ? 'true' : 'false');
+    btn.addEventListener('click', ()=>{
+      const next = root.getAttribute('data-theme') === 'dim' ? 'light' : 'dim';
+      setTheme(next);
+    });
+  })();
+
   // Reveal on scroll
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{

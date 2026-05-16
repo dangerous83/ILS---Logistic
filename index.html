@@ -1153,22 +1153,11 @@
   }
   .quote-sign-block{line-height:1.25}
   .quote-sign-block .name{
-    font-family:'Manrope',sans-serif;font-size:18px;font-weight:800;color:var(--ink);
-    background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
+    font-family:'Manrope',sans-serif;font-size:14px;font-weight:700;color:var(--ink);
   }
   .quote-sign-block .role{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px}
-  .quote-sign-block .scribble{
-    display:block;
-    font-family:'Great Vibes','Brush Script MT','Lucida Handwriting',cursive;
-    font-size:54px;line-height:1;color:#0b2a8a;
-    margin:0 0 -6px -2px;letter-spacing:.5px;
-    transform:rotate(-4deg);transform-origin:left bottom;
-  }
   .quote-sign-block .sign-svg{
-    display:block;margin:-4px 0 0 -2px;width:170px;height:18px;
-    transform:rotate(-3deg);transform-origin:left center;
-    opacity:.75;
+    display:block;margin:0 0 6px -2px;width:120px;height:34px;
   }
   .quote-sign-block .sign-svg path{
     stroke:#0b2a8a;stroke-width:1.6;fill:none;
@@ -2558,9 +2547,9 @@
 
         <div class="quote-sign">
           <div class="quote-sign-block">
-            <div class="scribble">Alvin Jampazar</div>
-            <svg class="sign-svg" viewBox="0 0 170 18" aria-hidden="true">
-              <path d="M2 12 C 18 4, 38 16, 58 8 S 96 14, 118 6 S 152 14, 168 4"/>
+            <svg class="sign-svg" viewBox="0 0 120 34" aria-hidden="true">
+              <path d="M4 22 C 10 6, 22 4, 28 18 S 40 30, 48 16 S 64 6, 70 20 C 74 30, 82 28, 90 18 C 96 10, 106 12, 112 22"/>
+              <path d="M14 28 C 40 26, 80 26, 108 28" opacity=".55"/>
             </svg>
             <div class="name">Alvin Jampazar</div>
             <div class="role">Art Director · CEO</div>
@@ -3314,7 +3303,7 @@
       }
     }
     quoteDialog.classList.add('show');
-    speakOnce("Here is your professional quotation. Review the details, then click approve and download to receive your PDF.");
+    speakOnce("Here is your professional quotation. Please read every line carefully before you approve or download, because this scope is final and no extra services will be added outside it. Once you are ready, return to Alvin and let him know which option you approve so he can start the management of your social media right away.");
   }
   function closeQuoteDialog(){
     quoteDialog.classList.remove('show');
@@ -3371,94 +3360,81 @@
     const doc = new jsPDF({ unit:'pt', format:'a4' });
     const W = doc.internal.pageSize.getWidth();
     const H = doc.internal.pageSize.getHeight();
-    const M = 44;
+    const M = 40;
 
-    // Header band
+    // Header band (compact)
     doc.setFillColor(11, 42, 138);
-    doc.rect(0, 0, W, 110, 'F');
+    doc.rect(0, 0, W, 88, 'F');
     doc.setFillColor(30, 77, 216);
-    doc.triangle(W-180, 0, W, 0, W, 110, 'F');
+    doc.triangle(W-150, 0, W, 0, W, 88, 'F');
 
-    // Logo (or fallback text block)
     if(logoDataUrl){
       try{
         doc.setFillColor(255,255,255);
-        doc.roundedRect(M, 28, 92, 50, 6, 6, 'F');
-        doc.addImage(logoDataUrl, 'JPEG', M+8, 33, 76, 40, undefined, 'FAST');
+        doc.roundedRect(M, 20, 76, 44, 6, 6, 'F');
+        doc.addImage(logoDataUrl, 'JPEG', M+6, 24, 64, 36, undefined, 'FAST');
       }catch(_){}
     } else {
       doc.setFillColor(255,255,255);
-      doc.roundedRect(M, 28, 70, 50, 6, 6, 'F');
+      doc.roundedRect(M, 20, 60, 44, 6, 6, 'F');
       doc.setTextColor(11,42,138);
       doc.setFont('helvetica','bold');
-      doc.setFontSize(18);
-      doc.text('ILS', M+35, 60, { align:'center' });
+      doc.setFontSize(16);
+      doc.text('ILS', M+30, 48, { align:'center' });
     }
     doc.setTextColor(255,255,255);
     doc.setFont('helvetica','bold');
-    doc.setFontSize(13);
-    doc.text('International Logistics Services', M+108, 50);
+    doc.setFontSize(12);
+    doc.text('International Logistics Services', M+90, 40);
     doc.setFont('helvetica','normal');
-    doc.setFontSize(9.5);
-    doc.text('Social Media Management · Monthly Package', M+108, 66);
+    doc.setFontSize(9);
+    doc.text('Social Media Management · Monthly Package', M+90, 54);
 
-    // QUOTATION title (right)
     doc.setFont('helvetica','bold');
-    doc.setFontSize(26);
-    doc.text('QUOTATION', W-M, 56, { align:'right' });
+    doc.setFontSize(22);
+    doc.text('QUOTATION', W-M, 44, { align:'right' });
     doc.setFont('helvetica','normal');
-    doc.setFontSize(8.5);
-    doc.text('CONFIDENTIAL · FOR CLIENT REVIEW', W-M, 72, { align:'right' });
-
-    // Meta info box
-    let y = 130;
-    doc.setFillColor(246, 249, 255);
-    doc.roundedRect(M, y, W-M*2, 70, 8, 8, 'F');
-
     doc.setFontSize(8);
-    doc.setTextColor(120,120,140);
-    doc.setFont('helvetica','bold');
+    doc.text('CONFIDENTIAL · FOR CLIENT REVIEW', W-M, 58, { align:'right' });
+
+    // Meta info box (compact)
+    let y = 102;
+    doc.setFillColor(246, 249, 255);
+    doc.roundedRect(M, y, W-M*2, 50, 6, 6, 'F');
     const colW = (W-M*2)/4;
     const labels = ['QUOTE NUMBER','DATE ISSUED','PREPARED BY','BILLING CYCLE'];
     const values = [_quoteNum, _dateStr, 'Alvin Jampazar', 'Per Month · Renewable'];
     labels.forEach((lab,i)=>{
       doc.setTextColor(120,120,140);
-      doc.setFontSize(8);
+      doc.setFontSize(7.5);
       doc.setFont('helvetica','bold');
-      doc.text(lab, M+14+colW*i, y+22);
+      doc.text(lab, M+12+colW*i, y+18);
       doc.setTextColor(10,18,48);
-      doc.setFontSize(11);
-      doc.text(values[i], M+14+colW*i, y+42);
-      if(i===2){
-        doc.setFontSize(8.5);
-        doc.setTextColor(110,115,144);
-        doc.setFont('helvetica','normal');
-        doc.text('Art Director', M+14+colW*i, y+56);
-      }
+      doc.setFontSize(10);
+      doc.text(values[i], M+12+colW*i, y+34);
     });
-
-    y += 90;
+    y += 64;
 
     // Selected option
-    doc.setFontSize(10);
+    doc.setFontSize(9);
     doc.setFont('helvetica','bold');
     doc.setTextColor(11,42,138);
     doc.text('SELECTED CREATIVE OPTION', M, y);
-    y += 16;
+    y += 12;
     doc.setFillColor(11, 42, 138);
-    doc.roundedRect(M, y, W-M*2, 38, 6, 6, 'F');
+    doc.roundedRect(M, y, W-M*2, 28, 5, 5, 'F');
     doc.setTextColor(255,255,255);
     doc.setFont('helvetica','bold');
-    doc.setFontSize(13);
-    doc.text(`Option ${chosenOption}  ·  ${OPTION_NAMES[chosenOption]}`, M+14, y+24);
-    y += 56;
+    doc.setFontSize(12);
+    doc.text(`Option ${chosenOption}  ·  ${OPTION_NAMES[chosenOption]}`, M+12, y+18);
+    y += 40;
 
     // Service breakdown
-    doc.setFontSize(10);
+    doc.setFontSize(9);
     doc.setFont('helvetica','bold');
     doc.setTextColor(11,42,138);
     doc.text('SERVICE BREAKDOWN · PER MONTH', M, y);
-    y += 14;
+    y += 10;
 
     const items = [
       ['Stories & Animations', 'Branded vertical story frames + motion animations', '5 per month'],
@@ -3470,57 +3446,55 @@
     ];
     // table header
     doc.setFillColor(244, 247, 255);
-    doc.rect(M, y, W-M*2, 22, 'F');
+    doc.rect(M, y, W-M*2, 16, 'F');
     doc.setTextColor(80,80,100);
     doc.setFont('helvetica','bold');
-    doc.setFontSize(8.5);
-    doc.text('ITEM', M+12, y+14);
-    doc.text('QUANTITY', W-M-12, y+14, { align:'right' });
-    y += 22;
-    // table rows
+    doc.setFontSize(7.5);
+    doc.text('ITEM', M+10, y+11);
+    doc.text('QUANTITY', W-M-10, y+11, { align:'right' });
+    y += 16;
+    // table rows (tighter)
     items.forEach((row,i)=>{
-      const rowH = 36;
+      const rowH = 26;
       if(i%2 === 1){ doc.setFillColor(252,253,255); doc.rect(M, y, W-M*2, rowH, 'F'); }
       doc.setDrawColor(230,236,255);
       doc.line(M, y+rowH, W-M, y+rowH);
       doc.setTextColor(10,18,48);
       doc.setFont('helvetica','bold');
-      doc.setFontSize(10);
-      doc.text(row[0], M+12, y+15);
+      doc.setFontSize(9);
+      doc.text(row[0], M+10, y+11);
       doc.setFont('helvetica','normal');
-      doc.setFontSize(8.5);
+      doc.setFontSize(7.5);
       doc.setTextColor(110,115,144);
-      doc.text(row[1], M+12, y+28);
+      doc.text(row[1], M+10, y+21);
       doc.setFont('helvetica','bold');
-      doc.setFontSize(11);
+      doc.setFontSize(10);
       doc.setTextColor(30,77,216);
-      doc.text(row[2], W-M-12, y+22, { align:'right' });
+      doc.text(row[2], W-M-10, y+16, { align:'right' });
       y += rowH;
     });
-    y += 10;
+    y += 8;
 
-    // Totals bar
+    // Totals bar (compact)
     doc.setFillColor(11, 42, 138);
-    doc.roundedRect(M, y, W-M*2, 44, 8, 8, 'F');
+    doc.roundedRect(M, y, W-M*2, 32, 6, 6, 'F');
     doc.setTextColor(255,255,255);
     doc.setFont('helvetica','bold');
     doc.setFontSize(9);
-    doc.text('TOTAL · PER MONTH', M+18, y+27);
-    doc.setFontSize(20);
-    doc.text('2,000 AED / month', W-M-18, y+29, { align:'right' });
-    y += 60;
+    doc.text('TOTAL · PER MONTH', M+14, y+20);
+    doc.setFontSize(16);
+    doc.text('2,000 AED / month', W-M-14, y+22, { align:'right' });
+    y += 44;
 
-    // Terms
-    if(y > H-220){ doc.addPage(); y = M; }
+    // Terms (compact)
     doc.setFont('helvetica','bold');
-    doc.setFontSize(10);
+    doc.setFontSize(9);
     doc.setTextColor(11,42,138);
     doc.text('TERMS & CONDITIONS', M, y);
-    y += 14;
+    y += 11;
     const terms = [
-      "Scope is final: ONLY the items listed in this quotation are included. No additional services will be provided outside this scope - any extra work will require a separate quotation.",
-      "Service period: billed per month from approval date - renewable on a monthly basis at 2,000 AED / month.",
-      "Creative direction: design follows the colour, typography and visual style of the option selected above.",
+      "Scope is final: ONLY the items listed in this quotation are included. No extra services outside this scope - any additional work requires a separate quotation.",
+      "Service period: billed per month from approval date, renewable on a monthly basis at 2,000 AED / month.",
       "Revisions: 2 rounds of revisions included per asset before publishing.",
       "Deliverables: all final assets handed over as editable master files - full ownership transferred to ILS.",
       "Payment: 50% on approval to start production - 50% on completion of the monthly batch.",
@@ -3528,69 +3502,72 @@
       "Copyright: all design IP belongs to ILS upon final payment.",
     ];
     doc.setFont('helvetica','normal');
-    doc.setFontSize(9);
+    doc.setFontSize(8);
     doc.setTextColor(80,85,110);
     terms.forEach(t=>{
-      const lines = doc.splitTextToSize('• ' + t, W-M*2-10);
+      const lines = doc.splitTextToSize('• ' + t, W-M*2-8);
       doc.text(lines, M, y);
-      y += lines.length * 12 + 2;
+      y += lines.length * 10 + 1;
     });
 
-    y += 14;
-    if(y > H-90){ doc.addPage(); y = M; }
+    y += 10;
 
-    // Signature
+    // Signature row (compact, no cursive name — just a small scribble)
     doc.setDrawColor(200,210,235);
     doc.setLineDashPattern([3,3],0);
     doc.line(M, y, W-M, y);
     doc.setLineDashPattern([],0);
-    y += 26;
-    // Handwritten signature (script font + flourish)
-    doc.setFont('times','italic');
-    doc.setFontSize(36);
-    doc.setTextColor(11,42,138);
-    doc.text('Alvin Jampazar', M, y);
-    // Flourish stroke under the signature
+    y += 16;
+
+    // Small abstract signature squiggle
     doc.setDrawColor(11,42,138);
-    doc.setLineWidth(1);
-    const sx = M, sy = y + 6, sw = 190;
+    doc.setLineWidth(1.1);
+    const sx = M + 2, sy = y + 6;
+    // Two flowing curves
     doc.lines(
       [
-        [sw*0.18, -6],
-        [sw*0.22,  6],
-        [sw*0.22, -4],
-        [sw*0.20,  5],
-        [sw*0.18, -8],
+        [10,-10, 22,-12, 28,2],
+        [6,12, 14,8, 20,-6],
+        [10,-8, 22,4, 32,-2],
+        [8,8, 18,-4, 28,2],
       ],
-      sx, sy,
-      [1,1], 'S'
+      sx, sy, [1,1], 'S'
+    );
+    // Underline flourish
+    doc.setLineWidth(0.7);
+    doc.lines(
+      [
+        [40,2, 70,2, 110,-2],
+      ],
+      sx, sy + 12, [1,1], 'S'
     );
     doc.setLineWidth(0);
     y += 22;
+
     doc.setFont('helvetica','bold');
-    doc.setFontSize(12);
+    doc.setFontSize(10);
     doc.setTextColor(10,18,48);
     doc.text('Alvin Jampazar', M, y);
-    y += 12;
+    y += 11;
     doc.setFont('helvetica','normal');
-    doc.setFontSize(9);
+    doc.setFontSize(8);
     doc.setTextColor(110,115,144);
     doc.text('Art Director · CEO', M, y);
 
     // Right-side
-    doc.setFontSize(9);
-    doc.setTextColor(110,115,144);
-    doc.text('Authorized signatory', W-M, y-26, { align:'right' });
     doc.setFontSize(8);
-    doc.text('© ILS — All rights reserved', W-M, y-14, { align:'right' });
+    doc.setTextColor(110,115,144);
+    doc.text('Authorized signatory', W-M, y-11, { align:'right' });
+    doc.setFontSize(7.5);
+    doc.text('© ILS — All rights reserved', W-M, y, { align:'right' });
 
     // Footer
     doc.setDrawColor(230,236,255);
-    doc.line(M, H-40, W-M, H-40);
-    doc.setFontSize(8);
+    doc.line(M, H-30, W-M, H-30);
+    doc.setFontSize(7.5);
     doc.setTextColor(140,145,170);
-    doc.text(`Quote ${_quoteNum} · Issued ${_dateStr}`, M, H-24);
-    doc.text('Contact: WhatsApp +971 56 164 3886 · www.alvinjampazar.com', W-M, H-24, { align:'right' });
+    doc.text(`Quote ${_quoteNum} · Issued ${_dateStr}`, M, H-18);
+    doc.text('WhatsApp +971 56 164 3886 · www.alvinjampazar.com', W-M, H-18, { align:'right' });
 
     // Save
     const fname = `ILS_Quotation_Option${chosenOption}_${_quoteNum}.pdf`;

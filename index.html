@@ -3168,27 +3168,65 @@
   let utterance = null;
   let isPlaying = false;
 
+  // ===== AI VOICE — locked to a consistent male English voice across devices =====
+  // Curated by platform, highest priority first.
+  const MALE_VOICE_NAMES = [
+    // Edge / Chromium "Natural" neural voices (best quality, all desktops)
+    'Microsoft Guy Online (Natural) - English (United States)',
+    'Microsoft Brandon Online (Natural) - English (United States)',
+    'Microsoft Christopher Online (Natural) - English (United States)',
+    'Microsoft Eric Online (Natural) - English (United States)',
+    'Microsoft Tony Online (Natural) - English (United States)',
+    'Microsoft Ryan Online (Natural) - English (United Kingdom)',
+    'Microsoft Thomas Online (Natural) - English (United Kingdom)',
+    'Microsoft William Online (Natural) - English (Australia)',
+    // Chromium fallback names
+    'Microsoft Guy', 'Microsoft Mark', 'Microsoft David', 'Microsoft Ryan', 'Microsoft Brandon',
+    // Chrome / Android — Google
+    'Google UK English Male',
+    'Google US English Male',
+    'Google English (United Kingdom) Male',
+    // Safari / iOS / macOS — male system voices
+    'Daniel', 'Daniel (Enhanced)', 'Daniel (English (United Kingdom))',
+    'Aaron', 'Aaron (Enhanced)',
+    'Fred', 'Albert', 'Tom', 'Rishi',
+    'Alex', 'Alex (Enhanced)',
+    'Oliver', 'Arthur'
+  ];
+  // Explicit female-name blocklist (system default on many devices)
+  const FEMALE_NAMES = /(samantha|susan|victoria|karen|moira|fiona|tessa|veena|ava|allison|kate|serena|monica|paulina|emma|michelle|sara|nicky|zoe|aria|jenny|jane|libby|natasha|catherine|kim|nora|elsa|isabella|lucia|amelie|martha|hazel|maisie|olivia|sonia|female)/i;
+
   function pickVoice(){
     if(!('speechSynthesis' in window)) return null;
     const voices = window.speechSynthesis.getVoices();
     if(!voices.length) return null;
-    // Preference order — natural neural voices first
-    const prefs = [
-      v=>/ryan/i.test(v.name),
-      v=>/guy|jenny|aria|davis/i.test(v.name) && /en[-_]US/i.test(v.lang),
-      v=>/natural|neural|online/i.test(v.name) && /en[-_]GB/i.test(v.lang),
-      v=>/natural|neural|online/i.test(v.name) && /^en/i.test(v.lang),
-      v=>/google.*(uk|us)/i.test(v.name),
-      v=>/^en[-_]GB/i.test(v.lang),
-      v=>/^en[-_]US/i.test(v.lang),
-      v=>/^en/i.test(v.lang),
-    ];
-    for(const pref of prefs){
-      const m = voices.find(pref);
+    // 1) Exact name match from our curated male list (in order)
+    for(const want of MALE_VOICE_NAMES){
+      const m = voices.find(v => v.name === want);
       if(m) return m;
     }
-    return voices[0];
+    // 2) Loose name match (some platforms add suffixes)
+    for(const want of MALE_VOICE_NAMES){
+      const lower = want.toLowerCase();
+      const m = voices.find(v => v.name.toLowerCase().includes(lower));
+      if(m) return m;
+    }
+    // 3) Any English voice that isn't on the female-name blocklist,
+    //    preferring "natural / neural / enhanced / online" (higher quality).
+    const enVoices = voices.filter(v => /^en[-_]/i.test(v.lang) && !FEMALE_NAMES.test(v.name));
+    const quality = enVoices.find(v => /(natural|neural|enhanced|online|premium)/i.test(v.name));
+    if(quality) return quality;
+    // 4) Prefer en-GB then en-US then any English
+    return enVoices.find(v => /^en[-_]GB/i.test(v.lang))
+        || enVoices.find(v => /^en[-_]US/i.test(v.lang))
+        || enVoices[0]
+        || voices[0];
   }
+
+  // Consistent tuning for the AI voice — slightly lower pitch and steady rate
+  // so the persona feels the same on phone, tablet, and desktop.
+  const AI_VOICE_RATE  = 0.95;
+  const AI_VOICE_PITCH = 0.9;
 
   function setPlayingUI(playing){
     isPlaying = playing;
@@ -3206,28 +3244,32 @@
       setPlayingUI(false);
       return;
     }
-    selectedVoice = selectedVoice || pickVoice();
+    // Re-pick on every play so we always use the most current voice list
+    selectedVoice = pickVoice() || selectedVoice;
     utterance = new SpeechSynthesisUtterance(VOICE_SCRIPT);
-    if(selectedVoice) utterance.voice = selectedVoice;
-    utterance.rate = 0.98;
-    utterance.pitch = 1.0;
+    if(selectedVoice){
+      utterance.voice = selectedVoice;
+      utterance.lang  = selectedVoice.lang || 'en-US';
+    } else {
+      utterance.lang = 'en-US';
+    }
+    utterance.rate   = AI_VOICE_RATE;
+    utterance.pitch  = AI_VOICE_PITCH;
     utterance.volume = 1.0;
-    utterance.onend = ()=> setPlayingUI(false);
+    utterance.onend   = ()=> setPlayingUI(false);
     utterance.onerror = ()=> setPlayingUI(false);
     window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
+    // Tiny defer helps mobile Safari/Chrome flush the cancel before speak
+    setTimeout(()=> window.speechSynthesis.speak(utterance), 60);
     setPlayingUI(true);
   }
 
-  // voices load asynchronously in some browsers
+  // Voices populate asynchronously on most platforms — re-pick every time the list changes.
   if('speechSynthesis' in window){
-    if(window.speechSynthesis.getVoices().length === 0){
-      window.speechSynthesis.addEventListener('voiceschanged', ()=>{
-        selectedVoice = pickVoice();
-      }, { once:true });
-    } else {
+    selectedVoice = pickVoice();
+    window.speechSynthesis.addEventListener('voiceschanged', ()=>{
       selectedVoice = pickVoice();
-    }
+    });
   }
 
   voiceWidget.addEventListener('click', ()=>{ playSfx('click'); speak(); });
@@ -3503,14 +3545,20 @@
 
   function speakOnce(text, opts){
     if(!('speechSynthesis' in window)) return;
-    selectedVoice = selectedVoice || pickVoice();
+    // Always re-pick so a late-arriving voice list (mobile) still gives us the male voice
+    selectedVoice = pickVoice() || selectedVoice;
     const u = new SpeechSynthesisUtterance(text);
-    if(selectedVoice) u.voice = selectedVoice;
-    u.rate = (opts && opts.rate) || 1.0;
-    u.pitch = (opts && opts.pitch) || 1.0;
+    if(selectedVoice){
+      u.voice = selectedVoice;
+      u.lang  = selectedVoice.lang || 'en-US';
+    } else {
+      u.lang = 'en-US';
+    }
+    u.rate   = (opts && opts.rate)   || AI_VOICE_RATE;
+    u.pitch  = (opts && opts.pitch)  || AI_VOICE_PITCH;
     u.volume = 1.0;
     window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
+    setTimeout(()=> window.speechSynthesis.speak(u), 60);
   }
 
   splashEnter.addEventListener('click', ()=>{

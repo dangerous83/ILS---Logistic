@@ -688,8 +688,134 @@
 
   /* Common animation utility */
   @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-  .reveal{opacity:0;transform:translateY(30px);transition:all .9s cubic-bezier(.2,.8,.2,1)}
+  /* ===== SCROLL REVEAL ANIMATIONS ===== */
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.2,.8,.2,1), transform .9s cubic-bezier(.2,.8,.2,1)}
   .reveal.in{opacity:1;transform:translateY(0)}
+  .reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 1s cubic-bezier(.2,.8,.2,1), transform 1s cubic-bezier(.2,.8,.2,1)}
+  .reveal-left.in{opacity:1;transform:translateX(0)}
+  .reveal-right{opacity:0;transform:translateX(40px);transition:opacity 1s cubic-bezier(.2,.8,.2,1), transform 1s cubic-bezier(.2,.8,.2,1)}
+  .reveal-right.in{opacity:1;transform:translateX(0)}
+  .reveal-scale{opacity:0;transform:scale(.92);transition:opacity .9s cubic-bezier(.2,.8,.2,1), transform .9s cubic-bezier(.2,.8,.2,1)}
+  .reveal-scale.in{opacity:1;transform:scale(1)}
+  /* Children of .reveal-stagger get a graceful 80ms cascade */
+  .reveal-stagger > *{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1)}
+  .reveal-stagger.in > *{opacity:1;transform:translateY(0)}
+  .reveal-stagger.in > *:nth-child(1){transition-delay:.05s}
+  .reveal-stagger.in > *:nth-child(2){transition-delay:.13s}
+  .reveal-stagger.in > *:nth-child(3){transition-delay:.21s}
+  .reveal-stagger.in > *:nth-child(4){transition-delay:.29s}
+  .reveal-stagger.in > *:nth-child(5){transition-delay:.37s}
+  .reveal-stagger.in > *:nth-child(6){transition-delay:.45s}
+  .reveal-stagger.in > *:nth-child(7){transition-delay:.53s}
+  .reveal-stagger.in > *:nth-child(8){transition-delay:.61s}
+  /* Respect user's reduced-motion preference */
+  @media (prefers-reduced-motion: reduce){
+    .reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-stagger > *{
+      opacity:1 !important; transform:none !important; transition:none !important;
+    }
+  }
+
+  /* ===== CARGO LOADER (after correct password) ===== */
+  .cargo-loader{
+    position:fixed;inset:0;z-index:350;
+    background:linear-gradient(180deg,#0b2a8a 0%,#1e4dd8 60%,#5b87ff 100%);
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;
+    transition:opacity .55s ease;
+    overflow:hidden;
+  }
+  .cargo-loader.show{opacity:1;pointer-events:auto}
+  .cargo-loader.fade-out{opacity:0;pointer-events:none}
+  .cargo-loader::before{
+    /* Soft cloud / atmosphere */
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse at 20% 25%, rgba(255,255,255,.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 75%, rgba(255,255,255,.10) 0%, transparent 60%);
+    pointer-events:none;
+  }
+  .cargo-loader-inner{
+    position:relative;z-index:2;
+    text-align:center;color:#fff;max-width:560px;padding:0 24px;
+  }
+  .cargo-loader-logo{
+    height:60px;width:auto;
+    background:#fff;padding:8px 14px;border-radius:12px;
+    box-shadow:0 22px 50px -18px rgba(0,0,0,.55);
+    margin:0 auto 28px;display:block;
+    animation:cargoLogoIn .8s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .cargo-loader-text{
+    font-family:'Inter',sans-serif;font-size:13px;font-weight:600;
+    letter-spacing:.22em;text-transform:uppercase;
+    color:rgba(255,255,255,.9);
+    animation:fadeUp 1s .25s both;
+  }
+  .cargo-loader-text .dot{display:inline-block;opacity:0;animation:dotPulse 1.4s infinite}
+  .cargo-loader-text .dot:nth-child(2){animation-delay:.2s}
+  .cargo-loader-text .dot:nth-child(3){animation-delay:.4s}
+  @keyframes dotPulse{0%,100%{opacity:0}40%{opacity:1}}
+  .cargo-loader-scene{
+    position:relative;width:380px;max-width:84vw;height:90px;
+    margin:32px auto 22px;overflow:hidden;
+  }
+  .cargo-horizon{
+    position:absolute;bottom:22px;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.55) 25%,rgba(255,255,255,.55) 75%,transparent 100%);
+  }
+  .cargo-horizon::after{
+    /* tiny "city" silhouettes */
+    content:"";position:absolute;left:0;right:0;bottom:0;height:14px;
+    background:
+      linear-gradient(transparent 6px,rgba(255,255,255,.25) 6px,rgba(255,255,255,.25) 8px,transparent 8px) 10px 0/30px 14px no-repeat,
+      linear-gradient(transparent 2px,rgba(255,255,255,.2) 2px,rgba(255,255,255,.2) 8px,transparent 8px) 60px 0/22px 14px no-repeat,
+      linear-gradient(transparent 8px,rgba(255,255,255,.28) 8px,rgba(255,255,255,.28) 12px,transparent 12px) 120px 0/40px 14px no-repeat,
+      linear-gradient(transparent 4px,rgba(255,255,255,.22) 4px,rgba(255,255,255,.22) 8px,transparent 8px) 220px 0/26px 14px no-repeat,
+      linear-gradient(transparent 5px,rgba(255,255,255,.2) 5px,rgba(255,255,255,.2) 11px,transparent 11px) 290px 0/34px 14px no-repeat;
+  }
+  .cargo-plane{
+    position:absolute;top:8px;left:-90px;width:88px;height:36px;
+    color:#fff;
+    filter:drop-shadow(0 6px 12px rgba(0,0,0,.35));
+    animation:cargoFly 2.05s cubic-bezier(.4,0,.55,1) forwards;
+  }
+  .cargo-trail{
+    position:absolute;top:24px;left:-80px;height:2px;width:0;
+    background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.7) 100%);
+    border-radius:99px;
+    animation:cargoTrail 2.05s cubic-bezier(.4,0,.55,1) forwards;
+  }
+  @keyframes cargoFly{
+    0%   {transform:translateX(0)   translateY(2px)}
+    50%  {transform:translateX(190px) translateY(-4px)}
+    100% {transform:translateX(440px) translateY(0)}
+  }
+  @keyframes cargoTrail{
+    0%   {width:0;opacity:0;transform:translateX(0)}
+    20%  {opacity:.85}
+    80%  {opacity:.85}
+    100% {width:160px;opacity:0;transform:translateX(380px)}
+  }
+  .cargo-loader-bar{
+    width:260px;max-width:64vw;height:3px;
+    background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden;
+    margin:0 auto;
+  }
+  .cargo-loader-bar-fill{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,#fff 0%, #cfe0ff 100%);
+    animation:cargoFill 2s linear forwards;
+    box-shadow:0 0 12px rgba(255,255,255,.7);
+  }
+  @keyframes cargoFill{to{width:100%}}
+  @keyframes cargoLogoIn{
+    from{opacity:0;transform:translateY(-12px) scale(.96)}
+    to  {opacity:1;transform:translateY(0)     scale(1)}
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  /* Body lock while loader is shown */
+  body.loader-open{overflow:hidden}
 
   /* ===== MODAL ===== */
   .modal{
@@ -1954,6 +2080,27 @@
   </div>
 </div>
 
+<!-- CARGO LOADER — shown for ~2s after password is correct -->
+<div class="cargo-loader" id="cargoLoader" aria-hidden="true" role="status">
+  <div class="cargo-loader-inner">
+    <img class="cargo-loader-logo" src="Assets/logo.jpg" alt="International Logistics Services">
+    <div class="cargo-loader-scene" aria-hidden="true">
+      <svg class="cargo-plane" viewBox="0 0 88 36" fill="currentColor">
+        <!-- Stylised cargo plane silhouette -->
+        <path d="M2 20 L 62 16 L 70 6 C 72 4 76 4 78 6 L 86 14 L 78 22 L 86 30 C 84 32 80 32 78 30 L 70 22 L 62 20 L 2 20 Z M 28 16 L 18 6 L 24 6 L 38 16 M 28 20 L 18 30 L 24 30 L 38 20 Z"/>
+      </svg>
+      <div class="cargo-trail"></div>
+      <div class="cargo-horizon"></div>
+    </div>
+    <div class="cargo-loader-text">
+      Preparing your proposal<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+    </div>
+    <div class="cargo-loader-bar" style="margin-top:22px">
+      <div class="cargo-loader-bar-fill"></div>
+    </div>
+  </div>
+</div>
+
 <div class="grid-pattern"></div>
 <div class="bg-decor"></div>
 
@@ -3037,7 +3184,53 @@
     });
   })();
 
-  // Reveal on scroll
+  // ===== CARGO LOADER (post-password) =====
+  function showCargoLoader(onDone){
+    const loader = document.getElementById('cargoLoader');
+    if(!loader){ if(onDone) onDone(); return; }
+    document.body.classList.add('loader-open');
+    loader.classList.remove('fade-out');
+    loader.classList.add('show');
+    loader.setAttribute('aria-hidden', 'false');
+    setTimeout(()=>{
+      loader.classList.add('fade-out');
+      loader.setAttribute('aria-hidden', 'true');
+      setTimeout(()=>{
+        loader.style.display = 'none';
+        document.body.classList.remove('loader-open');
+        if(onDone) onDone();
+      }, 550);
+    }, 2000);
+  }
+
+  // ===== SCROLL REVEAL =====
+  // Observe every animated element and add `.in` on first intersection.
+  // Auto-tag major sections so we don't have to sprinkle `class="reveal"`
+  // on every block in the markup.
+  const REVEAL_SELECTOR = '.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-stagger, .post';
+  function autoTagSections(){
+    // Promote big content blocks to fade-in-on-scroll
+    const selectors = [
+      '.section-head','.why-block','.cta-card','.highlights-block',
+      '.mockup-section','.process','.posts-grid','.services',
+      '.variation-switcher','.variation-panel','.foot'
+    ];
+    selectors.forEach(sel=>{
+      document.querySelectorAll(sel).forEach(el=>{
+        if(el.classList.contains('reveal') ||
+           el.classList.contains('reveal-left') ||
+           el.classList.contains('reveal-right') ||
+           el.classList.contains('reveal-scale') ||
+           el.classList.contains('reveal-stagger')) return;
+        el.classList.add('reveal');
+      });
+    });
+    // Make grid-style blocks cascade their children
+    ['.posts-grid','.services','.why-grid','.process','.highlights-grid','.hero-stats']
+      .forEach(sel=>document.querySelectorAll(sel).forEach(el=>el.classList.add('reveal-stagger')));
+  }
+  autoTagSections();
+
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       if(e.isIntersecting){
@@ -3045,8 +3238,8 @@
         io.unobserve(e.target);
       }
     });
-  },{threshold:.12});
-  document.querySelectorAll('.reveal, .post').forEach(el=>io.observe(el));
+  },{threshold:.12, rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll(REVEAL_SELECTOR).forEach(el=>io.observe(el));
 
   // Counter animation
   const counters = document.querySelectorAll('.stat .num');
@@ -3664,11 +3857,14 @@
       playSfx('unlock');
       pwInputWrap.classList.remove('error');
       pwError.classList.remove('show');
-      // Successful unlock — fade splash and start voice intro
+      // Successful unlock → splash → cargo loader (~2s) → main site
       setTimeout(()=>{
         splash.classList.add('hidden');
-        document.body.classList.remove('splash-open');
-        setTimeout(()=> speak(), 450);
+        showCargoLoader(()=>{
+          document.body.classList.remove('splash-open');
+          // Slight delay so the first reveal animations get a clean frame
+          setTimeout(()=> speak(), 350);
+        });
       }, 350);
     } else {
       playSfx('error');

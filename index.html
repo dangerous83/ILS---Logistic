@@ -3126,10 +3126,12 @@
       // Speak the explanation for the currently active option (defaults to Option 1)
       const activeTab = document.querySelector('.var-tab.active');
       const v = activeTab ? activeTab.dataset.var : "1";
-      setTimeout(()=> speakOnce(OPTION_VOICE[v] || OPTION_VOICE["1"]), 900);
+      const key = 'option' + v;
+      const fallback = OPTION_VOICE[v] || OPTION_VOICE["1"];
+      setTimeout(()=> playLine(key, fallback), 900);
     } else {
       // Stop any narration when the panel is collapsed
-      if('speechSynthesis' in window) window.speechSynthesis.cancel();
+      stopAllSpeech();
     }
   });
 
@@ -3146,7 +3148,7 @@
       });
       // Re-narrate only when the user switches to a different tab
       if(!wasActive && OPTION_VOICE[v]){
-        speakOnce(OPTION_VOICE[v]);
+        playLine('option' + v, OPTION_VOICE[v]);
       }
     });
   });
@@ -3237,34 +3239,91 @@
     voiceLabel.textContent = playing ? 'Stop Voice Intro' : 'Play Voice Intro';
   }
 
-  function speak(){
-    if(!('speechSynthesis' in window)){
-      alert('Voice playback is not supported in this browser. Please try Chrome, Edge, or Safari.');
-      return;
+  // ===== ELEVENLABS VOICE PLAYBACK =====
+  // Pre-rendered MP3s sit in /Assets/ as 01.mp3 ... 13.mp3.
+  // Each fixed voice line on the site is mapped to a file; if a file is
+  // missing or blocked, we fall back to browser speechSynthesis.
+  const AUDIO_FILES = {
+    passwordPrompt: 'Assets/01.mp3',
+    passwordDenied: 'Assets/02.mp3',
+    voiceIntro:     'Assets/03.mp3',
+    option1:        'Assets/04.mp3',
+    option2:        'Assets/05.mp3',
+    option3:        'Assets/06.mp3',
+    connect:        'Assets/07.mp3',
+    copyright:      'Assets/08.mp3',
+    quoteOpened:    'Assets/09.mp3',
+    quoteApproved:  'Assets/10.mp3',
+    approve1:       'Assets/11.mp3',
+    approve2:       'Assets/12.mp3',
+    approve3:       'Assets/13.mp3',
+  };
+  let currentAudio = null;
+  function stopAllSpeech(){
+    if(currentAudio){
+      try{ currentAudio.pause(); currentAudio.currentTime = 0; }catch(_){}
+      currentAudio = null;
     }
+    if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  }
+  function playLine(key, fallbackText, opts){
+    const url = AUDIO_FILES[key];
+    if(!url){ if(fallbackText) browserSpeak(fallbackText, opts); return null; }
+    stopAllSpeech();
+    const a = new Audio(url);
+    a.preload = 'auto';
+    a.volume = 1.0;
+    currentAudio = a;
+    a.addEventListener('ended', ()=>{ if(currentAudio === a) currentAudio = null; });
+    a.addEventListener('error', ()=>{
+      if(currentAudio === a) currentAudio = null;
+      if(fallbackText) browserSpeak(fallbackText, opts);
+    });
+    const p = a.play();
+    if(p && p.catch) p.catch(()=>{
+      if(currentAudio === a) currentAudio = null;
+      if(fallbackText) browserSpeak(fallbackText, opts);
+    });
+    return a;
+  }
+
+  function speak(){
+    // Toggle: if any speech (audio file or TTS) is already playing, stop it.
     if(isPlaying){
-      window.speechSynthesis.cancel();
+      stopAllSpeech();
       setPlayingUI(false);
       return;
     }
-    // Re-pick on every play so we always use the most current voice list
-    selectedVoice = pickVoice() || selectedVoice;
-    utterance = new SpeechSynthesisUtterance(VOICE_SCRIPT);
-    if(selectedVoice){
-      utterance.voice = selectedVoice;
-      utterance.lang  = selectedVoice.lang || 'en-US';
+    const a = playLine('voiceIntro', VOICE_SCRIPT);
+    if(a){
+      a.addEventListener('ended', ()=> setPlayingUI(false));
+      a.addEventListener('error', ()=> setPlayingUI(false));
+      a.addEventListener('pause', ()=>{
+        // Pause without ended = user-stop or autoplay block
+        if(a.currentTime === 0 || a.ended) return;
+      });
+      setPlayingUI(true);
+    } else if('speechSynthesis' in window){
+      // Fallback path — speak via TTS with the original UI behavior
+      selectedVoice = pickVoice() || selectedVoice;
+      utterance = new SpeechSynthesisUtterance(VOICE_SCRIPT);
+      if(selectedVoice){
+        utterance.voice = selectedVoice;
+        utterance.lang  = selectedVoice.lang || 'en-US';
+      } else {
+        utterance.lang = 'en-US';
+      }
+      utterance.rate   = AI_VOICE_RATE;
+      utterance.pitch  = AI_VOICE_PITCH;
+      utterance.volume = 1.0;
+      utterance.onend   = ()=> setPlayingUI(false);
+      utterance.onerror = ()=> setPlayingUI(false);
+      window.speechSynthesis.cancel();
+      setTimeout(()=> window.speechSynthesis.speak(utterance), 60);
+      setPlayingUI(true);
     } else {
-      utterance.lang = 'en-US';
+      alert('Voice playback is not supported in this browser. Please try Chrome, Edge, or Safari.');
     }
-    utterance.rate   = AI_VOICE_RATE;
-    utterance.pitch  = AI_VOICE_PITCH;
-    utterance.volume = 1.0;
-    utterance.onend   = ()=> setPlayingUI(false);
-    utterance.onerror = ()=> setPlayingUI(false);
-    window.speechSynthesis.cancel();
-    // Tiny defer helps mobile Safari/Chrome flush the cancel before speak
-    setTimeout(()=> window.speechSynthesis.speak(utterance), 60);
-    setPlayingUI(true);
   }
 
   // Voices populate asynchronously on most platforms — re-pick every time the list changes.
@@ -3546,9 +3605,9 @@
     which.classList.add('active');
   }
 
-  function speakOnce(text, opts){
+  // Browser TTS fallback used when no MP3 is mapped (or one fails to load).
+  function browserSpeak(text, opts){
     if(!('speechSynthesis' in window)) return;
-    // Always re-pick so a late-arriving voice list (mobile) still gives us the male voice
     selectedVoice = pickVoice() || selectedVoice;
     const u = new SpeechSynthesisUtterance(text);
     if(selectedVoice){
@@ -3563,6 +3622,9 @@
     window.speechSynthesis.cancel();
     setTimeout(()=> window.speechSynthesis.speak(u), 60);
   }
+  // Public name kept for backwards compatibility with existing callers
+  // that haven't been migrated to playLine().
+  function speakOnce(text, opts){ browserSpeak(text, opts); }
 
   splashEnter.addEventListener('click', ()=>{
     // Unlock audio context on first user gesture
@@ -3570,12 +3632,12 @@
     playSfx('whoosh');
     showStage(stagePassword);
     setTimeout(()=> pwInput.focus(), 350);
-    setTimeout(()=> speakOnce('Please enter the password to proceed.'), 200);
+    setTimeout(()=> playLine('passwordPrompt', 'Please enter the password to proceed.'), 200);
   });
 
   pwBack.addEventListener('click', ()=>{
     playSfx('click');
-    if('speechSynthesis' in window) window.speechSynthesis.cancel();
+    stopAllSpeech();
     pwError.classList.remove('show');
     pwInputWrap.classList.remove('error');
     pwInput.value = '';
@@ -3609,7 +3671,7 @@
       pwInputWrap.classList.add('error');
       pwError.classList.add('show');
       pwInput.select();
-      speakOnce('Access denied. Please try again.', { rate: 1.05 });
+      playLine('passwordDenied', 'Access denied. Please try again.', { rate: 1.05 });
       setTimeout(()=> pwInputWrap.classList.remove('error'), 600);
     }
   });
@@ -3619,7 +3681,7 @@
 
   // Stop speech when user navigates away
   window.addEventListener('beforeunload', ()=>{
-    if('speechSynthesis' in window) window.speechSynthesis.cancel();
+    stopAllSpeech();
   });
 
   // ===== "MY SERVICES" navbar button — opens connect dialog =====
@@ -3633,12 +3695,12 @@
     const now = Date.now();
     if(now - lastNavSpoken > 4000){
       lastNavSpoken = now;
-      speakOnce("How would you like to connect with Alvin? Pick the option that works best for you.");
+      playLine('connect', "How would you like to connect with Alvin? Pick the option that works best for you.");
     }
   }
   function closeServicesDialog(){
     servicesDialog.classList.remove('show');
-    if('speechSynthesis' in window) window.speechSynthesis.cancel();
+    stopAllSpeech();
   }
 
   if(myServicesBtn) myServicesBtn.addEventListener('click', openServicesDialog);
@@ -3670,7 +3732,7 @@
     const now = Date.now();
     if(now - lastWarnSpoken > 6000){
       lastWarnSpoken = now;
-      speakOnce("You are not allowed to download or copy Alvin's proposal. This content is protected by copyright.");
+      playLine('copyright', "You are not allowed to download or copy Alvin's proposal. This content is protected by copyright.");
     }
   }
 
@@ -3757,11 +3819,11 @@
       }
     }
     quoteDialog.classList.add('show');
-    speakOnce("Here is your professional quotation. Please read every line carefully before you approve or download. This engagement covers Instagram and Facebook only — no other social media platforms are included. The scope listed here is final, and no extra services will be added outside it. Once you are ready, return to Alvin and let him know which option you approve so he can start the management of your Instagram and Facebook right away.");
+    playLine('quoteOpened', "Here is your professional quotation. Please read every line carefully before you approve or download. This engagement covers Instagram and Facebook only — no other social media platforms are included. The scope listed here is final, and no extra services will be added outside it. Once you are ready, return to Alvin and let him know which option you approve so he can start the management of your Instagram and Facebook right away.");
   }
   function closeQuoteDialog(){
     quoteDialog.classList.remove('show');
-    if('speechSynthesis' in window) window.speechSynthesis.cancel();
+    stopAllSpeech();
   }
   if(quoteFab)     quoteFab.addEventListener('click', openQuoteDialog);
   if(quoteClose)   quoteClose.addEventListener('click', closeQuoteDialog);
@@ -4016,7 +4078,7 @@
   if(quoteApprove){
     quoteApprove.addEventListener('click', ()=>{
       playSfx('unlock');
-      speakOnce("Quotation approved. Downloading your PDF now. Thank you for choosing Alvin Jampazar.");
+      playLine('quoteApproved', "Quotation approved. Downloading your PDF now. Thank you for choosing Alvin Jampazar.");
       setTimeout(()=>{
         try{ generateQuotationPDF(); }
         catch(err){ console.error(err); alert('Could not generate PDF. Try again.'); }
@@ -4255,7 +4317,7 @@
         addAiMessage(`✅ I approve Option ${opt} — ${data.name}`, 'user');
         aiReply(data.reply);
         // Voice confirmation (after the reply lands)
-        setTimeout(()=> speakOnce(data.speak), 1600);
+        setTimeout(()=> playLine('approve' + opt, data.speak), 1600);
         // Open WhatsApp with the chosen option pre-filled
         setTimeout(()=>{
           const txt = encodeURIComponent(

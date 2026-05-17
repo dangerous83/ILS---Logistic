@@ -756,47 +756,69 @@
   .cargo-loader-text .dot:nth-child(3){animation-delay:.4s}
   @keyframes dotPulse{0%,100%{opacity:0}40%{opacity:1}}
   .cargo-loader-scene{
-    position:relative;width:380px;max-width:84vw;height:90px;
+    position:relative;width:420px;max-width:88vw;height:120px;
     margin:32px auto 22px;overflow:hidden;
-  }
-  .cargo-horizon{
-    position:absolute;bottom:22px;left:0;right:0;height:1px;
-    background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.55) 25%,rgba(255,255,255,.55) 75%,transparent 100%);
-  }
-  .cargo-horizon::after{
-    /* tiny "city" silhouettes */
-    content:"";position:absolute;left:0;right:0;bottom:0;height:14px;
+    border-radius:8px;
     background:
-      linear-gradient(transparent 6px,rgba(255,255,255,.25) 6px,rgba(255,255,255,.25) 8px,transparent 8px) 10px 0/30px 14px no-repeat,
-      linear-gradient(transparent 2px,rgba(255,255,255,.2) 2px,rgba(255,255,255,.2) 8px,transparent 8px) 60px 0/22px 14px no-repeat,
-      linear-gradient(transparent 8px,rgba(255,255,255,.28) 8px,rgba(255,255,255,.28) 12px,transparent 12px) 120px 0/40px 14px no-repeat,
-      linear-gradient(transparent 4px,rgba(255,255,255,.22) 4px,rgba(255,255,255,.22) 8px,transparent 8px) 220px 0/26px 14px no-repeat,
-      linear-gradient(transparent 5px,rgba(255,255,255,.2) 5px,rgba(255,255,255,.2) 11px,transparent 11px) 290px 0/34px 14px no-repeat;
+      linear-gradient(180deg,
+        transparent 0%,
+        transparent 62%,
+        rgba(16,42,108,.55) 62%,
+        rgba(16,42,108,.75) 100%);
   }
-  .cargo-plane{
-    position:absolute;top:8px;left:-90px;width:88px;height:36px;
-    color:#fff;
-    filter:drop-shadow(0 6px 12px rgba(0,0,0,.35));
-    animation:cargoFly 1.6s cubic-bezier(.4,0,.55,1) infinite;
+  /* Sky / horizon glow on top half */
+  .cargo-loader-scene::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:62%;
+    background:
+      radial-gradient(ellipse at 50% 100%, rgba(255,255,255,.18), transparent 60%);
+    pointer-events:none;
   }
-  .cargo-trail{
-    position:absolute;top:24px;left:-80px;height:2px;width:0;
-    background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.7) 100%);
-    border-radius:99px;
-    animation:cargoTrail 1.6s cubic-bezier(.4,0,.55,1) infinite;
+  /* Horizon line */
+  .cargo-horizon{
+    position:absolute;left:0;right:0;top:62%;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.5) 20%,rgba(255,255,255,.5) 80%,transparent);
+    pointer-events:none;
   }
-  @keyframes cargoFly{
-    0%   {transform:translateX(0)     translateY(2px);  opacity:0}
-    8%   {opacity:1}
-    50%  {transform:translateX(190px) translateY(-4px)}
-    92%  {opacity:1}
-    100% {transform:translateX(440px) translateY(0);   opacity:0}
+  /* Animated waves under the ship */
+  .cargo-waves{
+    position:absolute;left:0;right:0;bottom:0;height:34px;pointer-events:none;
+    opacity:.9;
   }
-  @keyframes cargoTrail{
-    0%   {width:0;opacity:0;transform:translateX(0)}
-    20%  {opacity:.85}
-    80%  {opacity:.85}
-    100% {width:160px;opacity:0;transform:translateX(380px)}
+  .cargo-waves::before,
+  .cargo-waves::after{
+    content:"";position:absolute;left:-30px;right:-30px;height:6px;
+    background-image:radial-gradient(ellipse 14px 4px at 14px 3px, rgba(255,255,255,.6) 0 60%, transparent 65%);
+    background-repeat:repeat-x;background-size:28px 6px;
+  }
+  .cargo-waves::before{
+    bottom:18px;opacity:.7;
+    animation:waveScroll 1.6s linear infinite;
+  }
+  .cargo-waves::after{
+    bottom:6px;opacity:.95;
+    background-size:36px 6px;
+    animation:waveScroll 2.4s linear infinite reverse;
+  }
+  @keyframes waveScroll{from{transform:translateX(0)}to{transform:translateX(-36px)}}
+  /* Ship — outer wrapper sails left to right, inner element bobs */
+  .cargo-ship-track{
+    position:absolute;left:0;top:0;width:100%;height:100%;
+    animation:shipSail 3.2s linear infinite;
+    will-change:transform;
+  }
+  .cargo-ship{
+    position:absolute;left:-160px;top:18%;width:160px;height:80px;
+    animation:shipBob 2.4s ease-in-out infinite;
+    filter:drop-shadow(0 8px 10px rgba(0,0,0,.35));
+    will-change:transform;
+  }
+  @keyframes shipSail{
+    0%   {transform:translateX(0)}
+    100% {transform:translateX(calc(100% + 160px))}
+  }
+  @keyframes shipBob{
+    0%,100%{transform:translateY(0)   rotate(-.6deg)}
+    50%    {transform:translateY(-3px) rotate(.6deg)}
   }
   .cargo-loader-bar{
     width:260px;max-width:64vw;height:3px;
@@ -2087,12 +2109,47 @@
   <div class="cargo-loader-inner">
     <img class="cargo-loader-logo" src="Assets/logo.jpg" alt="International Logistics Services">
     <div class="cargo-loader-scene" aria-hidden="true">
-      <svg class="cargo-plane" viewBox="0 0 88 36" fill="currentColor">
-        <!-- Stylised cargo plane silhouette -->
-        <path d="M2 20 L 62 16 L 70 6 C 72 4 76 4 78 6 L 86 14 L 78 22 L 86 30 C 84 32 80 32 78 30 L 70 22 L 62 20 L 2 20 Z M 28 16 L 18 6 L 24 6 L 38 16 M 28 20 L 18 30 L 24 30 L 38 20 Z"/>
-      </svg>
-      <div class="cargo-trail"></div>
       <div class="cargo-horizon"></div>
+      <div class="cargo-ship-track">
+        <svg class="cargo-ship" viewBox="0 0 160 80" preserveAspectRatio="xMidYMid meet">
+          <!-- Ship hull -->
+          <path d="M 8 56 L 154 56 L 144 76 L 22 76 Z" fill="#ffffff" stroke="#0b2a8a" stroke-width="1.4"/>
+          <!-- Red bottom waterline stripe -->
+          <path d="M 22 76 L 144 76 L 138 80 L 28 80 Z" fill="#c20a2a"/>
+          <!-- Deck shadow line -->
+          <line x1="10" y1="56" x2="152" y2="56" stroke="rgba(11,42,138,.45)" stroke-width="1.2"/>
+          <!-- Stack of shipping containers — bottom row -->
+          <g stroke="#0b2a8a" stroke-width=".6">
+            <rect x="34" y="40" width="18" height="16" fill="#e85a4f"/>
+            <rect x="54" y="40" width="18" height="16" fill="#2e5fb8"/>
+            <rect x="74" y="40" width="18" height="16" fill="#f4a020"/>
+            <rect x="94" y="40" width="18" height="16" fill="#2e5fb8"/>
+            <rect x="114" y="40" width="18" height="16" fill="#e85a4f"/>
+            <!-- Middle row -->
+            <rect x="44" y="26" width="18" height="14" fill="#2e5fb8"/>
+            <rect x="64" y="26" width="18" height="14" fill="#f4a020"/>
+            <rect x="84" y="26" width="18" height="14" fill="#e85a4f"/>
+            <rect x="104" y="26" width="18" height="14" fill="#2e5fb8"/>
+            <!-- Top row -->
+            <rect x="64" y="14" width="18" height="12" fill="#f4a020"/>
+            <rect x="84" y="14" width="18" height="12" fill="#e85a4f"/>
+          </g>
+          <!-- Wheelhouse / bridge near the bow (left side) -->
+          <rect x="10" y="30" width="22" height="26" fill="#0b2a8a"/>
+          <rect x="14" y="34" width="4" height="3" fill="#cfe0ff"/>
+          <rect x="20" y="34" width="4" height="3" fill="#cfe0ff"/>
+          <rect x="26" y="34" width="4" height="3" fill="#cfe0ff"/>
+          <rect x="14" y="40" width="4" height="3" fill="#cfe0ff"/>
+          <rect x="20" y="40" width="4" height="3" fill="#cfe0ff"/>
+          <rect x="26" y="40" width="4" height="3" fill="#cfe0ff"/>
+          <!-- Smoke stack with red stripe -->
+          <rect x="14" y="18" width="8" height="14" fill="#ffffff" stroke="#0b2a8a" stroke-width=".8"/>
+          <rect x="14" y="22" width="8" height="3" fill="#c20a2a"/>
+          <!-- Mast -->
+          <line x1="36" y1="6" x2="36" y2="40" stroke="#0b2a8a" stroke-width="1"/>
+        </svg>
+      </div>
+      <div class="cargo-waves"></div>
     </div>
     <div class="cargo-loader-text">
       Preparing your proposal<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
@@ -3787,7 +3844,12 @@
       }
     });
 
-    requestAnimationFrame(drawNetwork);
+    // Stop redrawing once the splash has been hidden — saves CPU
+    // and prevents background work from competing with the loader's
+    // animations.
+    if(!splash.classList.contains('hidden')){
+      requestAnimationFrame(drawNetwork);
+    }
   }
   requestAnimationFrame(drawNetwork);
 
@@ -3862,15 +3924,14 @@
       playSfx('unlock');
       pwInputWrap.classList.remove('error');
       pwError.classList.remove('show');
-      // Successful unlock → splash → cargo loader (~2s) → main site
-      setTimeout(()=>{
-        splash.classList.add('hidden');
-        showCargoLoader(()=>{
-          document.body.classList.remove('splash-open');
-          // Slight delay so the first reveal animations get a clean frame
-          setTimeout(()=> speak(), 350);
-        });
-      }, 350);
+      // Show the cargo loader INSTANTLY — it sits on top of the splash
+      // (z-index 350 vs 200), so the user gets immediate feedback.
+      showCargoLoader(()=>{
+        document.body.classList.remove('splash-open');
+        setTimeout(()=> speak(), 250);
+      });
+      // Splash quietly fades out behind the loader on the next frame.
+      requestAnimationFrame(()=> splash.classList.add('hidden'));
     } else {
       playSfx('error');
       pwInputWrap.classList.add('error');

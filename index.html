@@ -1544,6 +1544,14 @@
     content:"";position:absolute;left:0;top:7px;width:6px;height:6px;
     background:var(--brand);border-radius:50%;
   }
+  /* Highlight phrases inside the terms — blue for emphasis, red for the
+     hard exclusion clause so the client cannot miss it. */
+  .quote-terms .kw-blue,
+  .quote-terms .kw-red{
+    font-weight:700;text-decoration:underline;text-underline-offset:2px;
+  }
+  .quote-terms .kw-blue{color:var(--brand)}
+  .quote-terms .kw-red {color:#c20a2a}
 
   .quote-sign{
     display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:18px;
@@ -3128,13 +3136,13 @@
         <div class="quote-terms">
           <h5>Terms &amp; Conditions</h5>
           <ul>
-            <li><strong>Platforms covered:</strong> this service is for <u>Instagram and Facebook only</u>. <u>No other social media platforms</u> (TikTok, LinkedIn, X/Twitter, YouTube, Threads, Snapchat, etc.) are included or managed under this quotation.</li>
-            <li><strong>Scope is final:</strong> only the items listed in this quotation are included. <u>No additional services will be provided outside this scope</u> — any extra work will require a separate quotation.</li>
+            <li><strong>Platforms covered:</strong> this service is for <span class="kw-blue">Instagram and Facebook only</span>. <span class="kw-red">No other social media platforms</span> (TikTok, LinkedIn, X/Twitter, YouTube, Threads, Snapchat, etc.) are included or managed under this quotation.</li>
+            <li><strong>Scope is final:</strong> only the items listed in this quotation are included. <span class="kw-blue">No additional services will be provided outside this scope</span> — any extra work will require a separate quotation.</li>
             <li><strong>Service period:</strong> billed per month from approval date — renewable on a monthly basis at 2,000 AED / month.</li>
             <li><strong>Creative direction:</strong> design follows the colour, typography and visual style of the option selected above (Option 1, 2 or 3).</li>
             <li><strong>Revisions:</strong> 2 rounds of revisions included per asset before publishing.</li>
             <li><strong>Deliverables:</strong> all final assets handed over as editable master files — full ownership transferred to ILS.</li>
-            <li><strong>Payment:</strong> 50% on approval to start production · 50% on completion of the monthly batch.</li>
+            <li><strong>Payment:</strong> <span class="kw-blue">50% on approval to start production</span> · 50% on completion of the monthly batch.</li>
             <li><strong>Quotation validity:</strong> this quotation is valid for 30 days from the date of issue.</li>
             <li><strong>Copyright:</strong> all design IP belongs to ILS upon final payment.</li>
           </ul>

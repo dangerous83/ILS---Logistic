@@ -3239,10 +3239,8 @@
     voiceLabel.textContent = playing ? 'Stop Voice Intro' : 'Play Voice Intro';
   }
 
-  // ===== ELEVENLABS VOICE PLAYBACK =====
-  // Pre-rendered MP3s sit in /Assets/ as 01.mp3 ... 13.mp3.
-  // Each fixed voice line on the site is mapped to a file; if a file is
-  // missing or blocked, we fall back to browser speechSynthesis.
+  // ===== ELEVENLABS VOICE PLAYBACK (MP3 ONLY — no browser TTS fallback) =====
+  // The same MP3 plays on every device, browser and platform.
   const AUDIO_FILES = {
     passwordPrompt: 'Assets/01.mp3',
     passwordDenied: 'Assets/02.mp3',
@@ -3258,72 +3256,78 @@
     approve2:       'Assets/12.mp3',
     approve3:       'Assets/13.mp3',
   };
+  // Pre-construct one Audio element per file at page load. On mobile this
+  // is what lets the clip play instantly inside a click handler — creating
+  // a fresh Audio on demand often loses the user-gesture chain on iOS.
+  const AUDIO_CACHE = {};
+  Object.entries(AUDIO_FILES).forEach(([key, url])=>{
+    try{
+      const a = new Audio(url);
+      a.preload = 'auto';
+      a.volume  = 1.0;
+      // Helps iOS Safari treat the element as inline media
+      a.setAttribute('playsinline', '');
+      a.setAttribute('webkit-playsinline', '');
+      AUDIO_CACHE[key] = a;
+    }catch(_){ /* ignored */ }
+  });
+  // Prime every audio element on the first user gesture so iOS / Chrome
+  // mobile permit later programmatic plays (after timeouts, etc.).
+  let __audioPrimed = false;
+  function primeAudioOnce(){
+    if(__audioPrimed) return;
+    __audioPrimed = true;
+    Object.values(AUDIO_CACHE).forEach(a=>{
+      try{
+        a.muted = true;
+        const p = a.play();
+        if(p && p.then) p.then(()=>{ a.pause(); a.currentTime = 0; a.muted = false; })
+                         .catch(()=>{ a.muted = false; });
+        else { a.pause(); a.currentTime = 0; a.muted = false; }
+      }catch(_){ a.muted = false; }
+    });
+  }
+  // Hook the primer to the very first user interaction
+  ['pointerdown','touchstart','click','keydown'].forEach(ev=>{
+    window.addEventListener(ev, primeAudioOnce, { once:true, capture:true, passive:true });
+  });
+
   let currentAudio = null;
   function stopAllSpeech(){
     if(currentAudio){
       try{ currentAudio.pause(); currentAudio.currentTime = 0; }catch(_){}
       currentAudio = null;
     }
+    // Stop any leftover browser TTS from older builds — never start a new one.
     if('speechSynthesis' in window) window.speechSynthesis.cancel();
   }
-  function playLine(key, fallbackText, opts){
-    const url = AUDIO_FILES[key];
-    if(!url){ if(fallbackText) browserSpeak(fallbackText, opts); return null; }
+  function playLine(key){
+    const a = AUDIO_CACHE[key];
+    if(!a) return null;
     stopAllSpeech();
-    const a = new Audio(url);
-    a.preload = 'auto';
-    a.volume = 1.0;
+    try{ a.currentTime = 0; }catch(_){}
     currentAudio = a;
-    a.addEventListener('ended', ()=>{ if(currentAudio === a) currentAudio = null; });
-    a.addEventListener('error', ()=>{
-      if(currentAudio === a) currentAudio = null;
-      if(fallbackText) browserSpeak(fallbackText, opts);
-    });
     const p = a.play();
     if(p && p.catch) p.catch(()=>{
+      // Autoplay blocked or playback failed — stay silent on purpose.
       if(currentAudio === a) currentAudio = null;
-      if(fallbackText) browserSpeak(fallbackText, opts);
     });
     return a;
   }
 
   function speak(){
-    // Toggle: if any speech (audio file or TTS) is already playing, stop it.
+    // Toggle: if the intro audio is already playing, stop it
     if(isPlaying){
       stopAllSpeech();
       setPlayingUI(false);
       return;
     }
-    const a = playLine('voiceIntro', VOICE_SCRIPT);
-    if(a){
-      a.addEventListener('ended', ()=> setPlayingUI(false));
-      a.addEventListener('error', ()=> setPlayingUI(false));
-      a.addEventListener('pause', ()=>{
-        // Pause without ended = user-stop or autoplay block
-        if(a.currentTime === 0 || a.ended) return;
-      });
-      setPlayingUI(true);
-    } else if('speechSynthesis' in window){
-      // Fallback path — speak via TTS with the original UI behavior
-      selectedVoice = pickVoice() || selectedVoice;
-      utterance = new SpeechSynthesisUtterance(VOICE_SCRIPT);
-      if(selectedVoice){
-        utterance.voice = selectedVoice;
-        utterance.lang  = selectedVoice.lang || 'en-US';
-      } else {
-        utterance.lang = 'en-US';
-      }
-      utterance.rate   = AI_VOICE_RATE;
-      utterance.pitch  = AI_VOICE_PITCH;
-      utterance.volume = 1.0;
-      utterance.onend   = ()=> setPlayingUI(false);
-      utterance.onerror = ()=> setPlayingUI(false);
-      window.speechSynthesis.cancel();
-      setTimeout(()=> window.speechSynthesis.speak(utterance), 60);
-      setPlayingUI(true);
-    } else {
-      alert('Voice playback is not supported in this browser. Please try Chrome, Edge, or Safari.');
-    }
+    const a = playLine('voiceIntro');
+    if(!a) return;
+    const onDone = ()=>{ setPlayingUI(false); a.removeEventListener('ended', onDone); a.removeEventListener('error', onDone); };
+    a.addEventListener('ended', onDone);
+    a.addEventListener('error', onDone);
+    setPlayingUI(true);
   }
 
   // Voices populate asynchronously on most platforms — re-pick every time the list changes.

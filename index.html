@@ -3376,12 +3376,15 @@
       ? 'Hide Creative Variations'
       : 'Reveal Creative Variations';
     if(isOpen){
+      // Make sure the active panel's content is revealed immediately —
+      // it was display:none, so IntersectionObserver never fired on it.
+      const activeTab = document.querySelector('.var-tab.active');
+      const v = activeTab ? activeTab.dataset.var : "1";
+      const activePanel = document.querySelector(`.variation-panel[data-panel="${v}"]`);
+      if(activePanel) forceRevealPanel(activePanel);
       setTimeout(()=>{
         optionPanel.scrollIntoView({behavior:'smooth', block:'start'});
       }, 280);
-      // Speak the explanation for the currently active option (defaults to Option 1)
-      const activeTab = document.querySelector('.var-tab.active');
-      const v = activeTab ? activeTab.dataset.var : "1";
       const key = 'option' + v;
       const fallback = OPTION_VOICE[v] || OPTION_VOICE["1"];
       setTimeout(()=> playLine(key, fallback), 900);
@@ -3390,6 +3393,16 @@
       stopAllSpeech();
     }
   });
+
+  // Reveal every scroll-animated element inside a panel right away so the
+  // panel doesn't appear blank when it switches from display:none to block
+  // (the IntersectionObserver only fires on the next paint cycle).
+  function forceRevealPanel(panel){
+    if(!panel) return;
+    panel.classList.add('in');
+    panel.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-stagger, .post')
+         .forEach(el=> el.classList.add('in'));
+  }
 
   // Variation tab switcher — also plays the matching voice explanation
   document.querySelectorAll('.var-tab').forEach(tab=>{
@@ -3400,7 +3413,9 @@
       tab.classList.add('active');
       const v = tab.dataset.var;
       document.querySelectorAll('.variation-panel').forEach(p=>{
-        p.classList.toggle('active', p.dataset.panel === v);
+        const isActive = p.dataset.panel === v;
+        p.classList.toggle('active', isActive);
+        if(isActive) forceRevealPanel(p);
       });
       // Re-narrate only when the user switches to a different tab
       if(!wasActive && OPTION_VOICE[v]){

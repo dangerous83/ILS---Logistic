@@ -777,18 +777,20 @@
     position:absolute;top:8px;left:-90px;width:88px;height:36px;
     color:#fff;
     filter:drop-shadow(0 6px 12px rgba(0,0,0,.35));
-    animation:cargoFly 2.05s cubic-bezier(.4,0,.55,1) forwards;
+    animation:cargoFly 1.6s cubic-bezier(.4,0,.55,1) infinite;
   }
   .cargo-trail{
     position:absolute;top:24px;left:-80px;height:2px;width:0;
     background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.7) 100%);
     border-radius:99px;
-    animation:cargoTrail 2.05s cubic-bezier(.4,0,.55,1) forwards;
+    animation:cargoTrail 1.6s cubic-bezier(.4,0,.55,1) infinite;
   }
   @keyframes cargoFly{
-    0%   {transform:translateX(0)   translateY(2px)}
+    0%   {transform:translateX(0)     translateY(2px);  opacity:0}
+    8%   {opacity:1}
     50%  {transform:translateX(190px) translateY(-4px)}
-    100% {transform:translateX(440px) translateY(0)}
+    92%  {opacity:1}
+    100% {transform:translateX(440px) translateY(0);   opacity:0}
   }
   @keyframes cargoTrail{
     0%   {width:0;opacity:0;transform:translateX(0)}
@@ -804,7 +806,7 @@
   .cargo-loader-bar-fill{
     height:100%;width:0%;
     background:linear-gradient(90deg,#fff 0%, #cfe0ff 100%);
-    animation:cargoFill 2s linear forwards;
+    animation:cargoFill 3s linear forwards;
     box-shadow:0 0 12px rgba(255,255,255,.7);
   }
   @keyframes cargoFill{to{width:100%}}
@@ -3189,9 +3191,12 @@
     const loader = document.getElementById('cargoLoader');
     if(!loader){ if(onDone) onDone(); return; }
     document.body.classList.add('loader-open');
+    loader.style.display = '';
     loader.classList.remove('fade-out');
     loader.classList.add('show');
     loader.setAttribute('aria-hidden', 'false');
+    // Loader runs ~3 seconds. The cargo plane animation is infinite,
+    // so even on slow connections you still see motion.
     setTimeout(()=>{
       loader.classList.add('fade-out');
       loader.setAttribute('aria-hidden', 'true');
@@ -3200,7 +3205,7 @@
         document.body.classList.remove('loader-open');
         if(onDone) onDone();
       }, 550);
-    }, 2000);
+    }, 3000);
   }
 
   // ===== SCROLL REVEAL =====

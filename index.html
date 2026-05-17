@@ -1993,7 +1993,8 @@
     .variation-tabs{flex-direction:column;padding:8px}
     .var-tab{flex:none;width:100%;min-width:0}
     .variation-switcher{margin-bottom:24px}
-    .voice-widget{bottom:16px;right:16px;font-size:12px;padding:10px 14px}
+    /* Hide the voice-intro widget on mobile entirely */
+    .voice-widget{display:none !important}
     .audio-prompt{flex-direction:column;text-align:center;left:16px;right:16px;transform:translateY(-160%)}
     .audio-prompt.show{transform:translateY(0)}
     .cta-card{padding:32px 22px}
@@ -3928,7 +3929,10 @@
       // (z-index 350 vs 200), so the user gets immediate feedback.
       showCargoLoader(()=>{
         document.body.classList.remove('splash-open');
-        setTimeout(()=> speak(), 250);
+        // Skip the auto-played voice intro on mobile — the widget is hidden
+        // there, so playing it would give the user no way to stop it.
+        const isMobile = window.matchMedia('(max-width:600px)').matches;
+        if(!isMobile) setTimeout(()=> speak(), 250);
       });
       // Splash quietly fades out behind the loader on the next frame.
       requestAnimationFrame(()=> splash.classList.add('hidden'));

@@ -1553,6 +1553,48 @@
   .quote-terms .kw-blue{color:var(--brand)}
   .quote-terms .kw-red {color:#c20a2a}
 
+  /* ===== BANK DETAILS ===== */
+  .quote-banks{
+    background:#f6f9ff;border-radius:12px;padding:18px 22px;border:1px solid var(--line);
+    margin-bottom:22px;
+  }
+  .quote-banks h5{
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--brand-dark);font-weight:800;margin-bottom:12px;
+  }
+  .quote-banks .bank-intro{
+    font-size:12px;color:var(--muted);margin-bottom:14px;font-weight:600;
+  }
+  .quote-banks .bank-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:14px;
+  }
+  .quote-banks .bank-card{
+    background:#fff;border:1px solid var(--line);border-radius:10px;
+    padding:14px 16px;border-left:3px solid var(--brand);
+  }
+  .quote-banks .bank-card .bank-name{
+    font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;
+    color:var(--brand-dark);margin-bottom:8px;line-height:1.25;
+  }
+  .quote-banks .bank-row{
+    display:flex;justify-content:space-between;gap:10px;
+    font-size:11.5px;line-height:1.5;padding:3px 0;
+    border-bottom:1px dashed #e6ecf5;
+  }
+  .quote-banks .bank-row:last-child{border-bottom:0}
+  .quote-banks .bank-row .lbl{
+    color:var(--muted);font-weight:600;text-transform:uppercase;
+    letter-spacing:.06em;font-size:10px;flex-shrink:0;
+  }
+  .quote-banks .bank-row .val{
+    color:var(--ink);font-weight:700;text-align:right;
+    font-family:'JetBrains Mono','SFMono-Regular',Menlo,Consolas,monospace;
+    word-break:break-all;
+  }
+  @media (max-width:720px){
+    .quote-banks .bank-grid{grid-template-columns:1fr}
+  }
+
   .quote-sign{
     display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:18px;
     padding-top:18px;border-top:2px dashed var(--line);
@@ -3148,6 +3190,30 @@
           </ul>
         </div>
 
+        <div class="quote-banks">
+          <h5>Bank Account Details — Payment Transfer</h5>
+          <p class="bank-intro">Clients may transfer payments to either of the following accounts:</p>
+          <div class="bank-grid">
+            <div class="bank-card">
+              <div class="bank-name">Abu Dhabi Commercial Bank PJSC</div>
+              <div class="bank-row"><span class="lbl">Account Title</span><span class="val">SONNY FRANCIS JAMPAZAR</span></div>
+              <div class="bank-row"><span class="lbl">Account No.</span><span class="val">14473056910001</span></div>
+              <div class="bank-row"><span class="lbl">IBAN</span><span class="val">AE470030014473056910001</span></div>
+              <div class="bank-row"><span class="lbl">Swift</span><span class="val">ADCBAEAA</span></div>
+              <div class="bank-row"><span class="lbl">Branch</span><span class="val">Business Bay Branch</span></div>
+              <div class="bank-row"><span class="lbl">Currency</span><span class="val">AED</span></div>
+            </div>
+            <div class="bank-card">
+              <div class="bank-name">Abu Dhabi Islamic Bank (ADIB)</div>
+              <div class="bank-row"><span class="lbl">Account Holder</span><span class="val">ALVIN JAMPAZAR</span></div>
+              <div class="bank-row"><span class="lbl">Account No.</span><span class="val">19351497</span></div>
+              <div class="bank-row"><span class="lbl">IBAN</span><span class="val">AE580500000000019351497</span></div>
+              <div class="bank-row"><span class="lbl">Swift</span><span class="val">ABDIAEADXXX</span></div>
+              <div class="bank-row"><span class="lbl">Currency</span><span class="val">AED</span></div>
+            </div>
+          </div>
+        </div>
+
         <div class="quote-sign">
           <div class="quote-sign-block">
             <div class="name">Alvin Jampazar</div>
@@ -4329,7 +4395,68 @@
       y += lines.length * 10 + 1;
     });
 
-    y += 10;
+    y += 14;
+
+    // Bank account details — add a new page if not enough space
+    const bankBlockH = 150;
+    if (y + bankBlockH > H - 60) { doc.addPage(); y = M; }
+
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(9);
+    doc.setTextColor(11,42,138);
+    doc.text('BANK ACCOUNT DETAILS — PAYMENT TRANSFER', M, y);
+    y += 6;
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(7.5);
+    doc.setTextColor(110,115,144);
+    doc.text('Clients may transfer payments to either of the following accounts:', M, y+6);
+    y += 14;
+
+    const bankW = (W - M*2 - 10) / 2;
+    const bankH = 118;
+    const bankTopY = y;
+
+    const drawBank = (x, title, rows) => {
+      doc.setDrawColor(220,228,245);
+      doc.setFillColor(255,255,255);
+      doc.roundedRect(x, bankTopY, bankW, bankH, 6, 6, 'FD');
+      doc.setFillColor(11,42,138);
+      doc.rect(x, bankTopY, 2.5, bankH, 'F');
+      doc.setFont('helvetica','bold');
+      doc.setFontSize(9);
+      doc.setTextColor(11,42,138);
+      doc.text(title, x + 10, bankTopY + 14);
+      let by = bankTopY + 26;
+      rows.forEach(([lbl, val]) => {
+        doc.setFont('helvetica','normal');
+        doc.setFontSize(7);
+        doc.setTextColor(110,115,144);
+        doc.text(lbl.toUpperCase(), x + 10, by);
+        doc.setFont('helvetica','bold');
+        doc.setFontSize(8);
+        doc.setTextColor(20,28,58);
+        const valLines = doc.splitTextToSize(val, bankW - 80);
+        doc.text(valLines, x + bankW - 10, by, { align:'right' });
+        by += Math.max(11, valLines.length * 9);
+      });
+    };
+
+    drawBank(M, 'Abu Dhabi Commercial Bank PJSC', [
+      ['Account Title', 'SONNY FRANCIS JAMPAZAR'],
+      ['Account No.',   '14473056910001'],
+      ['IBAN',          'AE470030014473056910001'],
+      ['Swift',         'ADCBAEAA'],
+      ['Branch',        'Business Bay Branch'],
+      ['Currency',      'AED'],
+    ]);
+    drawBank(M + bankW + 10, 'Abu Dhabi Islamic Bank (ADIB)', [
+      ['Account Holder','ALVIN JAMPAZAR'],
+      ['Account No.',   '19351497'],
+      ['IBAN',          'AE580500000000019351497'],
+      ['Swift',         'ABDIAEADXXX'],
+      ['Currency',      'AED'],
+    ]);
+    y = bankTopY + bankH + 14;
 
     // Sign-off row (no signature scribble — printed name only)
     doc.setDrawColor(200,210,235);

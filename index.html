@@ -487,22 +487,34 @@
     letter-spacing:.01em;white-space:nowrap;
   }
   .var-pill .dot{width:8px;height:8px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 4px rgba(30,77,216,.18)}
-  .var-showcase{
-    position:absolute;inset:0;display:grid;
-    grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
-    gap:22px;align-items:center;justify-items:center;padding:34px 4px 4px;
+
+  /* Two-column auto-scrolling marquee of all variation designs */
+  .var-marquee{
+    position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;
+    gap:18px;padding:30px 4px 4px;overflow:hidden;
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 11%,#000 88%,transparent 100%);
+            mask-image:linear-gradient(to bottom,transparent 0,#000 11%,#000 88%,transparent 100%);
     transition:transform .3s ease;
   }
-  .var-card{
-    position:relative;width:100%;max-width:228px;aspect-ratio:3/4;
-    border-radius:20px;overflow:hidden;background:#0b1838;
-    border:1px solid rgba(255,255,255,.08);
-    box-shadow:0 30px 60px -26px rgba(20,40,120,.55),0 10px 22px -14px rgba(20,40,120,.32);
-    cursor:pointer;will-change:transform;
-    transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s ease;
+  .var-col{display:flex;flex-direction:column;will-change:transform}
+  .var-col-up{animation:varScrollUp 42s linear infinite}
+  .var-col-down{animation:varScrollDown 42s linear infinite}
+  .var-marquee:hover .var-col{animation-play-state:paused}
+  @keyframes varScrollUp{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+  @keyframes varScrollDown{from{transform:translateY(-50%)}to{transform:translateY(0)}}
+  @media (prefers-reduced-motion: reduce){
+    .var-col-up,.var-col-down{animation:none}
+    .var-marquee{overflow-y:auto}
   }
-  .var-card:nth-child(odd){transform:rotate(-2.5deg)}
-  .var-card:nth-child(even){transform:rotate(2.5deg)}
+
+  .var-card{
+    position:relative;width:100%;margin-bottom:18px;aspect-ratio:3/4;
+    border-radius:18px;overflow:hidden;background:#0b1838;
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 22px 44px -24px rgba(20,40,120,.5),0 8px 18px -12px rgba(20,40,120,.32);
+    cursor:pointer;will-change:transform;flex:0 0 auto;
+    transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s ease;
+  }
   .var-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
   .var-card-ov{
     position:absolute;inset:0;display:flex;align-items:flex-end;
@@ -517,7 +529,7 @@
     transform:scale(.6);transition:transform .4s cubic-bezier(.2,.8,.2,1);
   }
   .var-zoom svg{width:17px;height:17px}
-  .var-card:hover{transform:rotate(0deg) translateY(-10px) scale(1.04);z-index:5;box-shadow:0 52px 84px -26px rgba(20,40,120,.6)}
+  .var-card:hover{transform:translateY(-6px) scale(1.03);z-index:5;box-shadow:0 40px 70px -26px rgba(20,40,120,.6)}
   .var-card:hover img{transform:scale(1.06)}
   .var-card:hover .var-card-ov{opacity:1}
   .var-card:hover .var-zoom{transform:scale(1)}
@@ -2323,40 +2335,209 @@
 
     <div class="hero-right">
       <!-- Social-media variation designs — click any to preview -->
-      <span class="var-pill"><span class="dot"></span>4 Creative Variations · click to preview</span>
+      <span class="var-pill"><span class="dot"></span>14 Creative Variations · click any to preview</span>
 
-      <div class="var-showcase">
+      <div class="var-marquee">
+      <div class="var-col var-col-up">
         <div class="var-card" data-img="Assets/social media - ILS Var - 1.png"
              data-title="Global Freight Solutions"
-             data-desc="Ocean-freight hero creative. Cinematic port photography with bold display type and a “Trusted Worldwide” badge — built for reach and reliability messaging.">
-          <img src="Assets/social media - ILS Var - 1.png" alt="ILS — Global Freight Solutions social media design">
+             data-desc="Ocean-freight hero creative — cinematic port photography with bold display type and a “Trusted Worldwide” badge.">
+          <img src="Assets/social media - ILS Var - 1.png" alt="ILS social media design — Global Freight Solutions" loading="lazy">
           <div class="var-card-ov"><span class="var-card-name">Global Freight Solutions</span></div>
           <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
         </div>
-
         <div class="var-card" data-img="Assets/social media - ILS Var - 2.png"
              data-title="Fast. Efficient. Reliable."
-             data-desc="Air-cargo creative with a split layout and freight-loading photography — ideal for urgent airfreight and service-promise posts.">
-          <img src="Assets/social media - ILS Var - 2.png" alt="ILS — Fast Efficient Reliable social media design">
+             data-desc="Air-cargo creative with a split layout and freight-loading photography — for urgent airfreight and service-promise posts.">
+          <img src="Assets/social media - ILS Var - 2.png" alt="ILS social media design — Fast. Efficient. Reliable." loading="lazy">
           <div class="var-card-ov"><span class="var-card-name">Fast. Efficient. Reliable.</span></div>
           <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
         </div>
-
         <div class="var-card" data-img="Assets/social media - ILS Var - 3.png"
              data-title="Your Navigator in World Trade"
-             data-desc="Road-transport creative with a global-network backdrop and feature row (Global Reach · Reliable Solutions · On Time). Strong for trucking and trade-route storytelling.">
-          <img src="Assets/social media - ILS Var - 3.png" alt="ILS — Your Navigator in World Trade social media design">
+             data-desc="Road-transport creative on a global-network backdrop with a Global Reach · Reliable Solutions · On Time feature row.">
+          <img src="Assets/social media - ILS Var - 3.png" alt="ILS social media design — Your Navigator in World Trade" loading="lazy">
           <div class="var-card-ov"><span class="var-card-name">Your Navigator in World Trade</span></div>
           <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
         </div>
-
         <div class="var-card" data-img="Assets/social media - ILS Var - 4.png"
              data-title="End-to-End Logistics Support"
-             data-desc="Integrated-solutions creative covering sea, air and road freight in one frame — perfect for full-service and warehousing / customs messaging.">
-          <img src="Assets/social media - ILS Var - 4.png" alt="ILS — End-to-End Logistics Support social media design">
+             data-desc="Integrated-solutions creative covering sea, air and road freight in one frame — for full-service and customs messaging.">
+          <img src="Assets/social media - ILS Var - 4.png" alt="ILS social media design — End-to-End Logistics Support" loading="lazy">
           <div class="var-card-ov"><span class="var-card-name">End-to-End Logistics Support</span></div>
           <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
         </div>
+        <div class="var-card" data-img="Assets/social media - ILS Var - 5.png"
+             data-title="On-Time Delivery"
+             data-desc="Precision-logistics creative pairing aircraft and highway truck, with a “Precision Logistics” badge — built for deadline reliability.">
+          <img src="Assets/social media - ILS Var - 5.png" alt="ILS social media design — On-Time Delivery" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">On-Time Delivery</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" data-img="Assets/social media - ILS Var - 6.png"
+             data-title="Your Logistics Partner"
+             data-desc="Partnership-led creative (plane, port cranes, truck) with a “Trusted Worldwide” badge — for long-term trust posts.">
+          <img src="Assets/social media - ILS Var - 6.png" alt="ILS social media design — Your Logistics Partner" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Your Logistics Partner</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" data-img="Assets/social media - ILS Var - 7.png"
+             data-title="Customs Clearance"
+             data-desc="Documentation &amp; compliance creative with a customs-declaration overlay and “Compliant &amp; Efficient” badge.">
+          <img src="Assets/social media - ILS Var - 7.png" alt="ILS social media design — Customs Clearance" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Customs Clearance</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" aria-hidden="true" data-img="Assets/social media - ILS Var - 1.png"
+             data-title="Global Freight Solutions"
+             data-desc="Ocean-freight hero creative — cinematic port photography with bold display type and a “Trusted Worldwide” badge.">
+          <img src="Assets/social media - ILS Var - 1.png" alt="ILS social media design — Global Freight Solutions" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Global Freight Solutions</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" aria-hidden="true" data-img="Assets/social media - ILS Var - 2.png"
+             data-title="Fast. Efficient. Reliable."
+             data-desc="Air-cargo creative with a split layout and freight-loading photography — for urgent airfreight and service-promise posts.">
+          <img src="Assets/social media - ILS Var - 2.png" alt="ILS social media design — Fast. Efficient. Reliable." loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Fast. Efficient. Reliable.</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" aria-hidden="true" data-img="Assets/social media - ILS Var - 3.png"
+             data-title="Your Navigator in World Trade"
+             data-desc="Road-transport creative on a global-network backdrop with a Global Reach · Reliable Solutions · On Time feature row.">
+          <img src="Assets/social media - ILS Var - 3.png" alt="ILS social media design — Your Navigator in World Trade" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Your Navigator in World Trade</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" aria-hidden="true" data-img="Assets/social media - ILS Var - 4.png"
+             data-title="End-to-End Logistics Support"
+             data-desc="Integrated-solutions creative covering sea, air and road freight in one frame — for full-service and customs messaging.">
+          <img src="Assets/social media - ILS Var - 4.png" alt="ILS social media design — End-to-End Logistics Support" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">End-to-End Logistics Support</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" aria-hidden="true" data-img="Assets/social media - ILS Var - 5.png"
+             data-title="On-Time Delivery"
+             data-desc="Precision-logistics creative pairing aircraft and highway truck, with a “Precision Logistics” badge — built for deadline reliability.">
+          <img src="Assets/social media - ILS Var - 5.png" alt="ILS social media design — On-Time Delivery" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">On-Time Delivery</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" aria-hidden="true" data-img="Assets/social media - ILS Var - 6.png"
+             data-title="Your Logistics Partner"
+             data-desc="Partnership-led creative (plane, port cranes, truck) with a “Trusted Worldwide” badge — for long-term trust posts.">
+          <img src="Assets/social media - ILS Var - 6.png" alt="ILS social media design — Your Logistics Partner" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Your Logistics Partner</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" aria-hidden="true" data-img="Assets/social media - ILS Var - 7.png"
+             data-title="Customs Clearance"
+             data-desc="Documentation &amp; compliance creative with a customs-declaration overlay and “Compliant &amp; Efficient” badge.">
+          <img src="Assets/social media - ILS Var - 7.png" alt="ILS social media design — Customs Clearance" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Customs Clearance</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+      </div>
+      <div class="var-col var-col-down">
+        <div class="var-card" data-img="Assets/social media - ILS Var - 8.png"
+             data-title="Project Cargo"
+             data-desc="Heavy-lift creative with crane-lifted oversized equipment and a “Heavy-Lift Specialists” badge — for project-cargo posts.">
+          <img src="Assets/social media - ILS Var - 8.png" alt="ILS social media design — Project Cargo" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Project Cargo</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" data-img="Assets/social media - ILS Var - 9.png"
+             data-title="Global Trade Connected"
+             data-desc="Global-network creative with a world-map backdrop over a container port and a “Global Reach” badge.">
+          <img src="Assets/social media - ILS Var - 9.png" alt="ILS social media design — Global Trade Connected" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Global Trade Connected</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" data-img="Assets/social media - ILS Var - 10.png"
+             data-title="Road Freight Experts"
+             data-desc="Road-freight creative with a highway truck and an “On-Time Delivery” badge — for trucking and lane posts.">
+          <img src="Assets/social media - ILS Var - 10.png" alt="ILS social media design — Road Freight Experts" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Road Freight Experts</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" data-img="Assets/social media - ILS Var - 11.png"
+             data-title="Smart Warehousing"
+             data-desc="Warehousing creative with racked inventory and a loading truck, plus an “Integrated Support” badge.">
+          <img src="Assets/social media - ILS Var - 11.png" alt="ILS social media design — Smart Warehousing" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Smart Warehousing</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" data-img="Assets/social media - ILS Var - 12.png"
+             data-title="End-to-End Logistics"
+             data-desc="Multimodal creative (plane, ship, truck) with a “Sea · Air · Road” badge — one seamless service chain.">
+          <img src="Assets/social media - ILS Var - 12.png" alt="ILS social media design — End-to-End Logistics" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">End-to-End Logistics</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" data-img="Assets/social media - ILS Var - 13.png"
+             data-title="Global Sea Freight"
+             data-desc="Ocean-freight creative with a sunrise container vessel and a “Worldwide Coverage” badge — imports, exports, cross-border.">
+          <img src="Assets/social media - ILS Var - 13.png" alt="ILS social media design — Global Sea Freight" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Global Sea Freight</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" data-img="Assets/social media - ILS Var - 14.png"
+             data-title="Fast Air Cargo"
+             data-desc="Air-freight creative with a loading widebody at sunset and a “Time-Critical Solutions” badge — urgent &amp; scheduled airfreight.">
+          <img src="Assets/social media - ILS Var - 14.png" alt="ILS social media design — Fast Air Cargo" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Fast Air Cargo</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" aria-hidden="true" data-img="Assets/social media - ILS Var - 8.png"
+             data-title="Project Cargo"
+             data-desc="Heavy-lift creative with crane-lifted oversized equipment and a “Heavy-Lift Specialists” badge — for project-cargo posts.">
+          <img src="Assets/social media - ILS Var - 8.png" alt="ILS social media design — Project Cargo" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Project Cargo</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" aria-hidden="true" data-img="Assets/social media - ILS Var - 9.png"
+             data-title="Global Trade Connected"
+             data-desc="Global-network creative with a world-map backdrop over a container port and a “Global Reach” badge.">
+          <img src="Assets/social media - ILS Var - 9.png" alt="ILS social media design — Global Trade Connected" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Global Trade Connected</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" aria-hidden="true" data-img="Assets/social media - ILS Var - 10.png"
+             data-title="Road Freight Experts"
+             data-desc="Road-freight creative with a highway truck and an “On-Time Delivery” badge — for trucking and lane posts.">
+          <img src="Assets/social media - ILS Var - 10.png" alt="ILS social media design — Road Freight Experts" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Road Freight Experts</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" aria-hidden="true" data-img="Assets/social media - ILS Var - 11.png"
+             data-title="Smart Warehousing"
+             data-desc="Warehousing creative with racked inventory and a loading truck, plus an “Integrated Support” badge.">
+          <img src="Assets/social media - ILS Var - 11.png" alt="ILS social media design — Smart Warehousing" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Smart Warehousing</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" aria-hidden="true" data-img="Assets/social media - ILS Var - 12.png"
+             data-title="End-to-End Logistics"
+             data-desc="Multimodal creative (plane, ship, truck) with a “Sea · Air · Road” badge — one seamless service chain.">
+          <img src="Assets/social media - ILS Var - 12.png" alt="ILS social media design — End-to-End Logistics" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">End-to-End Logistics</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" aria-hidden="true" data-img="Assets/social media - ILS Var - 13.png"
+             data-title="Global Sea Freight"
+             data-desc="Ocean-freight creative with a sunrise container vessel and a “Worldwide Coverage” badge — imports, exports, cross-border.">
+          <img src="Assets/social media - ILS Var - 13.png" alt="ILS social media design — Global Sea Freight" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Global Sea Freight</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+        <div class="var-card" aria-hidden="true" data-img="Assets/social media - ILS Var - 14.png"
+             data-title="Fast Air Cargo"
+             data-desc="Air-freight creative with a loading widebody at sunset and a “Time-Critical Solutions” badge — urgent &amp; scheduled airfreight.">
+          <img src="Assets/social media - ILS Var - 14.png" alt="ILS social media design — Fast Air Cargo" loading="lazy">
+          <div class="var-card-ov"><span class="var-card-name">Fast Air Cargo</span></div>
+          <span class="var-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></span>
+        </div>
+      </div>
       </div>
     </div>
   </section>
@@ -4807,13 +4988,13 @@
   });
 
   // Subtle parallax on the hero variation showcase
-  const showcase = document.querySelector('.var-showcase');
+  const showcase = document.querySelector('.var-marquee');
   const heroRight = document.querySelector('.hero-right');
   if(showcase && heroRight && window.matchMedia('(min-width: 1080px)').matches){
     heroRight.addEventListener('mousemove',(e)=>{
       const r = heroRight.getBoundingClientRect();
-      const x = ((e.clientX-r.left)/r.width - .5)*12;
-      const y = ((e.clientY-r.top)/r.height - .5)*12;
+      const x = ((e.clientX-r.left)/r.width - .5)*10;
+      const y = ((e.clientY-r.top)/r.height - .5)*10;
       showcase.style.transform = `translate(${x}px, ${y}px)`;
     });
     heroRight.addEventListener('mouseleave',()=>{

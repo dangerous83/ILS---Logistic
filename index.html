@@ -2162,8 +2162,8 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
       <div class="splash-hint">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Secure access · password required
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        Tap to view the proposal
       </div>
     </div>
 
@@ -4201,10 +4201,17 @@
   splashEnter.addEventListener('click', ()=>{
     // Unlock audio context on first user gesture
     const ctx = getAudioCtx(); if(ctx && ctx.state === 'suspended') ctx.resume();
-    playSfx('whoosh');
-    showStage(stagePassword);
-    setTimeout(()=> pwInput.focus(), 350);
-    setTimeout(()=> playLine('passwordPrompt', 'Please enter the password to proceed.'), 200);
+    playSfx('unlock');
+    // Password gate removed — enter the proposal directly.
+    showCargoLoader(()=>{
+      document.body.classList.remove('splash-open');
+      // Skip the auto-played voice intro on mobile — the widget is hidden
+      // there, so playing it would give the user no way to stop it.
+      const isMobile = window.matchMedia('(max-width:600px)').matches;
+      if(!isMobile) setTimeout(()=> speak(), 250);
+    });
+    // Splash quietly fades out behind the loader on the next frame.
+    requestAnimationFrame(()=> splash.classList.add('hidden'));
   });
 
   pwBack.addEventListener('click', ()=>{
